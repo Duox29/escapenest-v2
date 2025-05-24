@@ -1,0 +1,63 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+}
+.hotel-user-img{
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px !important;
+}
+.address-hotel{
+    color: #0d6efd;
+}
+.status-booking{
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+.status-booking span {
+    font-size: 18px !important;
+}
+ .checkIn-checkOut{
+     display: flex;
+     align-items: center;
+     margin: 10px 0;
+ }
+.checkIn-checkOut .check-in-out{
+    width: 50%;
+ }
+.time-number{
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+.time-number .time{
+    width: 50%;
+}
+h6{
+    font-weight: 600;
+    font-size: 18px !important;
+    margin: 0 20px 0 0;
+}
+.created-updated{
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+.created-updated .created{
+    width: 50%;
+}
+.name-user,.email-user,.phone{
+    display: flex;
+
+}
+.name-user h6,.email-user h6,.phone h6{
+    margin: 10px 0 0 0;
+    width: 30%;
+}
+.original-price,.room-price,.total-room{
+    display: flex;
+    justify-content: space-between;
+}
+
+

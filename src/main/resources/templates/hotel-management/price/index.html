@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{hotel-management/layout/layout.html :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>Thiết lập giá</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/fontawesome-free/css/all.min.css">
+
+        <!-- fullCalendar -->
+        <link rel="stylesheet" href="/admin-assets/plugins/fullcalendar/main.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="/admin-assets/dist/css/adminlte.min.css">
+        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet'/>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.min.js'></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css' rel='stylesheet' />
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css' rel='stylesheet' />
+
+
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Montserrat);
+            body {
+                font-family: montserrat, arial, verdana;
+            }
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            a {
+                text-decoration: none; /* Loại bỏ gạch chân */
+            }
+            .datePicker {
+                border-radius: 10px !important;
+                border: 1px #2e3439 solid !important;
+                padding: 5px 5px;
+            }
+
+            .select-applicable-date {
+                margin-top: 30px;
+            }
+
+            .select-type-room {
+                padding: 7px 10px;
+                border-radius: 10px;
+                width: 100%;
+            }
+
+            .set-price {
+                width: 50%;
+                padding: 5px 10px;
+                border-radius: 10px;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <div class="wrapper" id="main-content" style="font-size: 14px">
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Lịch</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item active">Lịch</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card card-primary">
+                                <div class="card-body p-0">
+                                    <!-- THE CALENDAR -->
+                                    <div id="calendar"></div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="setting-price">
+                                <h6 >Thiết lập giá phòng </h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="w-50">
+                                        <label class="w-100">Từ :</label>
+                                        <input id="formDate" type="text" class="datePicker" name="formDate"
+                                               value="10/24/1984"/>
+                                    </div>
+                                    <div class="w-50">
+                                        <label class="w-100">Đến và bao gồm :</label>
+                                        <input id="includeDate" type="text" class="datePicker" name="toDate"
+                                               value="10/24/1984"/>
+                                    </div>
+                                </div>
+                                <div class="select-applicable-date">
+                                    <label>Quý vị muốn áp dụng cho ngày nào trong tuần ?</label>
+                                    <div>
+                                        <ul class="list-unstyled d-flex justify-content-between ">
+                                            <li class="mx-1">
+                                                <label>T2</label>
+                                                <input class="day-apply" value="MONDAY" type="checkbox">
+                                            </li>
+                                            <li class="mx-1">
+                                                <label>T3</label>
+                                                <input class="day-apply" value="TUESDAY" type="checkbox">
+                                            </li>
+                                            <li class="mx-1">
+                                                <label>T4</label>
+                                                <input class="day-apply" value="WEDNESDAY" type="checkbox">
+                                            </li>
+                                            <li class="mx-1">
+                                                <label>T5</label>
+                                                <input class="day-apply" value="THURSDAY" type="checkbox">
+                                            </li>
+                                            <li class="mx-1">
+                                                <label>T6</label>
+                                                <input class="day-apply" value="FRIDAY" type="checkbox">
+                                            </li>
+                                            <li class="mx-1">
+                                                <label>T7</label>
+                                                <input class="day-apply" value="SATURDAY" type="checkbox">
+                                            </li>
+                                            <li class="mx-1">
+                                                <label>CN</label>
+                                                <input class="day-apply" value="SUNDAY" type="checkbox">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="w-100">
+                                    <label>Loại phòng áp dụng</label>
+                                    <div class="w-100">
+                                        <select class="select-type-room">
+                                            <option th:each="room : ${roomList}"
+                                                    th:value="${room.id}" th:text="${room.name}"></option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="wrap-price mt-3">
+                                    <label>Giá :</label>
+                                    <form id="form-price">
+                                        <div class="form-group">
+                                          <div class="d-flex align-items-center">
+                                              <input id="price" name="price" class="set-price form-control" type="number"
+                                                     placeholder="Giá">
+                                              <span class="ms-2" style="font-size: 20px">đ</span>
+                                          </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="wrap-btn-save mt-3 ">
+                                    <button type="button" class="btn btn-info rounded btn-save">Lưu thay đổi</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thông tin giá phòng</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-price-room">
+                                    <table id="table-room-price" class="table table-bordered table-hover rounded">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30%">Tên phòng</th>
+                                            <th style="width: 30%">Loại phòng</th>
+                                            <th style="width: 20%">Giá</th>
+                                            <th style="width: 20%">Ngày</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="body-table">
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<th:block id="js">
+    <script src="/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+            integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+            integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js'></script>
+
+    <script>
+        const bodyTable = document.getElementById('body-table');
+        const table = document.getElementById('able-room-price');
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar')
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'vi',
+                buttonText: {
+                    today: 'Hôm nay' // Thay đổi văn bản nút "today" thành "Hôm nay"
+                },
+                titleFormat: { // Thiết lập định dạng tiêu đề
+                    year: 'numeric',
+                    month: 'numeric'
+                },
+                validRange: {
+                    start: new Date(), // Bắt đầu từ ngày đầu tiên của tháng hiện tại
+                    end: '2100-12-31' // Kết thúc tại ngày cuối cùng của năm 2100 (hoặc ngày bạn muốn)
+                },
+                dateClick: function(info) {
+                    var clickedDate = info.date;
+
+                    var day = clickedDate.getDate().toString().padStart(2, '0');
+                    var month = (clickedDate.getMonth() + 1).toString().padStart(2, '0');
+                    var year = clickedDate.getFullYear().toString(); // Lấy năm
+                    var date =  day + '-' + month + '-' + year;
+                    axios.get('/api/room-price/day' , {
+                        params: {
+                            date: date
+                        }})
+                        .then((res) =>{
+                            renderRoomPrice(res.data);
+                        })
+                        .catch(err =>{
+                            console.log(err);
+                        })
+
+                    // Hiển thị modal
+                    $('#myModal').modal('show');
+                }
+            })
+            calendar.render()
+        })
+
+
+        const renderRoomPrice = (listRoomPrice) => {
+            let html = "";
+            listRoomPrice.forEach((el,) => {
+                let formattedNumber = (+el.price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                html += `
+                     <tr>
+                                    <td>${el.nameRoom}</td>
+                                    <td>${el.typeRoom}</td>
+                                    <td >${formattedNumber}</td>
+                                    <td>${el.day}</td>
+                                </tr>
+                `
+            })
+            bodyTable.innerHTML = html;
+        }
+
+
+        $('#form-price').validate({
+            rules: {
+                price: {
+                    required: true,
+                    digits: true,
+                    min: 10000,
+                },
+            }, messages: {
+                price: {
+                    required: "Vui lòng nhập giá",
+                    digits: "Nội dung phải là một số nguyên không âm",
+                    min: "Giá trị phải lớn hơn hoặc bằng 10,000",
+                },
+            }, errorElement: 'span', errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            }, highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            }, unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        let currentDate = new Date();
+        let toDate = new Date();
+
+        let fromDateValue ='';
+        let toDateValue = '';
+        // xử lý khi đóng chọn ngày
+        $('#formDate').on('hide.daterangepicker', function (ev, picker) {
+            currentDate = new Date(picker.startDate.format('YYYY-MM-DD'))
+            fromDateValue = (picker.startDate.format('YYYY-MM-DD'));
+            $('#includeDate').data('daterangepicker').setStartDate(currentDate)
+            if (toDateValue === ''){
+                $('#includeDate').focus();
+            }
+
+        });
+
+        // xử lý khi đóng chọn ngày
+        $('#includeDate').on('hide.daterangepicker', function (ev, picker) {
+            toDate = new Date(picker.startDate.format('YYYY-MM-DD'))
+            toDateValue = (picker.startDate.format('YYYY-MM-DD'));
+            console.log(toDateValue)
+        });
+
+
+        // form date
+        $(function () {
+            $('#formDate').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2023,
+                maxYear: 2033,
+                minDate: currentDate,
+                startDate: currentDate,
+                locale: {
+                    format: 'DD/MM/YYYY' // Định dạng ngày
+                }
+            });
+
+        });
+        $(function () {
+            $('#includeDate').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2023,
+                maxYear: 2033,
+                minDate: toDate,
+                startDate: toDate,
+                locale: {
+                    format: 'DD/MM/YYYY' // Định dạng ngày
+                }
+            });
+
+        });
+
+        let arrInputChecked = [];
+        const inputDayApplyEl = document.querySelectorAll('.day-apply');
+        const  btnSave = document.querySelector('.btn-save');
+        const typeRoomEl = document.querySelector('.select-type-room');
+        const priceRoomEl = document.getElementById('price');
+        // api lưu lại bảng set giá cho từng ngày
+        btnSave.addEventListener('click' , ()=>{
+            // nếu người dùng chưa chọn ngày thì
+            if (fromDateValue === ''){
+                $('#formDate').focus();
+                return;
+            }
+            if (currentDate.getTime() >= toDate.getTime()){
+                toastr.warning('Ngày bắt đầu phải trước ngày kết thúc.');
+                return;
+            }
+
+            if (!$('#form-price').valid()) return;
+
+
+            let countChecked = 0;
+
+            inputDayApplyEl.forEach(inEl =>{
+                if (inEl.checked){
+                    arrInputChecked.push(inEl.value);
+                    countChecked ++ ;
+                }
+            })
+            // Kiểm tra nếu không có ô nào được chọn
+            if (countChecked === 0) {
+                toastr.warning('Vui lòng chọn ít nhất một ngày.')
+                return;
+            }
+
+            const data = {
+                startDate : fromDateValue,
+                endDate : toDateValue,
+                dayApply : arrInputChecked,
+                idRoom : parseInt(typeRoomEl.value),
+                price : priceRoomEl.value
+
+            }
+
+            console.log(data);
+            axios.post('/api/room-price/update', data)
+                .then((res) => {
+                    arrInputChecked = []
+                    console.log(arrInputChecked)
+                    toastr.success("Thành công ");
+                })
+                .catch((err) =>{
+                    console.log(err)
+                    toastr.error("Thất bại ");
+                })
+
+        })
+
+
+    </script>
+</th:block>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-light bg-light border-bottom shadow-sm" th:fragment="nav-bar">
+<div class="container">
+  <div class="collapse navbar-collapse justify-content-between p-0 m-0" id="navbarNavAltMarkup">
+    <a class="text-reset text-decoration-none nav-link active" aria-current="page" th:href="@{/}">
+      <img class="img-logo" src="/web/assets/image/logone.png" alt="Ảnh Logo">
+    </a>
+    <div class="d-flex align-items-center">
+
+      <a target="_blank" class="support nav-link text-decoration-none text-reset mx-2" th:href="@{/support}">
+        Hỗ trợ
+      </a>
+      <th:block  sec:authorize="isAuthenticated()" th:if="${#authentication.principal.getUser().getUserRole().getValue == 'USER'}">
+        <a href="/create-hotel"  class="nav-link registration text-reset text-decoration-none mx-2" th:if="${#authentication.principal.getUser().getUserRole().getValue() == 'USER'}">
+          <span> <i class="fa-solid fa-file-invoice"></i> Đăng ký cho thuê nhà</span>
+        </a>
+      </th:block>
+      <th:block sec:authorize="not isAuthenticated()" >
+        <a target="_blank" class="nav-link text-decoration-none text-reset register" th:href="@{/account/dang-ky}">
+          <i class="fa-solid fa-user-plus"></i>
+          Tạo tài khoản
+
+        </a>
+        <a target="_blank" class="nav-link text-decoration-none text-reset login" th:href="@{/account/login}">
+          <i class="fa-regular fa-user"></i>
+          Đăng Nhập
+        </a>
+      </th:block>
+     <th:block th:classappend="${#authentication.principal != null} ? '' : 'hidden'" >
+       <div class="profile-dropdown h-100 ">
+         <div onclick="toggle()" class="profile-dropdown-btn" sec:authorize="isAuthenticated()">
+          <div class="btn-user" >
+            <img  sec:authorize="isAuthenticated()" class="img-user-nav-bar" th:src="${#authentication.principal.user.getAvatar()}" alt="">
+            <th:block  sec:authorize="isAuthenticated()" th:text="${#authentication.principal.user.getName()}"></th:block>
+          </div>
+         </div>
+
+         <ul class="profile-dropdown-list  p-0 m-0">
+           <li class="profile-dropdown-list-item">
+             <a  sec:authorize="isAuthenticated()" class="text-decoration-none text-reset" th:href="@{/thong-tin-khach-hang}">
+               <i class="fa-regular fa-user"></i>
+               Hồ sơ của tôi
+             </a>
+           </li>
+
+           <li class="profile-dropdown-list-item">
+             <a  sec:authorize="isAuthenticated()" th:href="@{/yeu-thich/{id} (id=${#authentication.principal.user.getId()})}" class="text-decoration-none text-reset" >
+               <i class="fa-regular fa-bookmark"></i>
+               Danh sách yêu thích
+             </a>
+           </li>
+           <li class="profile-dropdown-list-item" sec:authorize="isAuthenticated()" th:if="${#authentication.principal.getUser().getUserRole().getValue == 'HOTEL'}">
+             <a   th:href="@{/hotel-manager/dashboard}" class="text-decoration-none text-reset" >
+               <i class="fa-solid fa-square-h"></i>
+               Quản lý nơi lưu trú của bạn
+             </a>
+           </li>
+           <li class="profile-dropdown-list-item" sec:authorize="isAuthenticated()" th:if="${#authentication.principal.getUser().getUserRole().getValue() == 'ADMIN'}">
+             <a  th:href="@{/admin/dashboard}" class="text-decoration-none text-reset" >
+               <i class="fa-solid fa-hammer"></i>
+               Quản trị viên
+             </a>
+           </li>
+
+           <li class="profile-dropdown-list-item">
+             <a  sec:authorize="isAuthenticated()" th:href="@{/danh-sach-dat-phong/{id} (id=${#authentication.principal.user.getId()})}" class="text-decoration-none text-reset">
+               <i class="fa-solid fa-clock-rotate-left"></i>Lịch sử đặt
+             </a>
+           </li>
+
+<!--           <li class="profile-dropdown-list-item">-->
+<!--             <a  sec:authorize="isAuthenticated()" href="#" class="text-decoration-none text-reset">-->
+<!--               <i class="fa-solid fa-gear"></i>-->
+<!--               Thiết lập-->
+<!--             </a>-->
+<!--           </li>-->
+
+           <hr />
+
+           <li class="profile-dropdown-list-item">
+             <a class="text-decoration-none text-reset logout" th:onclick="logOut()">
+               <i class="fa-solid fa-arrow-right-from-bracket" ></i>
+               Đăng xuất
+             </a>
+           </li>
+         </ul>
+       </div>
+     </th:block>
+    </div>
+  </div>
+
+</div>
+</nav>
+
+</body>
+<script >
+
+</script>
+</html>

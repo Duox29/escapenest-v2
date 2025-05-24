@@ -1,0 +1,183 @@
+
+.list-hotel{min-height: 700px}
+.title-page{
+    margin-top: 30px;
+}
+
+.link-back{
+    font-size: 22px;
+    font-weight: 450;
+    text-decoration: none;
+    color: #75A8F9;
+    letter-spacing: 2px;
+}
+.title-page span{
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+.title-page h2{
+   margin-top: 10px;
+}
+
+.slider-main {
+    position: relative;
+}
+
+.slider-main .fa-angle-left {
+    position: absolute;
+    top: 40%;
+    left: 10px;
+    font-size: 20px;
+    color: #0d6efd;
+    background-color: #F5F5F5;
+    padding: 8px 12px;
+    border-radius: 50%;
+
+}
+
+
+
+.slider-main .fa-angle-right {
+    position: absolute;
+    top: 40%;
+    right: 10px;
+    font-size: 20px;
+    color: #0d6efd;
+    background-color: #F5F5F5;
+    padding: 8px 12px;
+    border-radius: 50%;
+}
+
+.slider-main img{
+    border-radius: 15px;
+    object-fit: cover;
+    height: 200px;
+}
+.btn-close{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+}
+.conatiner-card{
+    position: relative;
+}
+
+
+.card-hotel{
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    height: 100%;
+    border: none !important;
+}
+.card-hotel .image-hotel {
+    height: 230px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    object-fit: cover;
+}
+
+.infor-hotel{
+    padding: 10px 10px;
+    background-color: #F5F5F5;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.infor-hotel .name-hotel{
+    width: 100%;
+    font-size: 17px;
+    padding: 0 0;
+    margin: 5px 0;
+    font-weight:500;
+    letter-spacing: 1px;
+
+}
+.infor-hotel .city-hotel{
+    width: 100%;
+    font-size: 15px;
+    color: #737373;
+    font-weight: 400;
+
+}
+.star{
+    margin: 5px 0;
+}
+.star i{
+    margin-right: 5px;
+    color: #CF2061;
+}
+hr{
+    color: #737373;
+}
+
+.ratting-hotel{
+ display: flex;
+    justify-content: space-between;
+}
+.ratting-hotel .quantity{
+    font-size: 17px;
+    font-weight: 500;
+    color: #737373;
+    letter-spacing: 1px;
+}
+.ratting-hotel .rating-text,.reviews{
+    font-size: 16px;
+    color: #737373;
+    letter-spacing: 1px;
+}
+.age-rating{
+    background-color: #27374D;
+    padding: 5px;
+    color: white;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.price-hotel{
+    display: flex;
+    justify-content: flex-end;
+
+
+}
+.description-price{
+    display: flex;
+    justify-content: flex-end;
+    font-size: 13px;
+    color: #737373;
+    font-weight: 450;
+    margin-right: 5px;
+}
+.price-hotel .price{
+    font-size: 25px;
+    font-weight: 550;
+   color: #E12D2D;
+
+}
+.price-hotel .unit{
+    margin-left: 5px;
+    font-size: 15px;
+    font-weight: 550;
+    color: #737373;
+    letter-spacing: 1.5px;
+}
+.delete {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+.delete button{
+    border: none;
+    font-size: 23px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.5); /* Background xuyên thấu */
+}
+.delete button i{
+   color: #27374D;
+}
+

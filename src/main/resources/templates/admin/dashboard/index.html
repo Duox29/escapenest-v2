@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <th:block id="css">
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="/admin-assets/plugins/fontawesome-free/css/all.min.css">
+        <!-- IonIcons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="/admin-assets/dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"/>
+
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Montserrat);
+            body {
+                font-family: montserrat, arial, verdana;
+                margin-bottom: 100px;
+                font-size: 15px;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper" id="main-content">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Dashboard </h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>
+                                    <th:block th:text="${totalBooking}"></th:block>
+                                </h3>
+                                <p>Đơn đặt phòng trong tháng</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a href="/admin/bookings" class="small-box-footer">Xem tất cả <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>
+                                    <th:block th:text="${totalUser}"></th:block>
+                                </h3>
+
+                                <p>User đăng ký mới </p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="/admin/user" class="small-box-footer">Xem tất cả  <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>
+                                    <th:block th:text="${totalHotel}"></th:block>
+                                </h3>
+
+                                <p>Homestay đăng ký mới </p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="/admin/hotels" class="small-box-footer">Xem tất cả  <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table table-bordered table-hover">
+                            <div class="card">
+                                <canvas id="chart-user"></canvas>
+                            </div>
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <table class="table table-bordered table-hover">
+                            <div class="card">
+                                <canvas id="chart-booking"></canvas>
+                            </div>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- /.container-fluid -->
+        </div>
+
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover dashboard-table" id="table-user">
+                                    <div class="d-flex justify-content-between">
+                                        <label>User đăng ký mới</label>
+                                    </div>
+                                    <thead>
+                                    <tr>
+                                        <th>Tên người dùng</th>
+                                        <th>Email</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="user : ${userList}">
+                                        <td >
+                                            <a  th:href="@{/admin/user/detail/{id} (id= ${user.id})}" th:text="${user.name}"></a>
+                                        </td>
+                                            <td th:text="${user.email}"></td>
+                                            <td>
+                                             <span class="badge"
+                                                   th:text="${user.enable ? 'Đã xác thực' : 'Chưa xác thực'}"
+                                                   th:classappend="${user.enable ? 'bg-success' : 'bg-secondary'}"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover dashboard-table" id="table-booking">
+                                    <div class="d-flex justify-content-between">
+                                        <label>Homestay mới</label>
+                                    </div>
+                                    <thead>
+                                    <tr>
+                                        <th>Tên homestay</th>
+                                        <th>Ngày đăng ký</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="hotel : ${hotelList}">
+
+                                        <td>
+                                            <a th:href="@{/admin/hotels/{id}/detail (id = ${hotel.id})}"
+                                                                        th:text="${hotel.name}"></a></td>
+                                        <td th:text="${#temporals.format(hotel.createdAt,'dd/MM/yyyy')}"></td>
+                                        <td>
+                                             <span class="badge bg-success"
+                                                   th:if="${hotel.status}">Công khai</span>
+                                            <span class="badge bg-warning"
+                                                  th:if="${!hotel.status}">Chưa duyệt</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+</div>
+
+<th:block id="js">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>>
+    <script src="/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+
+
+    <script th:inline="javascript">
+        let userRegisterByMonth = [[${userRegisterByMonth}]];
+        let totalBookingMonth = [[${totalBookingMonth}]];
+
+        $('#table-user').DataTable({
+            "pageLength": 5,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [],
+            "language": {
+                "emptyTable": "Không có user đăng ký mới", // Thông báo tùy chỉnh khi không có dữ liệu
+                "paginate": {
+                    "next": '<i class="fas fa-chevron-right"></i>',
+                    "previous": '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "drawCallback": function () {
+                var api = this.api();
+                if (api.page.info().pages <= 1) {
+                    $('.paginate_button').hide(); // Ẩn tất cả các nút phân trang
+                } else {
+                    $('.paginate_button').show(); // Hiện lại tất cả các nút phân trang
+                }
+            }
+        });
+        $('#table-booking').DataTable({
+            "pageLength": 5,
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [],
+            "language": {
+                "emptyTable": "Không có đơn đặt phòng mới.", // Thông báo tùy chỉnh khi không có dữ liệu
+                "paginate": {
+                    "next": '<i class="fas fa-chevron-right"></i>',
+                    "previous": '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "drawCallback": function () {
+                var api = this.api();
+                if (api.page.info().pages <= 1) {
+                    $('.paginate_button').hide(); // Ẩn tất cả các nút phân trang
+                } else {
+                    $('.paginate_button').show(); // Hiện lại tất cả các nút phân trang
+                }
+            }
+        });
+
+
+        const userChart = document.getElementById('chart-user');
+        const bookingChart = document.getElementById('chart-booking');
+        // Tính giá trị cao nhất trong mảng userRegisterByMonth
+        const maxUserRegister = Math.max(...userRegisterByMonth.map(item => item.totalUser));
+        new Chart(userChart, {
+            type: 'line',
+            data: {
+                labels: userRegisterByMonth.map(item => `Tháng ${item.month}/${item.year}`),
+                datasets: [{
+                    label: 'Lượng người dùng đăng ký mới trong 5 tháng gần nhất',
+                    data: userRegisterByMonth.map(item => item.totalUser),
+                }],
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: maxUserRegister + 10
+                    }
+                },
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: ''
+                    }
+                }
+            }
+        });
+
+
+        const maxTotalBooking = Math.max(...totalBookingMonth.map(item => item.totalBooking));
+        new Chart(
+            document.getElementById('chart-booking'),
+            {
+                type: 'bar',
+                data: {
+                    labels: totalBookingMonth.map(item => `Tháng ${item.month}/${item.year}`),
+                    datasets: [
+                        {
+                            label: 'Lượng đơn đặt phòng 5 tháng gần nhất trên trang web',
+                            data: totalBookingMonth.map(item => item.totalBooking),
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(255, 159, 64)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(54, 162, 235)',
+                                'rgb(153, 102, 255)',
+                            ],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: maxTotalBooking + 10 // Thêm một giá trị cố định cho giá trị cao nhất
+                        }
+                    }
+                }
+            }
+        );
+    </script>
+</th:block>
+</body>
+</html>

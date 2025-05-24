@@ -1,0 +1,38 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+}
+.favourite{min-height: 500px}
+
+.favourite-by-city{
+    margin-top: 20px;
+   padding: 0 20px;
+    text-decoration: none;
+    color: #5c636a;
+}
+
+.card-city{
+    padding-bottom: 20px;
+    border: 1px solid #DFE0E4;
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+
+.favourite-by-city img  {
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+
+}
+.quantity{
+
+    display: flex;
+    justify-content: center;
+}
+.name-city{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+   margin-bottom: 0;
+}

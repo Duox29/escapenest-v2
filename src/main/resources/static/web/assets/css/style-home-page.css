@@ -1,0 +1,371 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+    font-size: 15px;
+}
+:root {
+    --primary-color: #2c3855;
+    --primary-color-dark: #435681;
+    --text-dark: #333333;
+    --text-light: #767268;
+    --extra-light: #f3f4f6;
+    --primary: #eeeeee;
+    --secondary: #227c70;
+    --green: #82cd47;
+    --secondary-light: rgb(34, 124, 112, 0.2);
+    --secondary-light-2: rgb(127, 183, 126, 0.1);
+    --white: #fff;
+    --black: #393e46;
+
+    --shadow: 0px 2px 8px 0px var(--secondary-light);
+}
+
+
+/* style tìm kiếm khach sạn */
+.search{
+    position: absolute;
+    top:270px
+}
+
+
+.title-search {
+    /* background-color: papayawhip; */
+    border-bottom: none;
+    border-top-left-radius: 10px; /* Độ cong góc trên bên trái */
+    border-top-right-radius: 10px;
+}
+.title-search h4{
+    color: #F5F5F5;
+}
+
+.input-infor {
+    background-color: #DFE3EB;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.search-city {
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+
+}
+
+.search-city, .search-city:focus {
+    background-color: white !important;
+    font-size: 15px;
+    border-color: white;
+    outline: none;
+    padding: 5px;
+}
+#input-name-city, #input-name-city:focus {
+    background-color: white !important;
+    font-size: 15px;
+    border-color: white;
+    outline: none !important;
+    padding: 5px;
+}
+.search-date{
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+}
+.search-date input {
+    border: none;
+    background-color: white !important;
+    font-size: 15px;
+    outline: none;
+}
+
+.search-country input:focus {
+    border: none;
+    box-shadow: none;
+    background-color: white !important;
+    outline: none;
+}
+
+.btn-search button {
+    border-radius: 10px;
+    background-color: #566078;
+    color: #f3f4f6;
+
+}
+
+/* --------------------------------------------------- */
+
+.section__container{
+    position: relative;
+    margin-bottom: 100px;
+}
+
+.header__container {
+    /* padding: 1rem 1rem 5rem 1rem; */
+}
+
+
+.header__image__container {
+    position: relative;
+    min-height: 400px;
+    background-image: linear-gradient(
+            to right,
+          #526D82,
+            #9DB2BF
+    ),
+    url("static/web/assets/image/amanoi-resort-beach-club-1400x600.jpg");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 2rem;
+}
+
+.header__content {
+    max-width: 800px;
+    padding: 5rem 2rem;
+}
+
+.header__content h1 {
+    margin-bottom: 1rem;
+    font-size: 3.5rem;
+    line-height: 4rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.header__content p {
+    color: var(--extra-light);
+}
+
+
+.button-guest-number {
+    background-color: #FFFFFF !important;
+    width: 200px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    border-radius: 10px;
+
+}
+.button-guest-number .minus-guest{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+    cursor: pointer;
+    color: #27374D;
+    background-color: #FFFFFF !important;
+
+}
+.button-guest-number .plus-guest{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+    cursor: pointer;
+    color: #27374D;
+    background-color: #FFFFFF !important;
+}
+.button-guest-number .num-guest{
+
+    pointer-events: none;
+}
+
+
+.button-room-number {
+    width: 200px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF !important;
+    border-radius: 10px;
+}
+.button-room-number .minus-room{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+    cursor: pointer;
+    color:#27374D;
+    background-color: #FFFFFF !important;
+}
+.button-room-number .plus-room{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+    color: #27374D;
+    background-color: #FFFFFF !important;
+
+}
+.button-room-number .num-room{
+    pointer-events: none;
+}
+
+
+/* style slider */
+.slider-main {
+    position: relative;
+}
+
+.slider-main .fa-angle-left {
+    position: absolute;
+    top: 30%;
+    left: -15px;
+    font-size: 20px;
+
+}
+
+.slider-main .fa-angle-right {
+    position: absolute;
+    top: 30%;
+    right: -15px;
+    font-size: 20px;
+}
+
+.slider-main .slider-item {
+    border-radius: 10px;
+}
+
+.slider-main .slider-item img {
+    min-height: 320px;
+    max-height: 350px;
+    border-radius: 25px;
+    object-fit: cover;
+}
+
+.outstanding-city img {
+    height: 300px;
+}
+
+/* khác sạn nổi bật */
+.outstanding-hotel {
+    position: relative;
+}
+.active-city{
+    border-bottom: 2px solid #5392F9 !important;
+    font-weight: 500;
+}
+
+.outstanding-hotel .fa-heart {
+    position: absolute;
+    top: 5%;
+    font-size: 20px;
+    right: 10px;
+    background-color: aliceblue;
+    padding: 5px 5px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.outstanding-hotel .fa-heart:hover {
+    color: salmon;
+}
+
+.city-outstanding-hotel button {
+    border: none;
+    /* background-color: papayawhip; */
+    background-color: white;
+    padding: 5px 5px;
+}
+.card{
+    border-radius: 10px ;
+    height: 100%;
+    border: none !important;
+
+}
+
+.card img {
+    height: 230px;
+    border-radius: 10px;
+}
+.price-hotel{
+    font-weight: 700;
+    font-size: 18px;
+}
+.address-hotel{
+    color: #5392F9;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.score-rating{
+    font-weight: 700;
+    color: black;
+
+    padding: 5px 5px;
+    border-radius: 10px;
+
+}
+
+
+.btn-next button {
+    border: none;
+    background-color: #566078;
+    color: #f3f4f6;
+    border-radius: 10px;
+
+}
+
+.image-poster {
+    position: relative;
+}
+
+.image-poster img {
+    object-fit: cover;
+    height: 400px;
+    border-radius: 10px;
+}
+
+.title-poster {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    color: white;
+}
+
+.description-price {
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.discount{
+    letter-spacing: 0.5px; /* Điều chỉnh khoảng cách giữa các ký tự */
+    border-radius: 5px;
+    background-color:#227950;
+    margin-top: 5px !important;
+    padding: 5px 5px;
+    width: 20px;
+
+    font-size: 15px;
+    color: var(--extra-light);
+}
+.original-price{
+    margin: 2px;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+
+.pr {
+    margin-top: 100px;
+}
+
+.wrap-pr .image-pr {
+    object-fit: cover;
+    height: 250px;
+    border-radius: 15px;
+}
+
+.btn-pr {
+    padding: 5px 5px;
+    border-radius: 10px;
+    background-color: var(--text-light);
+    border: none;
+
+    width: 100px;
+
+}
+
+.btn-pr a {
+
+    text-decoration: none;
+    color: white;
+
+}
+

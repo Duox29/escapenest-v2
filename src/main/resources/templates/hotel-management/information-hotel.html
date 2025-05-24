@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{hotel-management/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Thông tin homestay</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css" />
+        <link rel="stylesheet" href="/admin-assets/plugins/select2/css/select2.min.css" />
+        <link rel="stylesheet" href="/admin-assets/dist/css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.6.0/pagination.min.css"
+              integrity="sha512-K1k7jSn9RDKEcn/ugqVVvWYu0bcS3q1w6m/5pQSnrj0bCfIqF6Wk49lkmckSb4wglvTP9V17LtS0q0XxYccXbg=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <style>
+            .modal-dialog {
+                max-width: 1000px;
+            }
+
+            .image-container {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                grid-gap: 10px;
+            }
+
+            .image-item {
+                height: 150px;
+                border: 2px solid #eee;
+            }
+
+            .image-item.selected {
+                border-color: red !important;
+                border-width: 4px !important;
+            }
+
+            .image-item img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .thumbnail-preview-container{
+                width: 300px;
+                height: 150px ;
+            }
+            .thumbnail-preview-container img{
+                width: 300px;
+                height: 150px ;
+                object-fit: cover;
+                border-radius: 10px;
+            }
+            .content-modal-amenity{
+                max-height: 500px;
+                overflow-y: auto;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/hotel-manager/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Thông tin
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-6">
+                    <a href="/hotel-manager/dashboard" class="btn btn-default">
+                        <i class="fas fa-chevron-left"></i> Quay lại
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="form-create-movie">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                           <div class="">
+                                               <i  style="min-width: 3%"  class="fa-solid fa-archway"></i>
+                                               <label style="min-width: 20%"  class="mr-5">Tên homestay : </label>
+                                               <span th:text="${hotel.name}"></span>
+                                           </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <i  style="min-width: 3%"  class="fa-regular fa-envelope"></i>
+                                            <label style="min-width: 20%"  class="mr-5">Email : </label>
+                                            <span th:text="${hotel.email}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <i  style="min-width: 3%"  class="fa-solid fa-phone"></i>
+                                            <label style="min-width: 20%"  class="mr-5">Số điện thoại : </label>
+                                            <span th:text="${hotel.hotline}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <i   style="min-width: 3%"  class="fa-solid fa-location-dot"></i>
+                                            <label style="min-width: 20%"  class="mr-5">Địa chỉ : </label>
+                                            <span th:text="${hotel.address}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <i  style="min-width: 3%" class="fa-regular fa-face-smile"></i>
+                                            <label style="min-width: 20%"  class="mr-5">Điểm đánh giá  </label>
+                                            <span><th:block th:text="${hotel.rating}"></th:block>/10</span>
+                                        </div>
+
+<!--                                        <div class="form-group">-->
+<!--                                            <i  style="min-width: 3%" class="fa-regular fa-user"></i>-->
+<!--                                            <label style="min-width: 20%"  class="mr-5">Số lượt đánh giá</label>-->
+<!--                                            <span>30 lượt đánh giá</span>-->
+<!--                                        </div>-->
+                                        <div class="form-group">
+                                            <div  class="thumbnail-preview-container mb-3">
+                                                <img th:src="${hotel.getPoster()}" alt="" id="thumbnail" />
+                                            </div>
+                                            <div>
+                                                <button name="thumbnail" type="button" class="rounded btn btn-info btn-flat" data-toggle="modal"
+                                                        data-target="#modal-image">
+                                                    Danh sách hình ảnh
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <form></form>
+                                        <form class="form-description" id="myForm">
+                                            <div class="form-group">
+
+                                                <textarea th:text="${hotel.description}" name="description" id="description" class="form-control" rows="6"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="rounded btn btn-success btn-flat" data-toggle="modal"
+                                                        data-target="#modal-amenityHotel">
+                                                    Danh sách tiện ích
+                                                </button>
+                                            </div>
+                                            <button type="button" class="btn btn-info px-4" id="btn-save">
+                                                Lưu
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-between">
+                                <h4>Danh sách phòng</h4>
+                                <a th:href="@{/hotel-manager/room/create}"  id="create-room" class="rounded overflow-hidden  btn btn-info mb-2 mr-2"
+                                        >
+                                    <span class><i class="fa-solid fa-plus"></i> Thêm Phòng</span>
+                                </a>
+                            </div>
+                            <table id="table-director" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="width: 5%">STT</th>
+                                    <th style="width: 25%">Tên phòng</th>
+                                    <th style="width: 20%">Loại phòng</th>
+                                    <th style="width: 10%">Số lượng</th>
+                                    <th style="width: 10%">Diện tích</th>
+                                    <th style="width: 10%">Sức chứa</th>
+                                    <th style="width: 10%">Đã sử dụng</th>
+                                    <th style="width: 10%">Trạng thái</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="room,start : ${roomList}">
+                                    <td th:text="${start.count}">Thứ Tự</td>
+                                    <td>
+                                        <a th:href="@{/hotel-manager/room/detail/{id} (id=${room.id})}"
+                                           th:text="${room.name}"></a>
+                                    </td>
+                                    <td th:text="${room.roomType.value}"></td>
+                                    <td th:text="${room.quantity}">6</td>
+                                    <td th:text="${room.area}">diện tích</td>
+                                    <td th:text="${room.capacity}">sức chứa</td>
+                                    <td th:text="${room.usedQuantity}">đã sử dụng</td>
+                                    <td>
+                                        <span class="badge" th:classappend="${room.status ? 'bg-success':'bg-warning'}"
+                                              th:text="${room.status ? 'Công khai' : 'Riêng tư'}"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div class="modal fade" id="modal-image" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Danh sách ảnh</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button class="btn btn-success" id="btn-chose-image" disabled>Chọn ảnh</button>
+
+                            <label for="avatar" class="btn btn-warning mb-0">Upload ảnh</label>
+                            <input type="file" id="avatar" class="d-none">
+                        </div>
+                        <div>
+                            <button class="btn btn-danger" id="btn-delete-image" disabled>Xóa ảnh</button>
+                        </div>
+                    </div>
+                    <!-- Hiển thị danh sách ảnh -->
+                    <div class="image-container mt-4 mb-4">
+                    </div>
+
+                    <!-- Hiển thị phần phân trang -->
+                    <div id="image-pagination" class="pagination-container d-flex justify-content-center">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-amenityHotel" aria-hidden="true">
+        <div class="modal-dialog modal-">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Danh sách các tiện ích</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body content-modal-amenity">
+                    <div class="row">
+                        <div class="col-6 py-1" th:each="amenity : ${amenityHotelListAll}">
+                            <input   th:id="'amenity-index-'+${amenity.id}" th:checked="${#lists.contains(hotel.amenityHotelList,amenity)}" class="amenity-hotel" type="checkbox"  th:value="${amenity.id}">
+                            <label style="font-weight: 200" th:for="'amenity-index-'+${amenity.id}" th:text="${amenity.name}"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block id="js">
+    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+    <script src="/admin-assets/plugins/select2/js/select2.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+            integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+             integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.6.0/pagination.min.js"
+            integrity="sha512-GzbaI5EsNzdEUq6/2XLYpr1y9CUZRIVsUeWTAFgULtQa5jZ3Nug8i0nZKM6jp9NffBCZhymPPQFcF0DK+JkRpw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script th:inline="javascript">
+        $(".select2").select2();
+        let hotel = [[${hotel}]];
+        let imageList = [[${imageHotelList}]];
+
+    </script>
+    <script src="/hotel/informationHotel.js"></script>
+<!--    <script th:src="@{/admin-assets/dist/js/modal-image.js}"></script>-->
+    <script th:src="@{/admin-assets/dist/js/notify-admin.js}"></script>
+</th:block>
+</body>
+
+</html>

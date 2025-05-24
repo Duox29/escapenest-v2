@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+  <title>Xuất báo cáo</title>
+
+  <th:block id="css">
+    <link rel="stylesheet" href="/admin-assets/dist/css/style.css">
+    <style>
+      .date-picker {
+        max-width: 250px;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+      .export-btn {
+        padding: 10px 25px;
+        margin-left: 15px;
+      }
+    </style>
+  </th:block>
+</head>
+
+<body>
+<div class="content-wrapper" style="font-size: 14px">
+  <!-- Content Header -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-12">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin/dashboard">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">
+              Xuất báo cáo
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row py-2">
+        <div class="col-6">
+          <a href="/admin/dashboard" class="btn btn-default">
+            <i class="fas fa-chevron-left"></i> Quay lại
+          </a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <form id="form-report">
+                    <div class="form-card">
+                      <div class="row">
+                        <div class="col-12 d-flex justify-content-center mb-4">
+                          <h4 class="fs-title">Xuất báo cáo hoạt động</h4>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label>Ngày bắt đầu</label>
+                          <input type="date" class="form-control date-picker"
+                                 id="startDate" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label>Ngày kết thúc</label>
+                          <input type="date" class="form-control date-picker"
+                                 id="endDate" required>
+                        </div>
+
+                        <div class="col-12 text-center">
+                          <button type="button" class="btn btn-success export-btn"
+                                  onclick="handleExport()">
+                            <i class="fas fa-file-excel"></i> Xuất file Excel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<th:block id="js">
+  <script th:inline="javascript">
+    function handleExport() {
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+
+      if (!startDate || !endDate) {
+        toastr.warning('Vui lòng chọn đầy đủ ngày bắt đầu và kết thúc');
+        return;
+      }
+
+      if (new Date(startDate) > new Date(endDate)) {
+        toastr.warning('Ngày kết thúc phải sau ngày bắt đầu');
+        return;
+      }
+
+      const params = new URLSearchParams({
+        start: startDate,
+        end: endDate
+      });
+
+      window.location.href = `/api/file/admin_excel?${params.toString()}`;
+    }
+
+    // Set default dates
+    document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('endDate').value = new Date().toISOString().split('T')[0];
+  </script>
+</th:block>
+
+</body>
+</html>

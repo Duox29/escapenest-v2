@@ -1,0 +1,242 @@
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:th="http://www.thymeleaf.org"
+          th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+    <head>
+        <title>EscapeNest.com</title>
+        <th:block id="css">
+            <link rel="stylesheet" href="/web/assets/css/style-payment-page.css">
+        </th:block>
+
+    </head>
+    <body>
+
+    <div id="main-content" >
+
+
+        <section class="">
+
+            <div class="container">
+                <div class="row">
+
+
+
+                    <div class="col-4">
+                        <div class="infor-hotel py-2  px-3  rounded my-3">
+                            <div class="image-hotel">
+                                <img th:src="${hotel.poster}" alt="IMG Hotel">
+                            </div>
+                            <div class="rental-type-star">
+                                <span class="rental-type" th:text="${hotel.rentalType.value}"></span>
+                                <i class="fa-solid fa-star" th:each="star : ${#numbers.sequence(0,hotel.star)}"></i>
+                            </div>
+
+                            <h5 th:text="${hotel.name}"></h5>
+                            <span class="address-hotel"><i class="fa-solid fa-location-dot"></i> <th:block th:text="${hotel.address}"></th:block></span>
+                            <div class="ratting-hotel">
+                                <span class="age-rating" th:text="${hotel.rating}"></span>
+                                <span class="rating-text" th:text="${hotel.ratingText}"></span>
+                            </div>
+                            <div class="amenity-hotel ">
+                                <div class="w-50">
+                                    <span th:text="${hotel.amenityHotelList.get(0).name}"></span>
+                                </div>
+                                <div class="w-50">
+                                    <span th:text="${hotel.amenityHotelList.get(1).name}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="infor-booking py-2 px-3 rounded">
+                            <h5>Chi tiết đặt phòng của bạn</h5>
+                            <div class="d-flex mb-2">
+                                <span class="w-50">Nhận phòng</span>
+                                <span class="w-50">Trả phòng</span>
+                            </div>
+                            <div class="d-flex p-0 m-0">
+        <span class="w-50 p-0 m-0" >
+            <th:block th:text="${hotel.policyHotel.startCheckIn}"></th:block>
+             -
+            <th:block th:text="${hotel.policyHotel.endCheckIn}"></th:block>
+        </span>
+                                <span class="w-50 p-0 m-0" >
+            <th:block th:text="${hotel.policyHotel.startCheckOut}"></th:block>
+             -
+            <th:block th:text="${hotel.policyHotel.endCheckOut}"></th:block>
+        </span>
+                            </div>
+                            <div class="d-flex p-0 m-0">
+                                <h6 class="w-50 p-0 m-0" id="startDateDisplay"><th:block th:text="${startDayOfWeek}"></th:block>, <th:block th:text="${start.getDayOfMonth()}"></th:block> tháng <th:block th:text="${start.getMonth().value}"></th:block> <th:block th:text="${start.getYear()}"></th:block></h6>
+                                <h6 class="w-50 p-0 m-0" id="endDateDisplay"><th:block th:text="${endDayOfWeek}"></th:block>, <th:block th:text="${end.getDayOfMonth()}"></th:block> tháng <th:block th:text="${end.getMonth().value}"></th:block> <th:block th:text="${end.getYear()}"></th:block></h6>
+                            </div>
+                            <div class="d-flex align-items-center mt-3">
+                                <h6 class="w-50 p-0 m-0">Thời gian lưu trú :</h6>
+                                <span class="w-50" id="stayDuration"><th:block th:text="${period.getDays()}"></th:block> đêm</span>
+                            </div>
+                            <div class="d-flex align-content-between mt-3">
+                                <h6 class="w-50 p-0 m-0">Số người và phòng:</h6>
+                                <span class="w-50" id="guestRoomDisplay"><th:block th:text="${numberGuest}"></th:block> Người <th:block th:text="${numberRoom}"></th:block> phòng</span>
+                            </div>
+                            <hr>
+                            <h5 class="">Phòng bạn đã chọn</h5>
+                            <div class="image-room overflow-hidden">
+                                <img th:src="${room.thumbnailRoom}" alt="IMG Hotel">
+                            </div>
+                            <h6 class="name-room" th:text="${room.getName()}"></h6>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-8">
+                        <div class=" infor-customer  p-3 my-3">
+                            <h5 >Nhập thông tin chi tiết của bạn</h5>
+                            <form id="info-customer">
+                                <div class="name-customer d-flex">
+                                    <div class="w-50 px-3 form-group">
+                                        <h6>Tên</h6>
+                                        <input name="nameCustomer" th:value="${#authentication.principal.user.getName()}" class=" form-control w-100 name-customer-value" type="text" placeholder="Nhập tên của bạn">
+                                    </div>
+                                    <div class="w-50 px-3 form-group">
+                                        <h6>Email</h6>
+                                        <input name="emailCustomer" th:value="${#authentication.principal.user.getEmail()}" class="form-control w-100 email-customer-value" type="email" placeholder="Nhập email của bạn">
+                                    </div>
+                                </div>
+                                <div class="phone w-50 px-3 mt-3 form-group">
+                                    <h6 class="m-0 p-0">Số điện thoại</h6>
+                                    <input name="phoneCustomer" th:value="${#authentication.principal.user.getPhoneNumber()}" class="form-control phone-customer-value w-100" type="text" placeholder="Nhập số điện thoại của bạn">
+                                </div>
+                            </form>
+                        </div>
+                        <div class=" payment-type p-3 my-3">
+                            <form class="">
+                                <h5>Hình thức thanh toán</h5>
+                                <ul class="list-type-payment list-unstyled ps-3">
+                                    <li class="d-flex align-items-center" th:each="payemtMethod : ${listPaymentMethod}">
+                                        <input id="payment-hotel" class=" m-2 custom-checkbox" type="radio"  name="payment" th:value="${payemtMethod}" >
+                                        <label for="payment-hotel" th:text="${payemtMethod.value}"></label>
+                                    </li>
+                                </ul>
+
+                            </form>
+                        </div>
+                        <div class="price-detail py-2 px-3 rounded my-3">
+                            <h5>Chi tiết giá</h5>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Khoảng thời gian lưu trú</span>
+                                <div class="search-date d-flex align-items-center border">
+                                    <i style="font-size: 20px;" class="fas fa-calendar-alt"></i>
+                                    <input id="date-range" class="w-100 form-control w-100 ps-3" type="text" name="daterange" placeholder="Chọn ngày nhận và trả phòng" />
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Số người</span>
+                                <input type="number" id="numGuestInput" class="form-control w-50" th:value="${numberGuest}" min="1" max="20" onchange="updateDetails()">
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Số phòng</span>
+                                <input type="number" id="numRoomInput" class="form-control w-50" th:value="${numberRoom}" min="1" max="20" onchange="updateDetails()">
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Giá mỗi đêm</span>
+                                <span id="pricePerNight" th:text="|${#numbers.formatInteger(price,3,'COMMA')}đ|"></span>
+                            </div>
+                            <hr>
+                            <div class="total-money d-flex justify-content-between">
+                                <h4>Thành tiền</h4>
+                                <h5 id="totalPriceDisplay" th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}đ|"></h5>
+                            </div>
+                        </div>
+                        <div class="btn-booking d-flex justify-content-end my-3">
+                            <button class="verify-booking"><i class="fa-solid fa-lock"></i> Đặt phòng </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+    </div>
+
+    <th:block id="js">
+        <script th:inline="javascript">
+            let idHotel = [[${hotel.id}]];
+            let idRoom = [[${room.id}]];
+            let numGuest = [[${numberGuest}]];
+            let numRoom = [[${numberRoom}]];
+            let totalPrice = [[${totalPrice}]];
+            let pricePerNight = [[${price}]];
+        </script>
+        <script src="/web/assets/js/payment-booking.js"></script>
+        <script>
+            function formatDate(date) {
+                let year = date.getFullYear();
+                let month = String(date.getMonth() + 1).padStart(2, '0');
+                let day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            // Lấy tham số từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Lấy giá trị checkIn và checkOut từ URL, nếu không có thì dùng giá trị mặc định
+            window.startDate = urlParams.get('checkIn') || formatDate(new Date());
+            window.endDate = urlParams.get('checkOut') || formatDate(moment().add(4, 'days').toDate());
+
+            function updateDetails() {
+                // Lấy số ngày lưu trú từ startDate và endDate
+                const start = new Date(window.startDate);
+                const end = new Date(window.endDate);
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                // Lấy giá trị từ input
+                const numGuestInput = document.getElementById('numGuestInput').value || numGuest;
+                const numRoomInput = document.getElementById('numRoomInput').value || numRoom;
+
+                // Tính tổng tiền
+                const newTotalPrice = pricePerNight * diffDays * numRoomInput;
+
+                // Cập nhật giao diện
+                document.getElementById('startDateDisplay').textContent = `${getDayOfWeek(start)}, ${start.getDate()} tháng ${start.getMonth() + 1} ${start.getFullYear()}`;
+                document.getElementById('endDateDisplay').textContent = `${getDayOfWeek(end)}, ${end.getDate()} tháng ${end.getMonth() + 1} ${end.getFullYear()}`;
+                document.getElementById('stayDuration').textContent = `${diffDays} đêm`;
+                document.getElementById('guestRoomDisplay').textContent = `${numGuestInput} Người ${numRoomInput} phòng`;
+                document.getElementById('totalPriceDisplay').textContent = `${newTotalPrice.toLocaleString('vi-VN')}đ`;
+
+                // Cập nhật biến toàn cục totalPrice
+                totalPrice = newTotalPrice;
+            }
+
+            // Hàm lấy tên ngày trong tuần
+            function getDayOfWeek(date) {
+                const days = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+                return days[date.getDay()];
+            }
+
+            $(function() {
+                // Khởi tạo daterangepicker với giá trị từ URL
+                $('#date-range').daterangepicker({
+                    opens: 'left',
+                    startDate: new Date(window.startDate),
+                    endDate: new Date(window.endDate),
+                    minDate: new Date()
+                }, function(start, end, label) {
+                    window.startDate = start.format('YYYY-MM-DD');
+                    window.endDate = end.format('YYYY-MM-DD');
+                    updateDetails(); // Cập nhật khi thay đổi ngày
+                });
+
+                // Gọi hàm cập nhật lần đầu để hiển thị giá trị ban đầu
+                updateDetails();
+
+                // Thêm sự kiện onchange cho input số người và số phòng
+                document.getElementById('numGuestInput').addEventListener('change', updateDetails);
+                document.getElementById('numRoomInput').addEventListener('change', updateDetails);
+            });
+        </script>
+    </th:block>
+
+    </body>
+    </html>

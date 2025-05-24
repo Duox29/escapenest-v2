@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác minh tài khoản</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/assets/css/style-login.css">
+        <style>
+            .btn-login{
+                color: white !important;
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                text-align: center;
+
+                width: 30%;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+
+<section id="main-content" class="my-5">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-5">
+                <form class="form-login" >
+                    <div class="title-description">
+                        <h3 class="title-form">
+                           Xác thực tài khoản
+                        </h3>
+                    </div>
+                    <th:block th:if="${!data.success}" >
+                        <span th:text="${data.message}"></span>
+                    </th:block>
+                    <th:block th:if="${data.success}">
+                        <span >Tài khoản của bạn đã được xác thực.bạn có thể click vào nút bên dưới để tiến hành đăng nhập</span>
+                        <div class="d-flex justify-content-center">
+                            <a th:href="@{/account/login}"  class="btn-login text-reset text-decoration-none">
+                                Đăng nhập
+                            </a>
+                        </div>
+                    </th:block>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<th:block id="js">
+</th:block>
+
+
+</body>
+</html>

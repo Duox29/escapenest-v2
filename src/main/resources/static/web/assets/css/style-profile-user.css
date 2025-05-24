@@ -1,0 +1,301 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+}
+
+.profile-menu, .registration{
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1px solid var(--text-light);
+    padding: 10px 10px;
+    margin: 15px 0;
+    cursor: pointer;
+    background-color: #DDE6ED;
+
+}
+.profile-menu span , .registration span{
+    font-size: 16px ;
+    padding: 0 0;
+    font-weight: 350;
+}
+.profile-menu i , .registration i{
+    padding: 0 0;
+    margin-right: 10px;
+    margin-left: 5px;
+    font-size: 18px ;
+}
+.avatar-upload-avatar{
+    display: flex;
+    flex-direction: column;
+    width: 70px;
+}
+
+.avatar-upload-avatar img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--text-light);
+}
+.btn-upload-avatar{
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+    align-content: center;
+    border-radius: 7px;
+    width: 60px !important; ;
+    background-color: #526D82 !important; ;
+    color: white !important;
+
+}
+.avatar-modal{
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar-modal img{
+    border: 1px solid var(--text-light);
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.file-image{
+    margin-top: 20px;
+}
+.btn-close{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+    padding: 10px;
+}
+
+
+.file-image label {
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-family: 'Helvetica', sans-serif;
+    transition: .5s;
+    background-color: #526D82 !important;
+    color: #F5F5F5;
+}
+
+.file-image label:hover {
+    background-color: #27374D !important;
+    color: #F5F5F5;
+}
+.file-image input{
+    border: none !important;
+}
+
+#saveImage{
+   background-color: #526D82;
+    padding: 5px;
+    border-radius: 5px;
+    color: #F5F5F5;
+    border: none;
+}
+.my-setting-container{
+    min-height: 400px;
+}
+
+.information-user {
+    border-radius: 15px;
+    padding: 10px 0 10px 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    width: 100%;
+    background-color: #DDE6ED;
+}
+.information-user button{
+    border: none;
+    background-color: var(--white);
+    color: #5392F9;
+    width: 100%;
+}
+.setting-account{
+    background-color: #DDE6ED;
+}
+.setting-account {
+    border-radius: 15px;
+    padding: 10px 0 10px 20px;
+    border: none;
+    width: 100%;
+}
+.setting-account button{
+    border: none;
+    background-color: #526D82;
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
+    color: #F5F5F5;
+}
+
+.input-birth-day select{
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    width: 150px;
+    margin-right: 10px;
+
+}
+
+
+.edit-name{
+    margin: 5px 5px;
+}
+
+.edit-name input{
+    padding: 5px 5px;
+    border-radius: 10px;
+    width: 300px;
+}
+.edit-email input{
+    border: none;
+    padding: 5px 5px;
+    border-radius: 10px;
+}
+.edit-phone-number input{
+    border: none;
+    padding: 5px 5px;
+    border-radius: 10px;
+}
+.edit-address-number input{
+    border: none;
+    padding: 5px 5px;
+    border-radius: 10px;
+    width:350px;
+}
+.edit-gender-number select{
+    border: none;
+    border-radius: 10px;
+   padding: 5px 10px;
+}
+
+.edit-name, .edit-email, .edit-phone-number, .edit-address-number  input:focus{
+   outline-color: #5392F9;
+    box-shadow: none;
+}
+ .edit-address-number  input:focus{
+    outline-color: #566078;
+    box-shadow: none;
+}
+
+ .edit-phone-number  input:focus{
+     outline-color: #566078;
+    box-shadow: none;
+}
+
+.edit-email,  input:focus{
+    outline-color: #566078;
+    box-shadow: none;
+}
+.edit-name  input:focus{
+    outline-color: #566078;
+    box-shadow: none;
+}
+
+.pr {
+    margin-top: 100px;
+}
+
+.wrap-pr .image-pr {
+    object-fit: cover;
+    height: 250px;
+    border-radius: 15px;
+}
+
+.btn-pr {
+    padding: 5px 5px;
+    border-radius: 10px;
+    background-color: var(--text-light);
+    border: none;
+
+    width: 100px;
+
+}
+
+.form-control{
+    background-color: white !important;
+    border: 1px solid var(--text-light)!important;
+    border-radius: 10px !important;
+    min-width: 200px;
+    text-align: center;
+
+}
+
+.btn-pr a {
+
+    text-decoration: none;
+    color: white;
+
+}
+
+.btn-save{
+    border: none;
+    margin: 10px 10px;
+    padding: 10px 20px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    background-color: #526D82;
+    color: white;
+}
+.cancel{
+    border: none;
+    margin: 10px 10px;
+    padding: 10px 10px;
+    font-size: 15px;
+    font-weight: 500;
+    background-color: white;
+    color:#5392F9 ;
+
+}
+.btn-change{
+    background-color: #526D82;
+    padding: 7px;
+    border-radius: 5px;
+    border: none;
+    color: #F5F5F5;
+}
+
+.modal-body{
+    padding: 10px 10px;
+}
+#changePassword .modal-content{
+    background-color: #DDE6ED !important;
+}
+.input-account{
+    display: flex;
+
+}
+.input-password {
+    display: flex;
+    font-size: 15px;
+    font-weight: 500;
+    margin: 5px 5px;
+    width: 80% !important;
+    border: none !important;
+    background-color: #F5F5F5 !important;
+    border-radius: 10px !important;
+}
+.show-password-current, .show-password-new, .show-password-confirm{
+    padding: 0 10px;
+    border: none !important;
+    background-color: #F5F5F5 !important;
+    border-bottom-right-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+.input-password input{
+    background-color: #F5F5F5 !important;
+    border-bottom-right-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border: none !important;
+}
+#reasonDeleteUser{
+    padding: 10px;
+
+    border-radius: 10px;
+}

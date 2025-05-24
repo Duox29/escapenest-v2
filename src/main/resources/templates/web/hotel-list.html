@@ -1,0 +1,120 @@
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:th="http://www.thymeleaf.org"
+          th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+    <head>
+        <title>EscapeNest.com</title>
+        <th:block id="css">
+            <link rel="stylesheet" href="/web/assets/css/style-hotel-list.css">
+        </th:block>
+
+    </head>
+    <body>
+
+
+    <th:block id="main-content">
+            <section class="search p-3">
+                <div class="container">
+                    <div class="row">
+
+                             <div class="col-4 ">
+                                 <form action="" id ="form-search">
+                                     <div class="form-group">
+                                         <div class="inputdata-search d-flex align-items-center pt-1 pb-2 px-2">
+                                            <i style="font-size: 20px;" class="fa-solid fa-location-dot"></i>
+                                            <input name="nameCity" id="input-name-city" type="text" class=" w-100 p-1 form-control" placeholder="Tìm địa điểm, khách sạn, v.v.">
+                                         </div>
+
+                                     </div>
+                                 </form>
+                             </div>
+
+                        <div class="col-3">
+                            <div class="inputdata-search d-flex align-items-center p-1">
+                                <i style="font-size: 15px;" class="fa-solid fa-calendar-days"></i>
+                                <input id="date-range" class="w-100 form-control w-100 ps-3" type="text" name="daterange"  placeholder="Ngập ngày đến và đi của bạn" />
+                            </div>
+                        </div>
+                       <div class="col-2">
+                           <div class="button-guest-number border shadow d-flex justify-content-between align-items-center" >
+                               <i style="font-size: 20px;"  class="fa-solid fa-user-check"></i>
+                               <label class="">Số người</label>
+                               <div class="w-50 d-flex justify-content-between">
+                                   <button id="minus-guest" class="minus-guest"><i class="fa-solid fa-minus"></i></button>
+                                   <span id="num-guest" class="num-guest">01</span>
+                                   <button id="plus-guest" class="plus-guest"><i class="fa-solid fa-plus"></i></button>
+                               </div>
+
+                           </div>
+
+                       </div>
+                        <div class="col-2" >
+                            <div class="button-room-number border shadow d-flex justify-content-between align-items-center">
+                                <i style="font-size: 15px;" class="fa-solid fa-house"></i>
+                                <label class="label">Số phòng</label>
+                                <div class="w-50 d-flex justify-content-between ">
+                                    <button id="minus-room" class="minus-room"><i class="fa-solid fa-minus"></i></button>
+                                    <span id="num-room" class="num-room">01</span>
+                                    <button id="plus-room" class="plus-room"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-1" >
+                            <div class="button-room-number border shadow d-flex justify-content-between align-items-center">
+                                <button type="submit" id="btn-search" class="btn-search w-100">
+                                    <i class="fa-solid fa-magnifying-glass" style="color: black; font-size: 20px;"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+
+
+        <div class="pr my-5">
+            <div class="container">
+                <div class="row">
+                    <div class="wrap-pr d-flex">
+                        <div class="col-4">
+                            <img class="w-100 image-pr" src="https://static.vinwonders.com/2023/01/cac-loai-hinh-du-lich-4.jpg" alt="">
+                        </div>
+                        <div class="col-7 px-3">
+                            <div class="title-pr mt-2 ">
+                                <h3>Hưởng nhiều quyền lợi hơn với EscapeNest</h3>
+                            </div>
+                            <div class="content-pr pt-2">
+                                <p>Với EscapeNest bạn có thể tiết kiệm
+                                    để đi được nhiều hơn và quản lý mọi thứ trong khi đang di chuyển</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </th:block>
+    <th:block id="js">
+
+        <script th:inline="javascript">
+            let nameCity = [[${nameCity}]];
+            let checkIn = [[${checkIn}]];
+            let checkOut = [[${checkOut}]];
+            let valueNumberGuest = [[${numberGuest}]];
+            let valueNumberRoom = [[${numberRoom}]];
+            console.log(valueNumberRoom);
+            let hotelsFavourite = [[${hotelFavourite}]];
+            let listAmenityRoom = [[${listAmenityRoom}]];
+            let listAmenityHotel = [[${listAmenityHotel}]];
+        </script>
+
+        <script src="/web/assets/js/hotel-list.js"></script>
+
+    </th:block>
+
+    </body>
+    </html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>EscapeNest.com</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/assets/css/style-booking-detail.css">
+    </th:block>
+
+</head>
+<body >
+
+<div id="main-content">
+
+
+    <section class="booking-detail">
+
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-10">
+                    <div class="status-booking">
+                        <label th:text="${booking.statusBooking.value}"
+                                th:class="${booking.statusBooking.value== 'Đã hủy' ? 'text-danger' : 'text-success'}"
+                        ></label>
+                        <h4 th:if="${booking.statusBooking.value.equalsIgnoreCase('Chờ xác nhận')}">Đơn đặt phòng của bạn ở <th:block th:text="${booking.hotel.city.name}"></th:block> đang chờ xác nhận</h4>
+                        <h4 th:if="${booking.statusBooking.value.equalsIgnoreCase('Đã xác nhận')}">Đơn đặt phòng của bạn ở <th:block th:text="${booking.hotel.city.name}"></th:block> đã được xác nhận</h4>
+                        <h4 th:if="${booking.statusBooking.value.equalsIgnoreCase('Đã hủy')}">Đơn đặt phòng của bạn ở <th:block th:text="${booking.hotel.city.name}"></th:block> đã bị hủy</h4>
+                        <h4 th:if="${booking.statusBooking.value.equalsIgnoreCase('Hoàn tất')}">Đơn đặt phòng của bạn ở <th:block th:text="${booking.hotel.city.name}"></th:block> đã hoàn tất</h4>
+                        <div class="link-search-and-rebook d-flex justify-content-between pt-3" th:if="${!booking.statusBooking.value.equalsIgnoreCase('Đã hủy')}">
+                            <a class="text-decoration-none text-reset"
+                               th:href="@{/danh-sach-khach-san (nameCity = ${booking.hotel.city.name},checkIn = ${booking.checkIn},checkOut = ${booking.checkOut},numberGuest = ${booking.guests},numberRoom = ${booking.numberRoom})}">
+                                <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm nơi lưu trú khác
+                            </a>
+
+<!--                            <a class="text-decoration-none text-reset"-->
+<!--                               th:href="@{/thanh-toan/{idHotel}/{idRoom} (idHotel=${booking.hotel.id},idRoom=${booking.room.id},checkIn = ${booking.checkIn},checkOut = ${booking.checkOut},numberGuest = ${booking.guests},numberRoom = ${booking.numberRoom})}">-->
+<!--                                <i class="fa-solid fa-rotate-left"></i> Đặt lại-->
+<!--                            </a>-->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-9">
+                    <div class=" infor-booking">
+                        <div class="infor-detail">
+                            <div class="wrap-booking py-1 px-3">
+                                <a class="name-hotel w-100" th:text="${booking.hotel.name}" th:href="@{/chi-tiet-khach-san/{id} (id=${booking.hotel.id} , nameCity = ${booking.hotel.city.name},checkIn = ${booking.checkIn},checkOut = ${booking.checkOut},numberGuest = ${booking.guests},numberRoom = ${booking.numberRoom})}"></a>
+                                <div class="row d-flex my-2">
+                                    <div class="col-1">
+                                        <i style="font-size: 20px" class="fa-regular fa-calendar"></i>
+                                    </div>
+                                    <div class="col-10 p-0 m-0">
+                                        <div class="w-100 d-flex ">
+                                            <label class="title-in-out w-50">Nhận phòng</label>
+                                            <label class="title-in-out w-50 ">Trả phòng</label>
+                                        </div>
+                                        <div class="w-100 d-flex justify-content-between p-0 m-0">
+                                            <h6 class="content-in-out w-50"><th:block th:text="${dayOfWeekStar}"></th:block>, <th:block th:text="${booking.checkIn.getDayOfMonth()}"></th:block>  tháng <th:block th:text="${booking.checkIn.getMonth().value}"></th:block> <th:block th:text="${booking.checkIn.getYear()}"></th:block></h6>
+                                            <h6 class="content-in-out w-50"><th:block th:text="${dayOfWeekEnd}"></th:block>, <th:block th:text="${booking.checkOut.getDayOfMonth()}"></th:block> tháng <th:block th:text="${booking.checkOut.getMonth().value}"></th:block> <th:block th:text="${booking.checkOut.getYear()}"></th:block></h6>
+                                        </div> <div class="w-100 d-flex justify-content-between p-0 m-0">
+<!--                                            <span class="content-in-out w-50" th:text="${booking.hotel.policyHotel.checkIn}"></span>-->
+<!--                                            <span class="content-in-out w-50" th:text="${booking.hotel.policyHotel.checkOut}"></span>-->
+                                            <span class="content-in-out w-50">
+                                                <th:block th:text="${booking.hotel.policyHotel.startCheckIn}"></th:block>
+                                                -
+                                                <th:block th:text="${booking.hotel.policyHotel.endCheckIn}"></th:block>
+                                            </span>
+                                            <span class="content-in-out w-50" >
+                                                <th:block th:text="${booking.hotel.policyHotel.startCheckOut}"></th:block>
+                                                -
+                                                <th:block th:text="${booking.hotel.policyHotel.endCheckOut}"></th:block></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex my-4">
+                                    <div class="col-1">
+                                        <i style="font-size: 20px" class="fa-solid fa-list-ul"></i>
+                                    </div>
+                                    <div class="col-8 p-0 m-0">
+                                        <h6 class="p-0 m-0">Chi tiết đặt phòng</h6>
+                                        <label class="w-100 p-0 m-0">Tên Phòng : <th:block th:text="${booking.room.name}"></th:block></label>
+                                       <div>
+                                           <label class="w-50 p-0 m-0">Số lượng phòng : </label>
+                                           <span > <th:block th:text="${booking.numberRoom}"></th:block> phòng</span>
+                                       </div>
+                                        <div>
+                                            <label class="w-50 p-0 m-0">Số lượng người : </label>
+                                            <span > <th:block th:text="${booking.numberRoom}"></th:block> người</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row d-flex my-2">
+                                    <div class="col-1">
+                                        <i style="font-size: 20px" class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div class="col-11 p-0 m-0">
+                                        <h6 class="p-0 m-0">Địa chỉ</h6>
+                                        <span th:text="${booking.hotel.address}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="">
+                                <img class="image-hotel" th:src="${booking.hotel.poster}">
+                            </div>
+                        </div>
+                        <h5 class="title-detail-room">Chi tiết phòng</h5>
+                        <div class="room-detail">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img class="image-room" th:src="${booking.room.thumbnailRoom}" alt="">
+                                </div>
+                                <div class="col-9">
+                                    <h6 th:text="${booking.room.name}"></h6>
+<!--                                    <h6>Phòng đôi Superior</h6>-->
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-3">
+                                   <h6 class="title-infor">Tên khách hàng</h6>
+                                </div>
+                                <div class="col-9">
+                                    <span th:text="${booking.user.name}"></span>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-3">
+                                    <h6 class="title-infor">Sức chứa tối đa</h6>
+                                </div>
+                                <div class="col-9">
+                                    <span th:text="${booking.room.capacity}"></span>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-3">
+                                    <h6 class="title-infor">Diện tích</h6>
+                                </div>
+                                <div class="col-9">
+                                    <span th:text="${booking.room.area}"></span>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-3">
+                                    <h6 class="title-infor">Giường</h6>
+                                </div>
+                                <div class="col-9">
+                                    <span th:text="${booking.room.bedType.value}"></span>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-3">
+                                    <h6 class="title-infor">Kích cỡ giường</h6>
+                                </div>
+                                <div class="col-9">
+                                    <span th:text="${booking.room.bedSize.value}"></span>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-3">
+                                    <h6 class="title-infor">Loại phòng</h6>
+                                </div>
+                                <div class="col-9" >
+                                    <span th:text="${booking.room.roomType.value}"></span>
+
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-3">
+                                    <h6 class="title-infor">Tiện nghi</h6>
+                                </div>
+                                <div class="col-9">
+                                    <span th:each="amenity : ${booking.room.amenityRoomList}">
+                                        <th:block th:text="${amenity.name}">,</th:block>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-3">
+                                    <h6 class="title-infor">Chính sách hủy</h6>
+                                </div>
+                                <div class="col-9">
+                                    <span th:text="${booking.hotel.policyHotel.cancelPolicy}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-3">
+                    <div class="id-booking">Mã đặt phòng :<th:block th:text="${booking.id}"></th:block></div>
+                    <div class="cancel-booking" th:classappend="${booking.statusBooking.value.equalsIgnoreCase('Chờ xác nhận') || booking.statusBooking.value.equalsIgnoreCase('Đã xác nhận') ? 'd-inline-block': 'd-none' }">
+                        <h6 class="w-100">Tất cả thông tin có đều chính xác ?</h6>
+                        <span>Bạn có thể thay đổi thông tin bất kỳ lúc nào .</span>
+                        <div class="w-100 mt-2 d-flex justify-content-center">
+                            <a th:value="${booking.id}"  class="btn-cancel-booking w-100 d-flex justify-content-center align-items-center" th:href="@{/cancel-booking/{idBooking} (idBooking = ${booking.id})}"> <i class="me-2 fa-solid fa-xmark"></i> Hủy đặt phòng</a>
+                        </div>
+                    </div>
+                    <div class="wrap-btn-reviews">
+                        <div class="reviews" th:if="${!booking.isReviewed}"  th:classappend="${!booking.statusBooking.value.equalsIgnoreCase('Hoàn Tất') ? 'd-none': 'd-inline-block' }">
+                            <h6 class="w-100">Viết đánh giá</h6>
+                            <span>Bạn có thể chia sẻ cảm nhận của mình về chuyến đi vừa rồi .</span>
+                            <button th:value="${booking.id}"   type="button" class="mt-3 create-review w-100 btn" data-bs-toggle="modal" data-bs-target="#myModal">
+                                <i class="fa-solid fa-pen fa-rotate-270 mx-1"  ></i> Đánh giá
+                            </button>
+                        </div>
+                    </div>
+                    <div class="price-detail py-2  px-3  rounded my-3">
+                        <h5>Chi tiết giá</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="">Giá mỗi đêm</span>
+                            <span class=""  th:text="|${#numbers.formatInteger(booking.price,3,'COMMA')}đ|"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="">Số lượng phòng</span>
+                            <span class="" th:text="${booking.numberRoom}"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="">Số đêm lưu trú</span>
+                            <span class="" th:text="${period.getDays()}"></span>
+                        </div>
+                        <hr>
+                        <div class="total-money d-flex justify-content-between">
+                            <h4 class="">Tổng </h4>
+                            <h5 th:text="|${#numbers.formatInteger(booking.price,3,'COMMA')}đ|"></h5>
+                        </div>
+
+                    </div>
+
+
+                    <!-- The Modal -->
+                    <div class="modal" id="myModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Viết đánh giá</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="rating d-flex justify-content-center">
+                                        <span class="star px-1" data-rating="1">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="2">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="3">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="4">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="5">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="6">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="7">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="8">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="9">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="10">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                </div>
+                                <div class="d-flex justify-content-center" id="rating-value"></div>
+
+
+                                <!-- Modal body -->
+                                <form id="form-review">
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                                      <textarea id="reviewContent" class="w-100 rounded overflow-hidden  my-2"
+                                                                type="text" placeholder="Viết bình luận . . . ." name="contentReview-review"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn text-black-50" data-bs-dismiss="modal">Đóng</button>
+                                        <button id="submitReview" type="button" class="btn">Gửi Đánh Giá
+                                        </button>
+
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="contact">
+                        <h6>Thông tin liên hệ.</h6>
+                        <span class="title-contact">Đối với hầu hết câu hỏi, chỗ nghỉ thường là nơi tốt nhất để liên hệ</span>
+                       <div class="phone">
+                           <label>Điện thoại : <th:block th:text="${booking.hotel.hotline}"></th:block> </label>
+                           <span ></span>
+                       </div>
+                        <div class="email">
+                           <label>Email : </label>
+                           <span ><th:block th:text="${booking.hotel.email}"></th:block></span>
+                       </div>
+                    </div>
+<!--                    <div class="contact">-->
+<!--                        <a>Những câu hỏi thường gặp ?</a>-->
+<!--                    </div>-->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="support">
+        <div class="container">
+
+        </div>
+    </section>
+
+
+
+</div>
+
+<th:block id="js">
+
+
+
+    <script th:inline="javascript">
+
+
+    </script>
+
+    <script src="/web/assets/js/booking-detail.js"></script>
+
+
+</th:block>
+
+</body>
+</html>

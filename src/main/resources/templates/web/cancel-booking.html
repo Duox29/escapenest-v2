@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>EscapeNest.com</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/assets/css/style-cancel-booking.css">
+    </th:block>
+
+</head>
+<body>
+
+<div id="main-content">
+    <section class="page-cancel-booking ">
+
+        <div class="container ">
+            <div class="row">
+                <a class="text-decoration-none back-page " th:href="@{/danh-sach-dat-phong/{id} (id = ${booking.user.id})}"><i class="fa-solid fa-angle-left"></i> Quay lại đặt chỗ của
+                    tôi </a>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="title-page">
+                        <h3>Lý do hủy</h3>
+                        <span> Chúng tôi có thể giúp bạn tìm giải pháp thay thế nếu bạn cần thay đổi đặt phòng của mình</span>
+                    </div>
+
+                    <div class="reason-cancel">
+                        <h6>Lý Do</h6>
+                        <select class="w-100 select-reason">
+                            <option class="option-reason p-5">Chọn lý do (bắt buộc)</option>
+                            <option class="option-reason">Đổi ngày hoặc điểm đến</option>
+                            <option class="option-reason" th:onclick="renderInputCheckBox()">Lý do cá nhân/chuyến đi bị hủy</option>
+
+                            <option class="option-reason" th:onclick="renderInputCheckBox()">Tôi tìm được chỗ nghỉ thay thế</option>
+
+                            <option class="option-reason" th:onclick="renderInputCheckBox()">Không phải các lý do trên</option>
+                        </select>
+
+                    </div>
+
+                    <div class="confirm-back">
+                        <button class="confirm" type="button" th:value="${booking.id}">Hủy đơn đặt phòng này </button>
+                        <a class="back text-decoration-none" th:href="@{/chi-tiet-booking/{id} (id=${booking.id})}">Tôi muốn giữ đơn đặt phòng này.</a>
+                    </div>
+
+                </div>
+                <div class="col-4">
+                    <div class="hotel">
+                        <div class="row">
+                            <div class="col-4">
+                                <img class="w-100 image-hotel" src="/web/assets/image/amanoi-resort-beach-club-1400x600.jpg" alt="">
+                            </div>
+                            <div class="col-8 infor-hotel">
+                                <h5 th:text="${booking.hotel.name}"></h5>
+                                <span>
+                                    <th:block  th:text="${booking.checkIn.getDayOfMonth()}"></th:block> tháng <th:block  th:text="${booking.checkIn.getMonthValue()}"></th:block> -
+                                    <th:block  th:text="${booking.checkOut.getDayOfMonth()}"></th:block> tháng <th:block  th:text="${booking.checkOut.getMonthValue()}"></th:block></span>
+                                <span><th:block th:text="${booking.numberRoom}"></th:block> phòng</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6">
+                                <span>Đặt phòng của bạn</span>
+                            </div>
+                            <div class="col-6">
+                                <p class="price"><th:block th:text="|${#numbers.formatInteger(booking.price,3,'COMMA')}đ|"></th:block></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <span>Phí hủy</span>
+                            </div>
+                            <div class="col-6">
+                                <p class="price">0 đ</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5>Số tiền bạn phải trả</h5>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="price">0 đ</h5>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="policy-hotel">
+                        <h5 class=""> Chính sách hủy</h5>
+                        <span th:text="${booking.hotel.policyHotel.cancelPolicy}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+
+</div>
+
+<th:block id="js">
+
+    <script th:inline="javascript">
+        const btnConfirm = document.querySelector('.confirm');
+        btnConfirm.addEventListener('click',()=>{
+            let con = confirm("Bạn có chắc rằng muốn hủy đơn đặt phòng này");
+            if (con===true){
+
+                axios.put('/api/booking/'+btnConfirm.value)
+                    .then((res) =>{
+                        toasr.success("Hủy đặt phòng thành công ")
+                        window.location.href = "/chi-tiet-booking/"+btnConfirm.value
+                    })
+                    .catch((err)=>{
+                        toastr.error(err.data.message);
+                    })
+
+            }
+        })
+    </script>
+    <script src="/web/assets/js/cancel-booking.js"></script>
+
+</th:block>
+
+</body>
+</html>
+

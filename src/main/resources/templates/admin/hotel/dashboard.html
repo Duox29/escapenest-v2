@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Hotel</title>
+
+  <th:block id="css">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/admin-assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- IonIcons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/admin-assets/dist/css/adminlte.min.css">
+
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Montserrat);
+      body {
+        font-family: montserrat, arial, verdana;
+        margin-bottom: 100px;
+      }
+      #chart-booking-of-room {
+        max-height: 350px;
+      }
+
+      #chart-revenue {
+        min-height: 350px;
+        max-height: 350px;
+      }
+
+      body {
+        margin-bottom: 100px;
+      }
+
+      .box-revenue-total {
+        border: 2px #17a2b8 solid;
+      }
+
+      .box-revenue-week {
+        border: 2px #28a745 solid;
+      }
+
+      .box-revenue-today {
+        border: 2px #605ca8 solid;
+      }
+
+      .box-revenue-month {
+        border: 2px #e83e8c solid;
+      }
+
+      .filter-revenue select {
+        border: 2px #e83e8c solid;
+        border-radius: 10px;
+        width: 100px;
+        margin-right: 10px;
+      }
+      #chart-revenue-year{
+        max-height: 300px;
+      }
+    </style>
+  </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper" id="main-content"  style="font-size: 14px">
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="font-size: 14px">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard </h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-white">
+              <div class="inner">
+                <h3 th:text="${totalBookingMonthDto.totalBooking}"></h3>
+                <p style="font-size: 14px">Đơn đặt phòng đã hoàn thành trong tháng</p>
+              </div>
+              <div class="icon" style="font-size: 14px">
+                <i style="font-size: 50px"  class="ion ion-bag"></i>
+              </div>
+              <a style="font-size: 12px" href="/hotel-manager/bookings" class="small-box-footer">Xem thêm <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-white">
+              <div class="inner">
+                <h3 th:text="${totalBookingMonthDtoPending.totalBooking}"> </h3>
+                <p style="font-size: 14px">Đơn đặt đang chờ xác nhận</p>
+              </div>
+              <div class="icon">
+                <i style="font-size: 50px" class="fa-solid fa-spinner"></i>
+              </div>
+              <a style="font-size: 12px" href="/hotel-manager/bookings" class="small-box-footer">Xem thêm <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-white ">
+              <div class="inner">
+                <h3 style="font-size: 27px" th:text="${totalRevenueYear == 0 ? 0 : #numbers.formatInteger(totalRevenueYear, 3, 'COMMA')} "></h3>
+                <h5 >VND</h5>
+                <p style="font-size: 14px">Doanh thu năm sau chiết khấu <th:block th:text="${ 1900 + #dates.createNow().getYear()}"></th:block></p>
+              </div>
+              <div class="icon">
+                <i style="font-size: 50px"  class="fa-solid fa-dollar-sign"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-white">
+              <div class="inner">
+                <h3 style="font-size: 27px" th:text="${totalRevenueMonth.totalPrice == 0 ? 0 : #numbers.formatInteger(totalRevenueMonth.totalPrice, 3, 'COMMA')} "></h3>
+                <h5 >VND</h5>
+                <p style="font-size: 14px">Doanh thu tháng sau chiết khấu <th:block th:text="${totalRevenueMonth.getMonth()}"></th:block>/<th:block th:text="${totalRevenueMonth.getYear()}"></th:block></p>
+              </div>
+              <div class="icon">
+                <i style="font-size: 50px"  class="fa-solid fa-chart-simple"></i>
+              </div>
+            </div>
+          </div>
+          <!-- ./col -->
+        </div>
+
+        <div class="row">
+
+          <div class="col-7">
+            <div class="d-flex justify-content-between mt-3 mb-1">
+              <label>Doanh thu theo tháng</label>
+              <div class="d-flex">
+                <div class="filter-revenue mx-2">
+                  <label>Tháng :</label>
+                  <select name="select-month" id="select-month-revenue-day">
+                    <option class="month" th:each="month : ${#numbers.sequence(1,12)}"
+                            th:value="${month}"
+                            th:selected="${ month == #dates.createNow().getMonth()+1}">
+                      <th:block th:text="${month}"></th:block>
+                    </option>
+                  </select>
+                </div>
+                <div class="filter-revenue mx-2">
+                  <label>Năm :</label>
+                  <select name="select-year" id="select-year-revenue-day">
+                    <option class="year"
+                            th:each="year : ${#numbers.sequence(hotel.createdAt.getYear(),hotel.createdAt.getYear())}"
+                            th:value="${year}" th:text="${year}"
+                            th:selected="${ year == 1900 + #dates.createNow().getYear()}"></option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <table class="table table-bordered table-hover">
+              <div class="card">
+                <canvas id="chart-revenue-by-month"></canvas>
+              </div>
+            </table>
+          </div>
+          <div class="col-5">
+            <div class="d-flex justify-content-between mt-3 mb-1">
+              <label>Đơn đặt phòng theo từng phòng</label>
+              <div class="d-flex">
+                <div class="filter-revenue mx-2">
+                  <label>Năm :</label>
+                  <select name="select-year" id="select-year-booking">
+                    <option class="year"
+                            th:each="year : ${#numbers.sequence(hotel.createdAt.getYear(),hotel.createdAt.getYear())}"
+                            th:value="${year}" th:text="${year}"
+                            th:selected="${ year == 1900 + #dates.createNow().getYear()}"></option>
+
+                  </select>
+                </div>
+              </div>
+
+            </div>
+            <div>
+              <canvas id="chart-booking-of-room" width="400" height="200"></canvas>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex justify-content-between mt-5 mb-1">
+              <label>Doanh thu homestay theo năm</label>
+              <div class="d-flex">
+                <div class="filter-revenue mx-2">
+                  <label>Năm :</label>
+                  <select name="select-year" id="select-year-revenue-month">
+                    <option class="year"
+                            th:each="year : ${#numbers.sequence(hotel.createdAt.getYear(),hotel.createdAt.getYear())}"
+                            th:value="${year}" th:text="${year}"
+                            th:selected="${ year == 1900 + #dates.createNow().getYear()}"></option>
+
+                  </select>
+                </div>
+              </div>
+
+            </div>
+            <div class="card">
+              <canvas id="chart-revenue-year" width="400" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+</div>
+
+<th:block id="js">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>>
+  <script src="/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+
+  <script th:inline="javascript">
+    const hotel = [[${hotel}]];
+
+
+    const selectMonthRevenueDay = document.getElementById('select-month-revenue-day');
+    const selectYearRevenueDay = document.getElementById('select-year-revenue-day');
+    const selectYearRevenueMonth = document.getElementById('select-year-revenue-month');
+    const selectBookingByYear = document.getElementById('select-year-booking');
+
+
+    // lắng nghe sự kiện khi lấy doanh thu các ngày trong tháng thay đổi
+    selectYearRevenueDay.addEventListener('change', () => {
+      var monthInt = parseInt(selectMonthRevenueDay.value)
+      var yearINt = parseInt(selectYearRevenueDay.value)
+      getRevenueDayOfMonthHotel(monthInt, yearINt);
+
+    })
+    selectMonthRevenueDay.addEventListener('change', () => {
+      var monthInt = parseInt(selectMonthRevenueDay.value)
+      var yearINt = parseInt(selectYearRevenueDay.value)
+      getRevenueDayOfMonthHotel(monthInt, yearINt);
+
+    })
+    selectBookingByYear.addEventListener('change', () => {
+      var yearINt = parseInt(selectBookingByYear.value)
+      getTotalBookingByTypeRoom(yearINt);
+
+    })
+    selectYearRevenueMonth.addEventListener('change', () => {
+
+      var yearINt = parseInt(selectYearRevenueMonth.value)
+      console.log(yearINt)
+      getRevenueMonth(yearINt);
+
+    })
+
+
+    // hàm gọi api để lấy doanh thu các tháng của năm đã được chọn
+    const getRevenueDayOfMonthHotel = (month, year) => {
+      axios.get("/api/hotel-manager/revenue-day/" + hotel.id + "?month=" + month + "&year=" + year)
+              .then((res) => {
+                renderRevenueDay(res.data, month, year)
+              })
+              .catch((err) => {
+                console.log(err);
+              })
+    };
+    const getTotalBookingByTypeRoom = (year) => {
+
+      axios.get("/api/hotel-manager/total-booking/" + hotel.id + "?year=" + year)
+              .then((res) => {
+                console.log(res)
+                renderTotalBooking(res.data, year)
+              })
+              .catch((err) => {
+                console.log(err);
+              })
+    }
+    const getRevenueMonth = (year)=>{
+      axios.get("/api/hotel-manager/revenue-month/" + hotel.id + "?year=" + year )
+              .then((res)=>{
+                renderRevenueMonth(res.data,year)
+              })
+              .catch((err)=>{
+                console.log(err);
+              })
+    }
+
+    const renderRevenueDay = (listRevenue, month, year) => {
+      const existingChart = Chart.getChart("chart-revenue-by-month");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+      const maxTotalBooking = Math.max(...listRevenue.map(item => item.totalPrice));
+      let maxChart = 10000000;
+      if (maxTotalBooking > maxChart) {
+        maxChart += maxTotalBooking;
+      }
+      new Chart(document.getElementById('chart-revenue-by-month'), {
+        type: 'line',
+        data: {
+          labels: listRevenue.map(item => `${item.day}-${item.month}`),
+          datasets: [{
+            label: 'Doanh thu homestay ',
+            data: listRevenue.map(item => item.totalPrice),
+            backgroundColor: [
+              'rgb(75, 192, 192)',
+            ],
+            pointStyle: 'rectRounded',
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+          }],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: maxChart
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: (ctx) => 'Doanh thu tháng ' + month + ' năm ' + year,
+            },
+          }
+        }
+      });
+    }
+    const renderTotalBooking = (list, year) => {
+      const existingChart = Chart.getChart("chart-booking-of-room");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+      new Chart(
+              document.getElementById('chart-booking-of-room'),
+              {
+                type: 'doughnut',
+                data: {
+                  labels: list.map(item => `${item.typeRoom}`),
+                  datasets: [{
+                    data: list.map(item => item.totalBooking),
+                    anchor: 'center'
+                  }],
+                },
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                  'rgb(255, 205, 86)'
+                ],
+              }
+      );
+    }
+    const renderRevenueMonth = (listRevenue,year) =>{
+      const existingChart = Chart.getChart("chart-revenue-year");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+      const maxTotalBooking = Math.max(...listRevenue.map(item => item.totalPrice));
+      let maxChart = 10000000;
+      if (maxTotalBooking>maxChart){
+        maxChart += maxTotalBooking;
+      }
+      new Chart(
+              document.getElementById('chart-revenue-year'),
+              {
+                type: 'bar',
+                data: {
+                  labels: listRevenue.map(item => `Tháng ${item.month}/${item.year}`),
+                  datasets: [
+                    {
+                      label: 'Doanh thu ',
+                      data: listRevenue.map(item => item.totalPrice),
+                      backgroundColor: [
+                        '#577B8D',
+                      ],
+                    }
+                  ]
+                },
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      max: maxChart // Thêm một giá trị cố định cho giá trị cao nhất
+                    }
+                  },
+                  plugins: {
+                    title: {
+                      display: true,
+                      text: (ctx) => 'Doanh thu năm '+year,
+                    },
+                  }
+                }
+              }
+      );
+    }
+
+
+    const currentDate = new Date()
+    getRevenueDayOfMonthHotel(currentDate.getMonth() + 1, currentDate.getFullYear())
+    getTotalBookingByTypeRoom(currentDate.getFullYear())
+    getRevenueMonth(currentDate.getFullYear())
+
+  </script>
+</th:block>
+</body>
+</html>

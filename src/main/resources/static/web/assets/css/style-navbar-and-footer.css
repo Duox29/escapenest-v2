@@ -1,0 +1,177 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+}
+:root {
+    --primary-color: #2c3855;
+    --primary-color-dark: #435681;
+    --text-dark: #333333;
+    --text-light: #767268;
+    --extra-light: #f3f4f6;
+    --primary: #eeeeee;
+    --secondary: #227c70;
+    --green: #82cd47;
+    --secondary-light: rgb(34, 124, 112, 0.2);
+    --secondary-light-2: rgb(127, 183, 126, 0.1);
+    --white: #fff;
+    --black: #393e46;
+
+    --shadow: 0px 2px 8px 0px var(--secondary-light);
+}
+
+
+.navbar-expand{
+    background-color: #DDE6ED !important;
+}
+
+.img-logo{
+    width: 160px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 10px;
+
+
+}
+
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 5px;
+    font-weight: 500;
+    border-radius: 50px;
+    color: var(--black);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in, background-color 0.2s ease-in,
+    border 0.3s;
+}
+
+.profile-dropdown-btn:hover {
+    background-color: #5C768A;
+    color: #F5F5F5 !important;
+}
+
+.register{
+    text-align: center;
+    width: 200px;
+    border: 1px solid #5392F9;
+    border-radius: 10px;
+    margin: 0 5px;
+}
+
+.login{
+    text-align: center;
+    width: 200px;
+    border: 1px solid #5392F9;
+    border-radius: 10px;
+    margin: 0 5px;
+}
+
+.login i{
+    margin-right: 7px;
+}
+.register i{
+    margin-right: 7px;
+}
+
+
+.profile-dropdown-btn .btn-user {
+    max-width: 200px;
+    min-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Hiển thị dấu chấm (...) khi nội dung bị cắt */
+    white-space: nowrap; /* Ngăn chặn nội dung xuống dòng */
+    text-align: center;
+}
+.btn-user img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-dropdown-list {
+    position: absolute;
+    top: 40px;
+    width: 220px;
+    right: 0;
+    background-color: #F5F5F5;
+
+    border-radius: 10px;
+    max-height: 0;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: max-height 0.5s;
+    z-index: 1000;
+}
+
+.profile-dropdown-list hr {
+    border: 0.5px solid var(--green);
+}
+
+.profile-dropdown-list.active {
+    max-height: 500px;
+}
+
+.profile-dropdown-list-item {
+    padding: 0.5rem 0 0.5rem 1rem;
+    transition: background-color 0.2s ease-in, padding-left 0.2s;
+}
+.profile-dropdown-list-item:hover {
+    background-color: var(--secondary-light-2);
+    box-shadow: var(--shadow);
+}
+
+
+.profile-dropdown-list-item a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--black);
+    cursor: pointer;
+}
+
+.profile-dropdown-list-item a i {
+    font-size: 1.1rem;
+    width: 2.3rem;
+    height: 2.3rem;
+    line-height: 2.3rem;
+    text-align: center;
+    margin-right: 1rem;
+    border-radius: 50%;
+    transition: margin-right 0.3s;
+}
+.infor-web {
+    background-color: var(--primary-color-dark);
+    color: var(--extra-light);
+} .registration{
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin: 15px 0;
+    cursor: pointer;
+    background-color: #DDE6ED;
+
+} .registration span{
+    font-size: 16px ;
+    padding: 0 0;
+    font-weight: 350;
+} .registration i{
+    padding: 0 0;
+    margin-right: 10px;
+    margin-left: 5px;
+    font-size: 18px ;
+}
+  .registration:hover,.support:hover{
+      border-radius: 10px;
+      background-color: #5C768A;
+      color: #F5F5F5 !important;
+  }

@@ -1,0 +1,130 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+}
+
+.infor-customer{
+    border: 1px solid #E7E7E7;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.payment-type{
+    border: 1px solid #E7E7E7;
+    border-radius: 10px;
+    background-color: white;
+}
+.custom-checkbox{
+    /* Tạo kiểu dáng cho ô checkbox */
+    width: 17px;
+    height: 17px;
+    border: 1px solid #DFE0E4;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+.name-customer input{
+    border-radius: 10px;
+    border: 1px solid #E7E7E7;
+    padding: 5px 5px;
+}
+.email input{
+    border-radius: 10px;
+    border: 1px solid #E7E7E7;
+    padding: 5px 5px;
+}
+.phone input{
+    border-radius: 10px;
+    border: 1px solid #E7E7E7;
+    padding: 5px 5px;
+}
+
+.card-payment{
+    border-radius: 10px;
+    border: 1px solid #E7E7E7;
+    background-color: white;
+}
+
+.list-infor-card-payment input{
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: 1px solid #E7E7E7;
+
+}
+
+.btn-booking button{
+    border-radius: 10px;
+    padding: 5px 20px;
+    border: none;
+    background-color: #526D82;
+    color: white;
+    font-size: 18px;
+}
+
+
+.infor-hotel{
+    border: 1px solid #E7E7E7;
+    border-radius: 10px !important;
+    background-color: white;
+}
+.rental-type{
+    font-size: 14px;
+    font-weight: 400;
+    margin-right: 5px;
+}
+
+.rental-type-star i{
+    color: #EB9711;
+    font-size: 14px;
+}
+
+.image-hotel img{
+    object-fit: cover;
+    width: 100%;
+    border-radius: 5px;
+    height: 200px;
+}
+.address-hotel{
+    color: #0d6efd;
+}
+.ratting-hotel{
+    margin-top: 10px;
+}
+
+.age-rating{
+    margin-top: 20px;
+    padding: 5px 10px;
+    background-color: #227950;
+    color: white;
+    border-radius: 5px;
+}
+
+.amenity-hotel{
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 15px;
+}
+
+.infor-booking{
+    border: 1px solid #E7E7E7;
+    border-radius: 10px !important;
+    background-color: white;
+}
+
+.name-room{
+    margin-top:20px;
+}
+
+.image-room img{
+    object-fit: cover;
+    width: 100%;
+    border-radius: 5px;
+    height: 200px;
+}
+
+.price-detail{
+    border: 1px solid #E7E7E7;
+    border-radius: 10px !important;
+    background-color: white;
+}

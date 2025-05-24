@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>EscapeNest.com</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/assets/css/style-favourite-city.css">
+    </th:block>
+
+</head>
+<body>
+
+<div id="main-content">
+
+
+    <section class="favourite">
+        <div class="container">
+            <div class="row px-5 mt-5">
+                <div class="" th:if="${mapHotelFavouriteByCity.isEmpty()}">
+                    <h1>Chưa có homestay nào được thêm vào mục yêu thích</h1>
+                </div>
+                <th:block th:if="${!mapHotelFavouriteByCity.isEmpty()}" >
+                    <div class="col-12">
+                        <h3>Danh dách yêu thích</h3>
+                    </div>
+                    <div class="col-3" th:each="keyValue : ${mapHotelFavouriteByCity}">
+
+                        <a class="favourite-by-city " th:href="@{/danh-sach-yeu-thich/{idUser}/{city} (idUser=${#authentication.principal.user.getId()},city=${keyValue.key.name})}">
+                            <div class="card-city">
+                                <img class="w-100" th:src="${keyValue.key.imageCity}" alt="">
+
+                                <h4 class="name-city" th:text="${keyValue.key.name}"></h4>
+
+                                <span class="quantity "><th:block th:text="${keyValue.value}"></th:block> homestay</span>
+                            </div>
+                        </a>
+                    </div>
+                </th:block>
+
+                </div>
+            </div>
+    </section>
+
+
+</div>
+
+<th:block id="js">
+
+
+</th:block>
+
+</body>
+</html>
+

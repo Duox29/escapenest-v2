@@ -1,0 +1,122 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+    background-color: #F9F9F9;
+}
+
+.form-register {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border: 1px solid #E7E7E7 !important;
+    background-color: #FFFFFF;
+    padding: 0 20px 20px;
+    border-radius: 10px;
+}
+
+.title-description {
+    margin: 15px 0;
+}
+
+.title-description .title-form {
+
+    margin-bottom: 0;
+    letter-spacing: 1px;
+    font-weight: 550;
+}
+.title-description .description-form {
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+
+
+
+
+.btn-register{
+    border: none;
+    width: 100%;
+    padding: 10px 0;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color:#526D82 ;
+    color: #F5F5F5;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+}
+
+.input-account{
+    margin: 10px 0;
+}
+.input-password{
+    display: flex;
+}
+.input-password input{
+    width: 90%;
+    border-radius: 5px 0 0 5px;
+}
+.input-password button{
+    width: 10%;
+    background-color: white;
+    border: 1px solid #E7E7E7 !important;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+.customs-register {
+    width: 100%;
+    display: flex;
+    text-align: center;
+
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: transparent;
+    margin-top: 30px;
+}
+.line {
+    min-width: 1px;
+    width: 100%;
+    flex: 1 1 0%;
+    margin: 0px;
+    border-bottom: 1px solid rgb(221, 223, 226);
+}
+
+.login-google{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    width: 100%;
+    border: 1px solid #5392F9 !important;
+    padding: 10px 0;
+    margin-top: 15px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+
+    text-decoration: none;
+}
+.login-google span{
+    font-size: 17px;
+    font-weight: 500;
+    color: #183153;
+}
+
+.back-login{
+    margin-top: 25px;
+    display: flex;
+    justify-content:center;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+}

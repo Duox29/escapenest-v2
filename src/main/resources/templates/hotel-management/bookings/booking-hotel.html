@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{hotel-management/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Danh sách đơn đặt phòng</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" th:href="@{/admin-assets/plugins/select2/css/select2.min.css}"/>
+        <link rel="stylesheet" th:href="@{/admin-assets/dist/css/style.css}">
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"/>
+        <style>
+            .select2-container .select2-selection--single {
+                height: 38px;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 38px;
+            }
+        </style>
+    </th:block>
+
+</head>
+
+<body>
+<div class="content-wrapper" style="font-size: 14px">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/hotel-manager/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span >Đơn đặt phòng</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+<!--            <div class="row py-2">-->
+<!--                <div class="col-6">-->
+<!--                    <a href="" type="button" class="btn btn-default">-->
+<!--                        <i class="fas fa-chevron-left"></i> Quay lại-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-content-below-all-tab" data-toggle="pill"
+                                       href="#custom-content-below-all" role="tab"
+                                       aria-controls="custom-content-below-all" aria-selected="false">Tất cả</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-content-below-confirm-tab" data-toggle="pill"
+                                       href="#custom-content-below-confirm" role="tab"
+                                       aria-controls="custom-content-below-confirm" aria-selected="true">Đã xác nhận</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill"
+                                       href="#custom-content-below-profile" role="tab"
+                                       aria-controls="custom-content-below-profile" aria-selected="false">Chờ xác nhận</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-content-below-complete-tab" data-toggle="pill"
+                                       href="#custom-content-below-complete" role="tab"
+                                       aria-controls="custom-content-below-complete" aria-selected="false">Hoàn thành</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-content-below-messages-tab" data-toggle="pill"
+                                       href="#custom-content-above-messages" role="tab"
+                                       aria-controls="custom-content-below-messages" aria-selected="false">Đã hủy & từ chối</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="custom-content-below-tabContent">
+                                <div class="tab-pane fade active show" id="custom-content-below-all" role="tabpanel"
+                                     aria-labelledby="custom-content-below-all-tab">
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <table id="table-all" class="table table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10%">Mã đơn đặt</th>
+                                                    <th style="width: 20%">Tên khách</th>
+                                                    <th style="width: 15%">Tên phòng</th>
+                                                    <th style="width: 10%">Số lượng phòng</th>
+                                                    <th style="width: 15%">Hình thức thanh toán</th>
+                                                    <th style="width: 9%">Giá tiền</th>
+                                                    <th style="width: 11%">Thời gian đặt</th>
+                                                    <th style="width: 10%">Trạng thái</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="booking : ${bookings}">
+                                                    <td>
+                                                        <a th:href="@{/hotel-manager/bookings/{id} (id = ${booking.id})}">
+                                                            <span th:text="${booking.id}"></span>
+                                                        </a>
+                                                    </td>
+                                                    <td th:text="${booking.nameCustomer}"></td>
+                                                    <td th:text="${booking.room.name}"></td>
+                                                    <td th:text="${booking.numberRoom}"></td>
+                                                    <td>
+                        <span class="badge"
+                              th:classappend="${booking.paymentMethod.value.equals('VN Pay') ? 'bg-success' : 'bg-info'}"
+                              th:text="${booking.paymentMethod.value}"></span>
+                                                    </td>
+                                                    <td th:text="|${#numbers.formatInteger(booking.price,3,'COMMA')}đ|"></td>
+                                                    <td th:text="${#temporals.format(booking.createAt, 'dd/MM/yyyy')}"></td>
+                                                    <td>
+                        <span th:if="${booking.statusBooking.value.equals('Đã xác nhận')}"
+                              class="badge bg-success"
+                              th:text="${booking.statusBooking.value}"></span>
+                                                        <span th:if="${booking.statusBooking.value.equals('Chờ xác nhận')}"
+                                                              class="badge bg-warning"
+                                                              th:text="${booking.statusBooking.value}"></span>
+                                                        <span th:if="${booking.statusBooking.value.equals('Hoàn tất')}"
+                                                              class="badge bg-primary"
+                                                              th:text="${booking.statusBooking.value}"></span>
+                                                        <span th:if="${booking.statusBooking.value.equals('Từ chối')}"
+                                                              class="badge bg-danger"
+                                                              th:text="${booking.statusBooking.value}"></span>
+                                                        <span th:if="${booking.statusBooking.value.equals('Đã hủy')}"
+                                                              class="badge bg-secondary"
+                                                              th:text="${booking.statusBooking.value}"></span>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="custom-content-below-confirm" role="tabpanel"
+                                     aria-labelledby="custom-content-below-confirm-tab">
+                                    <form id="form-update-film" class="mt-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table id="table-confirm" class="table table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="width: 10%">Mã đơn đặt</th>
+                                                        <th style="width: 20%">Tên khách</th>
+                                                        <th style="width: 15%">Tên phòng</th>
+                                                        <th style="width: 10%">Số lượng phòng</th>
+                                                        <th style="width: 15%">Hình thức thanh toán</th>
+                                                        <th style="width: 9%">Giá tiền</th>
+                                                        <th style="width: 11%">Thời gian đặt</th>
+                                                        <th style="width: 10%">Trạng thái</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="booking : ${bookings}"
+                                                        th:if="${booking.statusBooking.value.equals('Đã xác nhận')}">
+                                                        <td>
+                                                            <a th:href="@{/hotel-manager/bookings/{id} (id = ${booking.id})}" >
+                                                                <span th:text="${booking.id}"></span>
+                                                            </a>
+                                                        </td>
+                                                        <td th:text="${booking.nameCustomer}"></td>
+                                                        <td th:text="${booking.room.name}"></td>
+                                                        <td th:text="${booking.numberRoom}"></td>
+                                                        <td>
+                                                            <span class="badge " th:classappend="${booking.paymentMethod.value.equals('VN Pay') ? 'bg-success' : 'bg-info'}" th:text="${booking.paymentMethod.value}"></span>
+                                                        </td>
+                                                        <td th:text="|${#numbers.formatInteger(booking.price,3,'COMMA')}đ|"></td>
+                                                        <td th:text="${#temporals.format(booking.createAt , 'dd/MM/yyyy')}"></td>
+                                                        <td class="" >
+                                                            <span class="badge bg-success" th:text="${booking.statusBooking.value}"></span>
+                                                        </td>
+
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel"
+                                     aria-labelledby="custom-content-below-profile-tab">
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+
+
+                                            <table id="table-pending" class="table table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10%">Mã đơn đặt</th>
+                                                    <th style="width: 20%">Tên khách</th>
+                                                    <th style="width: 15%">Tên phòng</th>
+                                                    <th style="width: 10%">Số lượng phòng</th>
+                                                    <th style="width: 15%">Hình thức thanh toán</th>
+                                                    <th style="width: 9%">Giá tiền</th>
+                                                    <th style="width: 11%">Thời gian đặt</th>
+                                                    <th style="width: 10%"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="booking : ${bookings}"
+                                                    th:if="${booking.statusBooking.value.equals('Chờ xác nhận')}">
+                                                    <td>
+                                                        <a th:href="@{/hotel-manager/bookings/{id} (id = ${booking.id})}" >
+                                                            <span th:text="${booking.id}"></span>
+                                                        </a>
+                                                    </td>
+                                                    <td th:text="${booking.nameCustomer}"></td>
+                                                    <td th:text="${booking.room.name}"></td>
+                                                    <td th:text="${booking.numberRoom}"></td>
+                                                    <td>
+                                                        <span class="badge " th:classappend="${booking.paymentMethod.value.equals('VN Pay') ? 'bg-success' : 'bg-info'}" th:text="${booking.paymentMethod.value}"></span>
+                                                    </td>
+                                                    <td th:text="|${#numbers.formatInteger(booking.price,3,'COMMA')}đ|"></td>
+                                                    <td th:text="${#temporals.format(booking.createAt , 'dd/MM/yyyy')}"></td>
+                                                    <td th:class="|container-status-${booking.id}|"  >
+                                                        <button id="confirm"
+                                                                class="btn btn-success btn-sm mx-1"
+                                                            th:value="${booking.statusBooking}"
+                                                            th:onclick="'confirmBooking('+${booking.id}+')'">
+                                                            <i class="fa-solid fa-check"></i>
+                                                        </button>
+                                                        <button id="reject"
+                                                                class="btn btn-danger btn-sm mx-1"
+                                                                th:value="${booking.statusBooking}"
+                                                                th:onclick="'rejectBooking('+${booking.id}+')'">
+                                                            <i class="fa-solid fa-xmark"></i>
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="custom-content-below-complete" role="tabpanel"
+                                     aria-labelledby="custom-content-below-profile-tab">
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <table id="table-complete" class="table table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10%">Mã đơn đặt</th>
+                                                    <th style="width: 20%">Tên khách</th>
+                                                    <th style="width: 15%">Tên phòng</th>
+                                                    <th style="width: 10%">Số lượng phòng</th>
+                                                    <th style="width: 15%">Hình thức thanh toán</th>
+                                                    <th style="width: 9%">Giá tiền</th>
+                                                    <th style="width: 11%">Thời gian đặt</th>
+                                                    <th style="width: 10%">Trạng thái</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="booking : ${bookings}"
+                                                    th:if="${booking.statusBooking.value.equals('Hoàn tất')}">
+                                                    <td>
+                                                        <a th:href="@{/hotel-manager/bookings/{id} (id = ${booking.id})}" >
+                                                            <span th:text="${booking.id}"></span>
+                                                        </a>
+                                                    </td>
+                                                    <td th:text="${booking.nameCustomer}"></td>
+                                                    <td th:text="${booking.room.name}"></td>
+                                                    <td th:text="${booking.numberRoom}"></td>
+                                                    <td>
+                                                        <span class="badge " th:classappend="${booking.paymentMethod.value.equals('VN Pay') ? 'bg-success' : 'bg-info'}" th:text="${booking.paymentMethod.value}"></span>
+                                                    </td>
+                                                    <td th:text="|${#numbers.formatInteger(booking.price,3,'COMMA')}đ|"></td>
+                                                    <td th:text="${#temporals.format(booking.createAt , 'dd/MM/yyyy')}"></td>
+                                                    <td class="" >
+                                                        <span class="badge bg-success" th:text="${booking.statusBooking.value}"></span>
+                                                    </td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="custom-content-above-messages" role="tabpanel"
+                                     aria-labelledby="custom-content-above-messages-tab">
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <table id="table-booking-cancel" class="table table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10%">Mã đơn đặt</th>
+                                                    <th style="width: 20%">Tên khách</th>
+                                                    <th style="width: 20%">Tên phòng</th>
+                                                    <th style="width: 10%">Số lượng phòng</th>
+                                                    <th style="width: 10%">Giá tiền</th>
+                                                    <th style="width: 15%">Thời gian</th>
+                                                    <th style="width: 15%">Trạng thái</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="booking : ${bookings}"
+                                                    th:if="${booking.statusBooking.value.equals('Đã hủy') || booking.statusBooking.value.equals('Từ chối')}">
+                                                    <td>
+                                                        <a th:href="@{/hotel-manager/bookings/{id} (id = ${booking.id})}" >
+                                                            <span th:text="${booking.id}"></span>
+                                                        </a>
+                                                    </td>
+                                                    <td th:text="${booking.nameCustomer}"></td>
+                                                    <td th:text="${booking.room.name}"></td>
+                                                    <td th:text="${booking.numberRoom}"></td>
+                                                    <td th:text="|${#numbers.formatInteger(booking.price,3, 'COMMA')}đ|"></td>
+                                                    <td th:text="${#temporals.format(booking.createAt,'dd/MM/yyyy')}" ></td>
+                                                    <td class="result">
+                                                        <span class="badge bg-warning" th:if="${booking.statusBooking.value.equals('Từ chối')}"
+                                                        th:text="${booking.statusBooking.value}"></span>
+                                                        <span class="badge bg-danger" th:if="${booking.statusBooking.value.equals('Đã hủy')}"
+                                                              th:text="${booking.statusBooking.value}"></span>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<th:block id="js">
+    <script th:src="@{/admin-assets/plugins/select2/js/select2.full.min.js}"></script>
+    <script src="/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script th:inline="javascript">
+        $(".select2").select2();
+
+        $('#table-all').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [],
+            "language": {
+                "emptyTable": "Không có đơn đặt phòng nào.",
+                "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                "paginate": {
+                    "next": '<i class="fas fa-chevron-right"></i>',
+                    "previous": '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "drawCallback": function () {
+                var api = this.api();
+                if (api.page.info().pages <= 1) {
+                    $('.paginate_button').hide();
+                } else {
+                    $('.paginate_button').show();
+                }
+            }
+        });
+        $('#table-booking-cancel').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [],
+            "language": {
+                "emptyTable": "Không có đơn đặt phòng đã hủy & từ chối .",
+                "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                "paginate": {
+                    "next": '<i class="fas fa-chevron-right"></i>',
+                    "previous": '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "drawCallback": function () {
+                var api = this.api();
+                if (api.page.info().pages <= 1) {
+                    $('.paginate_button').hide(); // Ẩn tất cả các nút phân trang
+                } else {
+                    $('.paginate_button').show(); // Hiện lại tất cả các nút phân trang
+                }
+            }
+        });
+        $('#table-pending').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [],
+            "language": {
+                "emptyTable": "Không có đơn đặt phòng nào cần xác nhận.",
+                "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                "paginate": {
+                    "next": '<i class="fas fa-chevron-right"></i>',
+                    "previous": '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "drawCallback": function () {
+                var api = this.api();
+                if (api.page.info().pages <= 1) {
+                    $('.paginate_button').hide(); // Ẩn tất cả các nút phân trang
+                } else {
+                    $('.paginate_button').show(); // Hiện lại tất cả các nút phân trang
+                }
+            }
+        });
+        $('#table-complete').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [],
+            "language": {
+                "emptyTable": "Không có đơn đặt phòng nào đã hoàn thành.",
+                "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                "paginate": {
+                    "next": '<i class="fas fa-chevron-right"></i>',
+                    "previous": '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "drawCallback": function () {
+                var api = this.api();
+                if (api.page.info().pages <= 1) {
+                    $('.paginate_button').hide(); // Ẩn tất cả các nút phân trang
+                } else {
+                    $('.paginate_button').show(); // Hiện lại tất cả các nút phân trang
+                }
+            }
+        });
+         $('#table-confirm').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [],
+             "language": {
+                 "emptyTable": "Không có đơn đặt phòng nào đã xác nhận."
+                 ,"zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                 "paginate": {
+                     "next": '<i class="fas fa-chevron-right"></i>',
+                     "previous": '<i class="fas fa-chevron-left"></i>'
+                 }
+             },
+             "drawCallback": function () {
+                 var api = this.api();
+                 if (api.page.info().pages <= 1) {
+                     $('.paginate_button').hide(); // Ẩn tất cả các nút phân trang
+                 } else {
+                     $('.paginate_button').show(); // Hiện lại tất cả các nút phân trang
+                 }
+             }
+
+
+        });
+
+
+
+        const confirmBooking = (idBooking)=>{
+            let containerStatus = document.querySelector('.container-status');
+            axios.put('/api/booking/confirm/'+idBooking)
+                .then((res)=>{
+                    console.log(res);
+                    toastr.success("Thành công");
+                    let className = `container-status-${idBooking}`;
+                    let containerStatus = document.querySelector(`.${className}`);
+                    containerStatus.innerHTML = `<span class="badge bg-success" > Đã xác nhận</span>`
+                })
+                .catch((err) =>{
+                    console.log(err);
+                })
+        }
+        const rejectBooking = (idBooking)=>{
+            axios.put('/api/booking/reject/'+idBooking)
+                .then((res)=>{
+                    console.log(res);
+                    toastr.success("Thành công");
+                    let className = `container-status-${idBooking}`;
+                    let containerStatus = document.querySelector(`.${className}`);
+                    containerStatus.innerHTML = `<span class="badge bg-warning" > Từ chối</span>`
+                })
+                .catch((err) =>{
+                    console.log(err);
+                })
+        }
+
+
+
+
+
+    </script>
+</th:block>
+
+</body>
+
+</html>

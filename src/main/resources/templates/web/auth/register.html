@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+        <link rel="stylesheet" href="/web/assets/css/style-register.css">
+    </th:block>
+</head>
+<body>
+
+<section id="main-content" class="my-5">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-5">
+
+                <form id="form-register" class="form-register">
+                    <div class="title-description">
+                        <h3 class="title-form">Đăng ký</h3>
+                    </div>
+                    <div class="input-account">
+                        <span>Tên</span>
+                      <div class="form-group">
+                          <div class="input-box  m-0 p-0">
+                              <input id="inputName" name="nameUser" class="name form-control" type="text" placeholder="Tên">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="input-account">
+                        <span>Email</span>
+                        <div class="form-group">
+                            <div class="input-box  m-0 p-0">
+                                <input id="inputEmail" name="email" class="email form-control" type="email" placeholder="Email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-account">
+                        <span>Mật khẩu </span>
+                        <div class= "form-group">
+                            <div class="input-password m-0 p-0">
+                                <input  name="inputPassword" class="password form-control" type="password" placeholder="Mật khẩu">
+                                <button type="button" class="show-password"><i class="fa-regular fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-account">
+                        <span>Xác nhận mật khẩu</span>
+                        <div class= "form-group">
+                           <div class="input-password m-0 p-0">
+                               <input id="confirmPassword" name="confirmPassword" class="confirm-password form-control" type="password" placeholder="Xác nhận mật khẩu">
+                               <button type="button" class="show-password-confirm"><i class="fa-regular fa-eye"></i></button>
+                           </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-register">Đăng ký</button>
+                    <div class="customs-register">
+                        <div class="line"></div>
+                        <div class="title-login-other"><span>hoặc tiếp tục với</span></div>
+                        <div class="line"></div>
+                    </div>
+                    <a href="#" class="login-google"><span><i class="fa-brands fa-google-plus-g"></i> Google</span></a>
+                    <hr>
+                    <a href="/account/login" class="back-login"><span>Bạn đã có tài khoản? Đăng nhập</span></a>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+<th:block id="js">
+    <!-- Thêm thư viện jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Thêm thư viện Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Thêm thư viện Toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- Thêm thư viện jQuery Validation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <!-- JavaScript của bạn -->
+
+    <script src="/web/assets/js/register.js"></script>
+</th:block>

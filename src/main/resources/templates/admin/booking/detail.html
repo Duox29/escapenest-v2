@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title th:text="|Chi tiết đơn đặt phòng ${booking.id}|">AdminLTE 3 | Dashboard</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" th:href="@{/admin-assets/plugins/select2/css/select2.min.css}"/>
+        <link rel="stylesheet" th:href="@{/admin-assets/dist/css/style.css}">
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+              integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <!-- Font Awesome -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        <link rel="stylesheet" href="/admin-assets/plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="/admin-assets/dist/css/style-detail-booking.css">
+        <style>
+            .hotel-img{
+                object-fit: cover;
+                height: 250px;
+                width: 100%;
+                border-radius: 10px;
+            }
+            .name-hotel, .name-room{
+                margin: 10px 0 0 10px;
+            }
+            .address-hotel{
+                margin: 0 0 0 10px;
+                font-size: 15px;
+            }
+            .date-check-in , .date-check-out{
+                border-radius: 10px !important;
+                border: 1px #2e3439 solid !important;
+                padding: 5px 10px;
+            }
+            .info-customer{
+                display: flex;
+                flex-direction: column;
+                margin-top: 10px;
+            }
+            .info-customer input{
+                border-radius: 10px !important;
+                border: 1px #2e3439 solid !important;
+                padding: 5px 10px;
+                width: 300px;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/admin/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="/admin/orders">Danh sách đơn đặt phòng</a>
+                        </li>
+                        <li class="breadcrumb-item active" th:text="|Đơn đặt phòng ${booking.id}|">
+                            Đơn đặt phòng 1
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-6 d-flex">
+                    <a href="/admin/bookings" type="button" class="btn btn-default">
+                        <i class="fas fa-chevron-left"></i> Quay lại
+                    </a>
+                    <button th:classappend="${booking.statusBooking.value == 'Đã xác nhận'?'d-block':'d-none'}"
+                        name="edit-booking" type="button" class="btn btn-info btn-flat rounded" data-toggle="modal"
+                        data-target="#modal-edit-booking">
+                        <i class="fa-solid fa-pencil mr-2"></i>Chỉnh sửa
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="info-div">
+                                        <label>Thông tin người đặt</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                class="fas fa-user"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" readonly=""
+                                                           th:value="${booking.nameCustomer}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" readonly=""
+                                                           th:value="${booking.phoneCustomer}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                class="fas fa-envelope"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" readonly=""
+                                                           th:value="${booking.emailCustomer}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                class="far fa-calendar-alt"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" readonly=""
+                                                           th:value="${#temporals.format(booking.createAt, 'dd/MM/yyyy hh:mm')}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="info-div">
+                                <div class="d-flex align-items-center mb-2">
+                                    <label class="mb-0">Chi tiết đơn đặt phòng</label>
+
+                                    <button type="button" class="btn mx-1 my-0" data-toggle="modal">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="table-film">
+                                        <thead>
+                                        <tr>
+                                            <th>Tên homestay</th>
+                                            <th>Tên phòng</th>
+                                            <th>Ngày Check In</th>
+                                            <th>Ngày Check Out</th>
+                                            <th>Số lượng phòng</th>
+                                            <th>Số đêm lưu trú</th>
+                                            <th>Hình thức thanh toán</th>
+                                            <th>Trạng thái</th>
+                                            <th>Giá tiền</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <a th:href="@{/admin/hotels/detail/{id} (id=${booking.hotel.id})}"
+                                                   th:text="${booking.hotel.name}">Avengers: Endgame</a>
+                                            </td>
+                                            <td th:text="${booking.room.name}"></td>
+                                            <td th:text="${#temporals.format(booking.checkIn,'dd/MM/yyyy')}"></td>
+                                            <td th:text="${#temporals.format(booking.checkOut,'dd/MM/yyyy')}"></td>
+                                            <td th:text="${booking.numberRoom}"></td>
+                                            <td th:text="${booking.checkOut.dayOfMonth - booking.checkIn.dayOfMonth}"></td>
+                                            <td class="badge bg-info" th:text="${booking.paymentMethod.value}"></td>
+                                            <td>
+                                                <span class="badge bg-success"
+                                                      th:if="${booking.statusBooking.value.equalsIgnoreCase('Hoàn Tất')}">Hoàn Tất</span>
+                                                <span class="badge bg-warning"
+                                                       th:if="${booking.statusBooking.value.equalsIgnoreCase('Chờ xác nhận')}">Chờ xác nhận</span>
+                                                <span class="badge bg-danger"
+                                                      th:if="${booking.statusBooking.value.equalsIgnoreCase('Đã Hủy')}">Đã Hủy</span>
+                                                <span class="badge bg-success"
+                                                      th:if="${booking.statusBooking.value.equalsIgnoreCase('Đã xác nhận')}">Đã xác nhận</span>
+                                            </td>
+                                            <td th:text="|${#numbers.formatInteger(booking.price,3,'COMMA')}đ|"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+    <div class="modal fade" id="modal-edit-booking" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Chỉnh sửa booking</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="w-100 d-flex justify-content-start">
+                        <div class="w-50">
+                            <span class="w-50">Check In : </span>
+                        </div>
+                        <div class="w-50">
+                            <span class="w-50">Check Out : </span>
+                        </div>
+                    </div>
+                    <div class="w-100 d-flex justify-content-start">
+                        <div class="w-50">
+                            <input id="edit-checkIn" class="date-check-in" type="text" name="birthday"
+                                   value="23/10/2023"/>
+                        </div>
+
+                        <div class="w-50">
+                            <input id="edit-checkOut" class="date-check-out" type="text" name="birthday"
+                                   th:value="${#temporals.format(booking.checkOut,'dd/MM/yyyy')}" disabled/>
+                        </div>
+                    </div>
+
+                    <div class="info-customer">
+                        <span>Tên khách hàng :</span>
+                        <input class="name-edit" type="text" placeholder="Tên ">
+                    </div>
+                    <div class="info-customer">
+                        <span>Email :</span>
+                        <input class="email-edit" type="text" placeholder="email ">
+                    </div>
+                    <div class="info-customer">
+                        <span>Số điện thoại</span>
+                        <input class="phone-edit" type="text" placeholder="số điện thoại">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-success" id="btn-save-booking">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<th:block id="js">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+    <script th:inline="javascript">
+        let booking  = [[${booking}]];
+
+        let checkInJs = new Date(booking.checkIn + 'T00:00:00'); // Thêm 'T00:00:00' để chuyển đổi đúng định dạng ISO
+        let checkOutJS = new Date(booking.checkOut + 'T00:00:00'); // Thêm 'T00:00:00' để chuyển đổi đúng định dạng ISO
+
+
+
+        $(function () {
+            $('#edit-checkIn').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2023,
+                maxYear: 2033,
+                startDate:checkInJs,
+                locale: {
+                    format: 'DD/MM/YYYY' // Định dạng ngày
+                }
+            });
+
+        });
+
+
+
+
+        let checkInUpdate = booking.checkIn;
+        let checkOutUpdate = booking.checkOut;
+        $('#edit-checkOut').on('hide.daterangepicker', function(ev, picker) {
+            checkOutUpdate = (picker.startDate.format('YYYY-MM-DD'));
+            console.log("ngày nhận" + checkOutUpdate)
+        });
+        $('#edit-checkIn').on('hide.daterangepicker', function(ev, picker) {
+            checkInUpdate = (picker.startDate.format('YYYY-MM-DD'));
+            console.log("ngày nhận" + checkInUpdate)
+        });
+
+        let inputNameEl = document.querySelector('.name-edit');
+        let inputEmailEl = document.querySelector('.email-edit');
+        let inputPhoneEl = document.querySelector('.phone-edit');
+
+        let renderData = ()=>{
+            inputNameEl.value = booking.nameCustomer
+            inputEmailEl.value = booking.emailCustomer
+            inputPhoneEl.value = booking.phoneCustomer
+
+        }
+        const btnSaveBooking = document .getElementById('btn-save-booking');
+        btnSaveBooking.addEventListener('click' , ()=>{
+            const data = {
+                idHotel: booking.hotel.id,
+                idRoom: booking.room.id,
+                nameCustomer: inputNameEl.value,
+                emailCustomer: inputEmailEl.value,
+                phoneCustomer: inputPhoneEl.value,
+                guest: booking.guests,
+                numberRoom: booking.numberRoom,
+                checkIn: checkInUpdate,
+                checkOut: checkOutUpdate,
+                price : booking.price,
+                paymentMethod : booking.paymentMethod,
+            }
+            console.log(data)
+            console.log(booking.paymentMethod)
+            axios.put("/api/booking/update/"+booking.id, data)
+                .then((response) => {
+                    toastr.success("Cập nhật thành công")
+                    console.log("Thành công");
+                })
+                .catch((error) => {
+                    toastr.error(error.response.data.message)
+                    console.log(error)
+                })
+        })
+        renderData();
+    </script>
+    <script th:src="@{/admin-assets/plugins/select2/js/select2.full.min.js}"></script>
+    <script th:src="@{/admin-assets/dist/js/notify-admin.js}"></script>
+</th:block>
+
+</body>
+
+</html>

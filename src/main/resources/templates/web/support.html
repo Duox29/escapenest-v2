@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>EscapeNest.com</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/assets/css/style-support.css">
+    </th:block>
+</head>
+<body>
+
+<section id="main-content">
+    <div class="container">
+        <div class="row">
+            <h1 class="mt-5">Chào mừng bạn đến với trung tâm trợ giúp</h1>
+
+        </div>
+
+        <div class="row px-3">
+            <div class="col-3 ">
+                <button id="btn-all"> <i class="fa-solid fa-message" th:value="All"></i> Các câu hỏi thường gặp</button>
+
+                <div class="list-btn" >
+                    <button  class="btn-type-support w-100 p-3 "  th:each="type : ${supportTypes}" th:text="${type.value}" th:value="${type.value}"></button>
+                </div>
+
+            </div>
+            <div class="col-8">
+                <div id="wrapper" class="accordion mt-4">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pr my-5">
+        <div class="container">
+            <div class="row">
+                <div class="wrap-pr d-flex">
+                    <div class="col-4">
+                        <img class="w-100 image-pr" src="/web/assets/image/uudai.jpg" alt="">
+                    </div>
+                    <div class="col-6 px-3">
+                        <div class="title-pr mt-2 ">
+                            <h3>Hưởng nhiều quyền lợi hơn với EscapeNest</h3>
+                        </div>
+                        <div class="content-pr pt-2">
+                            <p>Với ưu đãi trên web của chúng tôi, bạn có thể tiết kiệm
+                                để đi được nhiều hơn và quản lý mọi thứ trong khi đang di chuyển</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+<th:block id="js">
+    <script th:inline="javascript" >
+        let supportList = [[${supportList}]]
+        // Lấy tất cả các nút và nội dung
+
+        let btnTypeSupport = document.querySelectorAll('.btn-type-support');
+        console.log(btnTypeSupport)
+        btnTypeSupport.forEach((btns) =>{
+           btns.addEventListener('click' , ()=>{
+               btnTypeSupport.forEach(function(btn) {
+                   btn.classList.remove('active-type');
+               });
+               btns.classList.add('active-type')
+               let  type = btns.value;
+               axios.get('/api/support/' + type)
+                   .then((res) => {
+                       let data = res.data;
+                       renderSupport(data);
+                   })
+                   .catch((err) => {
+                       console.log("Error");
+                   });
+
+
+
+
+           })
+        })
+
+        const btnAll = document.getElementById('btn-all');
+        btnAll.addEventListener('click',()=>{
+            renderSupport(supportList);
+        })
+
+      const wrapper = document.getElementById('wrapper')
+        const  renderSupport = (supportList) =>{
+            let html = '';
+            supportList.forEach((support)=> {
+                html += `
+
+                        <button class="btn-title-support d-flex align-items-center">
+                            <i class="fa-solid fa-angle-right"></i>
+                            <span class="ms-3">${support.title}</span>
+                        </button>
+                        <div class= "content-support ps-3 border " >
+                        <span>${support.description}</span>
+                                <p>${support.content}</p>
+                        </div>
+                    `
+            })
+            wrapper.innerHTML = html;
+            const btnTitleSupport = document.querySelectorAll('.btn-title-support');
+            const contents = document.querySelectorAll('.content-support')
+            btnTitleSupport.forEach((btn)=>{
+                btn.addEventListener('click',() =>{
+                    let content = btn.nextElementSibling;
+                    btnTitleSupport.forEach(function(btn) {
+                        btn.classList.remove('active-title');
+                    });
+                    contents.forEach((item)=>{
+                        if (item!==content){
+                            item.style.display = 'none';
+                        }
+                    })
+                    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+
+                    // Thêm hoặc xóa lớp active cho nút được click
+                    btn.classList.toggle('active-title');
+                })
+            });
+        }
+        window.addEventListener('load', () => {
+            renderSupport(supportList);
+        });
+
+
+    </script>
+</th:block>
+</body>
+</html>

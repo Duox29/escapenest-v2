@@ -1,0 +1,92 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+}
+.content-page{
+    margin: 20px 0px;
+    min-height: 500px;
+}
+.title-page{
+    margin: 10px 0px;
+}
+.filter-booking {
+    margin: 10px 0;
+}
+.filter-booking button{
+    background-color:#526D82;
+    padding: 5px 0;
+    display: flex;
+    justify-content: center;
+    border: none;
+    width: 100%;
+    border-radius: 10px;
+    color: #F5F5F5;
+}
+.filter-booking button:hover{
+    background-color: #27374D;
+    color: #F5F5F5;
+}
+.filter-booking button:focus{
+    background-color: #27374D;
+    color: #F5F5F5;
+}
+.sort-booking{
+    border: 1px solid #E7E7E7;
+    padding: 10px 15px;
+    border-radius: 30px;
+    background-color: #DDE6ED;
+}
+.sort-booking .select-type-sort select{
+   border: none;
+    background-color: #DDE6ED;}
+.sort-booking .select-type-sort select:focus{
+    border: none;
+}
+.search-by-id-booking {
+    border: 1px solid #E7E7E7;
+    padding: 10px 15px;
+    border-radius: 30px;
+    background-color: #DDE6ED;
+}
+.search-by-id-booking input {
+    border: none;
+    width: 300px;
+    background-color: #DDE6ED;
+    margin-left: 5px;
+
+}
+.search-by-id-booking input:focus {
+    outline: none;
+}
+
+
+
+
+.list-booking .card-booking  {
+    background-color: white;
+   display: flex;
+    width: 100%;
+    border: 1px solid #E7E7E7;
+    text-decoration: none; /* Bỏ gạch chân */
+    color: inherit; /* Sử dụng màu kế thừa từ phần tử cha */
+    padding: 10px 10px;
+    margin: 10px 0px;
+    border-radius:20px ;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.infor-booking{
+    height: 120px;
+    margin-left: 20px;
+}
+
+.list-booking .card-booking img {
+    object-fit: cover;
+    height: 120px;
+    width: 150px;
+    border-radius:20px ;
+
+}
+.current-filter{
+    background-color: #27374D !important;
+    color: #F5F5F5;
+}

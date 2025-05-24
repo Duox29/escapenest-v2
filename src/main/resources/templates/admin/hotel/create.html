@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Tạo homestay</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css" />
+        <link rel="stylesheet" href="/admin-assets/plugins/select2/css/select2.min.css" />
+        <link rel="stylesheet" href="/admin-assets/dist/css/style.css">
+        <style>
+            .phone-hotel{
+                border: 1px #747C85 solid;
+                border-radius: 3px;
+                padding: 6px 5px;
+            }
+            .email-hotel{
+                border: 1px #747C85 solid;
+                border-radius: 3px;
+                padding: 6px 5px;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/admin/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="/admin/hotels">Homestay</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Tạo homestay mới
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-6">
+                    <a href="/admin/hotels" class="btn btn-default">
+                        <i class="fas fa-chevron-left"></i> Quay lại
+                    </a>
+                    <button type="button" class="btn btn-info px-4" id="btn-create-hotel">
+                        Lưu
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="form-create-hotel">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tên homestay</label>
+                                            <input name="nameHotel" type="text" class="form-control" id="nameHotel"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Mô tả ngắn</label>
+                                            <textarea name="description" id="description" class="form-control" rows="6"></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Thành phố</label>
+                                            <div class="select2-purple">
+                                                <select name="city" class=" form-control" id="city">
+                                                    <option th:each="city : ${cityList}" th:value="${city.id}"
+                                                            th:text="${city.name}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label> Địa chỉ cụ thể</label>
+                                            <input name="address" type="text" class="form-control" id="addressHotel"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-5">Số điện thoại</label>
+                                            <input name="phoneHotel" id="phoneHotel" class="col-7 phone-hotel form-control" type="text" placeholder="Số điện thoại">
+                                        </div>
+                                        <div class="form-group">
+                                            <label  class="col-5">Email</label>
+                                            <input id="emailHotel" name="emailHotel" class="col-7 email-hotel form-control" type="text" placeholder="Email">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Trạng thái</label>
+                                            <select id="status" class="form-control">
+                                                <option value="0">
+                                                    Riêng tư
+                                                </option>
+                                                <option value="1">
+                                                    Công khai
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Loại hình cho thuê</label>
+                                            <select id="rentalType" class="form-control">
+                                                <option th:each="rentalType : ${rentalTypes}" th:value="${rentalType}"
+                                                        th:text="${rentalType.value}"></option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Xếp hạng sao</label>
+                                            <div class="">
+                                                <select name="city" class=" form-control" id="star">
+                                                    <option value="0">Khác</option>
+                                                    <option value="1">1 sao</option>
+                                                    <option value="2">2 sao</option>
+                                                    <option value="3">3 sao</option>
+                                                    <option value="4">4 sao</option>
+                                                    <option value="5">5 sao</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<th:block id="js">
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+    <script src="/admin-assets/plugins/select2/js/select2.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+            integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+             integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script >
+        $(".select2").select2();
+    </script>
+    <script th:inline="javascript">
+    </script>
+    <script th:src="@{/admin-assets/dist/js/notify-admin.js}"></script>
+    <script th:src="@{/admin-assets/dist/js/admin-hotel/hotel-create.js}"></script>
+</th:block>
+</body>
+
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/assets/css/style-profile-user.css">
+    </th:block>
+</head>
+<body>
+
+<section id="main-content" class="my-5">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-3">
+                <div class="">
+                    <h4 class=" m-0 w-100">
+                        Chào
+                        <th:block th:text="${#authentication.principal.user.name}"></th:block>
+                        !
+                    </h4>
+                </div>
+
+                <a class="profile-menu text-reset text-decoration-none" value="profile">
+                    <span> <i class="fa-solid fa-user"></i> Hồ sơ</span>
+                    <span> <i class="fa-solid fa-angle-right"></i></span>
+                </a>
+
+                <a class="profile-menu text-reset text-decoration-none" value="setting">
+                    <span> <i class="fa-solid fa-gear"></i> Thiết lập</span>
+                    <span> <i class="fa-solid fa-angle-right"></i></span>
+                </a>
+
+
+                <a  class="profile-menu text-reset text-decoration-none " th:onclick="logOut()">
+                    <span> <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</span>
+                    <span> <i class="fa-solid fa-angle-right"></i></span>
+                </a>
+
+
+            </div>
+            <div class="col-8">
+                <div class="my-setting-container">
+
+                    <div class="content-setting">
+                        <div class="information-user">
+                            <div class="row d-flex justify-content-between">
+                                <div class="col-9">
+                                    <h3 class="m-0">Thông tin cơ bản</h3>
+                                    <span>Cập nhật thông tin của bạn và tìm hiểu các thông tin này được sử dụng ra sao.</span>
+
+                                </div>
+
+                                <div class="col-2 d-flex flex-column">
+                                    <div class="avatar-upload-avatar">
+                                        <img id="image-user-information" class="" th:src="${#authentication.principal.user.getAvatar()}" alt="">
+                                        <button  type="button" class=" btn-upload-avatar" data-bs-toggle="modal" data-bs-target="#uploadImage">
+                                            Sửa
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <hr>
+                            <form id="input-info-user">
+                                <div class="edit-name-user">
+                                    <div class="row">
+                                        <div class="col-3 d-flex align-items-center">
+                                            <span class="w-100">Tên</span>
+                                        </div>
+                                        <div class="col-6 d-flex">
+                                            <div class="form-group edit-name-number">
+                                                <input th:value="${#authentication.principal.user.getName()}"
+                                                       class="input-name-user form-control"
+                                                       type="text" placeholder="Họ & tên" name="nameUser">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="edit-email-user">
+                                    <div class="row">
+                                        <div class="col-3 d-flex align-items-center">
+                                            <span class="w-100">Địa chỉ email</span>
+                                        </div>
+                                        <div class="col-6 d-flex">
+                                            <div class="edit-email">
+                                                <span sec:authentication="name" ></span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="edit-phone-number-user">
+                                    <div class="row">
+                                        <div class="col-3 d-flex align-items-center">
+                                            <span class="w-100">Số điện thoại</span>
+                                        </div>
+                                        <div class="col-6 d-flex">
+                                            <div class="form-group edit-phone-number">
+                                                <input th:value="${#authentication.principal.user.getPhoneNumber()}"
+                                                       class="input-phone form-control"
+                                                       type="tel" placeholder="Số điện thoại" name="phoneUser" inputmode="numeric">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="edit-address-user">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <span class="w-100">Địa chỉ</span>
+                                        </div>
+                                        <div class="col-6 d-flex">
+                                            <div class="form-group edit-address-number">
+                                                <input th:value="${#authentication.principal.user.getAddress()}"
+                                                       class="address form-control" type="text" placeholder="Nhập địa chỉ" name="addressUser" >
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="edit-birthday-user">
+                                    <div class="row">
+                                        <div class="col-3 d-flex align-items-center">
+                                            <span class="w-100">Ngày sinh</span>
+                                        </div>
+                                        <div class="col-6 d-flex">
+                                            <div class="input-birth-day">
+                                                <select name="select-day" id="select-day">
+                                                    <option class="day" th:each="day : ${#numbers.sequence(1,31)}" th:value="${day}"  th:text="${day}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="input-birth-day">
+                                                <select name="select-month" id="select-month">
+                                                    <option class="month" th:each="month : ${#numbers.sequence(1,12)}" th:value="${month}">
+                                                        Tháng <th:block th:text="${month}"></th:block>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="input-birth-day">
+                                                <select name="select-year" id="select-year">
+                                                    <option class="year" th:each="year : ${#numbers.sequence(1960,2023)}" th:value="${year}" th:text="${year}"></option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="edit-gender-user">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <span class="w-100">Giới tính</span>
+                                        </div>
+                                        <div class="col-6 d-flex">
+                                            <div class="edit-gender-number">
+                                                <select class="edit-gender-number" name="select-gender" id="">
+                                                    <th:block th:each="gender : ${listGender}">
+                                                        <option class="gender-option" th:text="${gender.value}"
+                                                                th:value="${gender}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+
+                            </form>
+
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button class="cancel">Hủy</button>
+                            <button class="btn-save" th:value="${#authentication.principal.user.getId()}">Lưu lại
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div class="setting-account content-setting d-none">
+                        <div class="row">
+                            <div class="col-10">
+                                <h3 class="m-0">Thiết lập</h3>
+                                <span>Thay đổi thiết lập bảo mật.</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-2">
+                                <span class="name w-100">Mật khẩu</span>
+                            </div>
+                            <div class="col-7">Để thay đổi mật khẩu, hãy nhập vào mật khẩu hiện tại của bạn.
+                            </div>
+                            <div class="col-3 d-flex justify-content-center">
+                                <button type="button" class="btn-change-password" data-bs-toggle="modal"
+                                        data-bs-target="#changePassword">Đổi mật khẩu
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+<!--                        <div class="row">-->
+<!--                            <div class="col-2">-->
+<!--                                <span class="name w-100">Xóa tài khoản</span>-->
+<!--                            </div>-->
+<!--                            <div class="col-7">Xóa tài khoản EscapeNest vĩnh viễn</div>-->
+<!--                            <div class="col-3 d-flex justify-content-center">-->
+<!--                                <button  data-bs-toggle="modal" data-bs-target="#modalConfirmDeleteUser" class="">Xóa tài khoản</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="uploadImage" tabindex="-1" aria-labelledby="modalUploadImage" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-flex justify-content-between py-4">
+                        <div class="avatar-modal">
+                            <img id="image-user-modal" class="" th:src="${#authentication.principal.user.getAvatar()}" alt="">
+                            <button th:classappend="${imageUser == null?'d-none':'d-block'}" class="btn text-danger" type="button" id="btn-delete-image-user">Xóa</button>
+                        </div>
+
+                        <div class="modal-body">
+                          <div class=" d-flex justify-content-between">
+                              <h1 class="modal-title fs-5" id="modalUploadImage">Chọn hình ảnh để tải lên </h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="showImageOld()"></button>
+                          </div>
+                            <div class="file-image">
+                                <label for="avatar" class="btn">Chọn tập tin</label>
+                                <input id="avatar" style="display:none;" type="file">
+
+                            </div>
+                           <div class="save-image d-flex justify-content-end mt-5">
+                               <button type="button" class="" id="saveImage" disabled>Lưu ảnh</button>
+                           </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Change Password -->
+        <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="modalChangePassword" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalChangePassword">Đổi mật khẩu</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                       <form id="form-change-password">
+
+
+
+                          <div class="form-group">
+                              <h6>Mật khẩu hiện tại</h6>
+                              <div class="input-password">
+                                  <input name="currentPassword" class="old-password form-control" type="password" placeholder=" Mật khẩu hiện tại">
+                                  <button type="button" class="show-password-current"><i class="fa-regular fa-eye"></i></button>
+                              </div>
+                          </div>
+                           <div class="form-group">
+                              <h6> Mật khẩu mới</h6>
+                              <div class="input-password">
+                                  <input id="newPassword"  name="newPassword" class="new-password form-control" type="password" placeholder="Mật khẩu mới">
+                                  <button type="button" class="show-password-new"><i class="fa-regular fa-eye"></i></button>
+                              </div>
+                          </div>
+                           <div class="form-group">
+                              <h6>Xác nhận mật khẩu mới</h6>
+                              <div class="input-password">
+                                  <input  name="confirmNewPassword" class="confirm-password form-control" type="password" placeholder="Nhập lại mật khẩu">
+                                  <button type="button" class="show-password-confirm"><i class="fa-regular fa-eye"></i></button>
+                              </div>
+                          </div>
+                       </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn-change "> Lưu lại thay đổi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+<!--        <div class="modal fade" id="modalConfirmDeleteUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--            <div class="modal-dialog modal-lg">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Tài khoản</h1>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    </div>-->
+<!--                   <div class="modal-body">-->
+<!--                       <span>Bạn có chắc rằng muốn xóa tài khoản? </span>-->
+<!--                       <span>Vui lòng chọn những lý do dưới đây để tiến hành yêu xầu xóa tài khoản</span>-->
+<!--                   </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <select class="w-100" id="reasonDeleteUser">-->
+<!--                            <option>Tôi có trải nghiệm đặt phòng không tốt</option>-->
+<!--                            <option>Chuyến đi của tôi đã kết thúc nên tôi không cần tài khoản này nữa</option>-->
+<!--                            <option>Tôi có tài khoản với một email khác</option>-->
+<!--                            <option>Tôi nhận được quá nhiều email và thông báo</option>-->
+<!--                            <option>Khác</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn text-primary " data-bs-dismiss="modal">Đóng</button>-->
+<!--                        <button style="background-color: #526D82; color: white" type="button" class="btn " th:onclick="'deleteUser('+${#authentication.principal.getUser().getId()}+')'">Gửi xác nhận</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+    </div>
+</section>
+
+
+<th:block id="js">
+    <script th:inline="javascript">
+        let inforUser = [[${user}]];
+        const imageUser = [[${imageUser}]];
+        const showPassword = document.querySelector('.show-password-current');
+        const showPasswordNew = document.querySelector('.show-password-new');
+        const showPasswordConfirm = document.querySelector('.show-password-confirm');
+        const inputPasswordNew = document.querySelector(".new-password");
+        const inputPassword = document.querySelector(".old-password");
+        const inputConfirmPassword = document.querySelector(".confirm-password");
+        // <Hiển thị mật khẩu>
+        showPassword.addEventListener('click',()=>{
+            if (inputPassword.getAttribute('type') === 'password') {
+                inputPassword.setAttribute('type', 'text');
+                showPassword.innerHTML=`<i class="fa-regular fa-eye-slash"></i>`
+
+            } else {
+                inputPassword.setAttribute('type', 'password');
+                showPassword.innerHTML=`<i  class="fa-regular fa-eye"></i>`
+            }
+        })
+        showPasswordConfirm.addEventListener('click',()=>{
+            if (inputConfirmPassword.getAttribute('type') === 'password') {
+                inputConfirmPassword.setAttribute('type', 'text');
+                showPasswordConfirm.innerHTML=`<i class="fa-regular fa-eye-slash"></i>`
+
+            } else {
+                inputConfirmPassword.setAttribute('type', 'password');
+                showPasswordConfirm.innerHTML=`<i  class="fa-regular fa-eye"></i>`
+            }
+        })
+        showPasswordNew.addEventListener('click',()=>{
+            if (inputPasswordNew.getAttribute('type') === 'password') {
+                inputPasswordNew.setAttribute('type', 'text');
+                showPasswordNew.innerHTML=`<i class="fa-regular fa-eye-slash"></i>`
+
+            } else {
+                inputPasswordNew.setAttribute('type', 'password');
+                showPasswordNew.innerHTML=`<i  class="fa-regular fa-eye"></i>`
+            }
+        })
+
+        $('#input-info-user').validate({
+            rules: {
+                nameUser: {
+                    required: true,
+                },
+                addressUser: {
+                    required: true,
+                },
+                phoneUser: {
+                    required: true,
+                    pattern: /^(0\d{9}|(\+84|84)[1-9]\d{7})$/,
+                },
+
+            },
+            messages: {
+                nameUser: {
+                    required: "Tên của bạn không được để trống.",
+                }, phoneUser: {
+                    required: "Số điện thoại không được để trống.",
+                    pattern : "Số điện thoại không hợp lệ ",
+
+                }, addressUser: {
+                    required: "Địa chỉ không được để trống.",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#form-change-password').validate({
+            rules: {
+                currentPassword: {
+                    required: true,
+                    minlength: 6,
+                }
+                ,newPassword: {
+                    required: true,
+                    minlength: 6,
+                    pattern: /^(?=.*[A-Za-z])(?=.*\d).{6,}$/, // ít nhất một chữ cái và một số, ít nhất 6 ký tự
+                }
+                ,confirmNewPassword: {
+                    required: true,
+                    minlength: 6,
+                    equalTo: "#newPassword", // ít nhất một chữ cái và một số, ít nhất 6 ký tự
+                },
+            },
+            messages: {
+                currentPassword: {
+                    required: "Mật khẩu không được để trống",
+                }
+                ,newPassword: {
+                    required: "Mật khẩu mới không được để trống",
+                    minlength: "Mật khẩu phải có ít nhất 6 ký tự.",
+                    pattern: "Mật khẩu mới phải chứa ít nhất một chữ cái và một số.",
+                }
+                ,confirmNewPassword: {
+                    required:"Vui lòng nhập lại mật khẩu mới của bạn",
+                    minlength: "Mật khẩu mới phải có ít nhất 6 ký tự.",
+                    equalTo: "Mật khẩu không trùng khớp",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        const deleteUser = (id) =>{
+            const reason = document.getElementById('reasonDeleteUser');
+            const data = reason.value
+            axios.post("/api/auth/delete/user/"+id , data,{
+                headers: {
+                    'Content-Type': 'text/plain'  // Đảm bảo đúng Content-Type nếu API yêu cầu
+                }
+                 })
+                .then((response) =>{
+                    toastr.success("Yêu cầu của bạn đã được gửi")
+                })
+                .catch((err) =>{
+                    toastr.success(err)
+                })
+        }
+        //
+        const rentalRegistration = document.querySelector('.registration');
+        rentalRegistration.addEventListener('click', ()=>{
+            if (!$('#input-info-user').valid()) return;
+            window.location.href = '/create-hotel'
+        } )
+
+
+    </script>
+    <script src="/web/assets/js/profile.js"></script>
+</th:block>
+
+
+</body>
+</html>

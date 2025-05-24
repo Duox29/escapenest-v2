@@ -1,0 +1,507 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+}
+/* style thanh tìm kiếm */
+.search{
+    background-color: #27374D;
+}
+
+.inputdata-search{
+    border: none;
+    border-radius: 10px;
+    background-color: #E9ECEF;
+}
+
+
+.inputdata-search input{
+    border-radius: 10px;
+    background-color: #E9ECEF;
+    border: none;
+
+}
+.inputdata-search #date-range{
+    border: none;
+    border-radius: 10px;
+    background-color: #E9ECEF;
+
+}
+.inputdata-search input:focus{
+    border: none;
+    background-color: #E9ECEF;
+    box-shadow: none;
+    outline: none;
+
+}
+
+
+.btn-search{
+    border-radius: 10px;
+    border: none;
+    background-color: #E9ECEF;}
+
+
+
+.flatpickr-months{
+    z-index:9999;
+}
+
+/* style danh sách khách sạn */
+.sort-by{
+    border-radius: 10px;
+    background-color: #DDE6ED;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+
+.type-sort{
+    border: none;
+    background-color: #DDE6ED;
+    width: 100px; /* Độ rộng của phần tử */
+    height: 20px; /* Độ cao của phần tử */
+
+
+
+}
+.type-sort:hover{
+    background-color: #9DB2BF;
+    color: #F5F5F5;
+}
+.select-sort{
+    background-color: #435681;
+    color: var(--extra-light);
+}
+.style-sortType{
+    background-color: #435681;
+    color: var(--extra-light);
+}
+/* .type-sort:focus{
+  background-color: #435681;
+  color: var(--extra-light);
+
+} */
+
+/* style tìm kiếm side bar */
+
+.map{
+
+    border-radius: 10px;
+    position: relative;
+}
+
+.link-map .fa-location-dot {
+    position: absolute;
+    font-size: 30px;
+    top: 50%;
+    left: 50%;
+
+}
+
+.image-city{
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    max-height: 200px;
+    width: 100%;
+
+}
+.search-by-name-hotel h3 {
+    color:var(--text-dark) ;
+    font-size: 22px;
+}
+.input-data{
+    border: 1px solid var(--text-dark);
+    padding: 10px ;
+    border-radius: 20px;
+}
+.input-data .input-name-hotel{
+
+    width: 90%;
+    border: none;
+
+}
+.input-data .input-name-hotel:focus{
+    width: 90%;
+    outline: none;
+
+}
+
+/* price slider */
+.price-slider {
+
+    margin-top: 50px;
+}
+header h2 {
+    font-size: 24px;
+
+}
+.price-input {
+    width: 100%;
+    display: flex;
+    margin: 0px 0 35px;
+}
+.price-input .field {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #999;
+    border-radius: 10px;
+    padding: 2px;
+}
+.field span {
+    font-size: 12px;
+    outline: none;
+}
+.field input {
+    border: none;
+    width: 100%;
+    height: 90%;
+    outline: none;
+    font-size: 15px;
+
+    border-radius: 10px;
+
+
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+.price-input .seperator {
+    width: 80px;
+    display: flex;
+    font-size: 19px;
+    align-items: center;
+    justify-content: center;
+}
+.slider {
+    height: 5px;
+    position: relative;
+    background: #ddd;
+    border-radius: 5px;
+}
+.slider .progress {
+    height: 100%;
+    left: 0;
+    right:0;
+    position: absolute;
+    border-radius: 5px;
+    background: #27374D ;
+}
+.range-input {
+    position: relative;
+}
+.range-input input {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    top: -5px;
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #27374D;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+input[type="range"]::-moz-range-thumb {
+    height: 17px;
+    width: 17px;
+    border: none;
+    border-radius: 50%;
+    background:#27374D;
+    pointer-events: auto;
+    -moz-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+
+
+}
+.button-guest-number {
+    padding: 7px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #E9ECEF;
+
+    border-radius: 10px;
+
+}
+.button-guest-number label{
+    font-size: 10px;
+}
+.button-guest-number .minus-guest{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+    cursor: pointer;
+
+}
+.button-guest-number .plus-guest{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+    cursor: pointer;
+}
+.button-guest-number .num-guest{
+
+    pointer-events: none;
+}
+
+.button-room-number {
+    padding: 7px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #E9ECEF;
+
+    border-radius: 10px;
+}
+.button-room-number label{
+    font-size: 12px;
+}
+.button-room-number .minus-room{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+    cursor: pointer;
+}
+.button-room-number .plus-room{
+    border: 1px solid var(--text-light);
+    border-radius: 50%;
+
+}
+.button-room-number .num-room{
+    pointer-events: none;
+}
+
+
+/* style check box sort by rental type */
+
+.custom-checkbox{
+
+    /* Tạo kiểu dáng cho ô checkbox */
+    width: 17px;
+    height: 17px;
+    border: 1px solid #DFE0E4;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* Thiết lập kiểu dáng của ô checkbox khi được chọn */
+.custom-checkbox:checked {
+    background-color: #5392F9;
+    border-color: #3170E7;
+
+}
+
+/* Ẩn hộp kiểm mặc định */
+.custom-checkbox + label {
+    cursor: pointer;
+}
+
+/* Kích hoạt kiểu dáng của ô checkbox khi nhãn được nhấp vào */
+.custom-checkbox:checked + label {
+    font-family: Helvetica, sans-serif;
+    color: #3170E7 ;
+}
+
+.btn-amenityHotel , .btn-amenityRoom{
+    border: none;
+    color: #0d6efd;
+    background-color: #F5F5F5 !important;
+}
+
+
+/* styel sort by star */
+
+.number-star{
+    padding: 5px ;
+    margin:5px ;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-dark);
+}
+.number-room{
+    padding: 5px ;
+    margin:5px ;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-dark);
+}
+
+
+
+/* style card hotel */
+
+.card-hotel{
+    position: relative;
+
+}
+
+
+.course {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    display: flex;
+    max-width: 100%;
+    overflow: hidden;
+}
+.container-hotel{
+    position: relative;
+}
+
+
+.course-preview {
+    color: #fff;
+    height: 200px;
+    min-width: 300px;
+    max-width: 305px;
+    object-fit: cover;
+}
+
+
+.course-info {
+    padding-left: 20px;
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+
+}
+
+.total-review {
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    padding: 5px 0px;
+
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    letter-spacing: 1px;
+}
+.age-rating{
+    background-color: #227950;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 16px;
+    padding: 5px;
+    bottom: 10px;
+    left: 20px;
+    letter-spacing: 1px;
+}
+
+.infor-rating-hotel{
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    line-height: 20px;
+    margin-left: 5px;
+}
+.quantity{
+    font-size: 13px;
+}
+
+.price {
+    font-size: 16px;
+
+    position: absolute;
+    bottom: 10px;
+    right: 30px;
+    letter-spacing: 1px;
+    max-width: 300px;
+
+}
+
+
+.original-price{
+    margin: 2px;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+.discount{
+    letter-spacing: 0.5px; /* Điều chỉnh khoảng cách giữa các ký tự */
+    border-radius: 5px;
+    background-color:#E03126;
+
+    font-size: 15px;
+    color: var(--extra-light);
+}
+.description-price {
+
+    color: var(--text-light);
+    font-size: 12px;
+
+}
+.current-price{
+    color: #E03126;
+}
+
+/* style nút yêu thích */
+.btn-favourite{
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    background-color: white;
+    position: absolute; /* Đặt phần tử ở vị trí tuyệt đối */
+    top: 30px; /* Đặt phần tử ở trên cùng */
+    left: 250px; /* Đặt phần tử ở bên phải */
+    color:var(--text-light); /* Màu chữ của phần tử */
+    border-radius: 50%;
+    z-index: 99;
+
+}
+
+.btn-favourite i{
+    font-size: 20px;
+}
+.btn-favourite i:hover{
+    color: coral;
+}
+
+.style-heart i{
+    color: #F16767;
+}
+
+
+/* quảng cao */
+.pr{
+    margin-top: 100px;
+}
+
+.wrap-pr .image-pr{
+    object-fit: cover;
+    height: 250px;
+    border-radius: 15px;
+}
+
+.btn-pr {
+    padding: 5px 5px;
+    border-radius: 10px;
+    background-color: var(--text-light);
+    border: none;
+
+    width: 100px;
+
+}
+.btn-pr a{
+
+    text-decoration: none;
+    color: white;
+
+}
+
+/*style phân trang*/

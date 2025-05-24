@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Doanh thu</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" href="/admin-assets/plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="/admin-assets/dist/css/adminlte.min.css">
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Montserrat);
+            body {
+                font-family: montserrat, arial, verdana;
+                margin-bottom: 100px;
+            }
+
+            .box-revenue-total {
+                border: 2px #17a2b8 solid;
+            }
+
+            .box-revenue-week {
+                border: 2px #28a745 solid;
+            }
+
+            .box-revenue-today {
+                border: 2px #605ca8 solid;
+            }
+
+            .box-revenue-month {
+                border: 2px #e83e8c solid;
+            }
+            .filter-revenue select {
+                border: 2px #e83e8c solid;
+                border-radius: 10px;
+                width: 100px;
+                margin-right: 10px;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper" id="main-content">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header pt-4">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Thống kê doanh thu </h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item active">doanh thu</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content ">
+            <div class="container-fluid ">
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box box-revenue-total card">
+                            <div class="inner">
+                                <h4 th:text="${revenueYear == 0 ? 0 : #numbers.formatInteger(revenueYear, 3, 'COMMA')} + ' VNĐ'"></h4>
+                                <p style="font-size: 15px"> Tổng doanh thu năm</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box box-revenue-today card">
+                            <div class="inner">
+                                <h4 th:text="${revenueDay == 0 ? 0 : #numbers.formatInteger(revenueDay, 3, 'COMMA')} + ' VNĐ'"></h4>
+                                <p style="font-size: 15px"> Doanh thu hôm nay</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box box-revenue-month card">
+                            <div class="inner">
+                                <h4 th:text="${revenueMonth == 0 ? 0 : #numbers.formatInteger(revenueMonth, 3, 'COMMA')} + ' VNĐ'"></h4>
+                                <p style="font-size: 15px">Doanh thu tháng hiện tại</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="d-flex justify-content-between mt-3 mb-1">
+                            <label>Doanh thu theo từng ngày</label>
+                            <div class="d-flex">
+                                <div class="filter-revenue mx-2">
+                                    <label>Tháng :</label>
+                                    <select name="select-month" id="select-month-revenue-day">
+                                        <option class="month" th:each="month : ${#numbers.sequence(1,12)}" th:value="${month}"
+                                                th:selected="${ month == #dates.createNow().getMonth()+1}">
+                                            <th:block th:text="${month}"></th:block>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="filter-revenue mx-2">
+                                    <label>Năm :</label>
+                                    <select name="select-year" id="select-year-revenue-day">
+                                        <option class="year"
+                                                th:each="year : ${#numbers.sequence(2022,1900 + #dates.createNow().getYear())}"
+                                                th:value="${year}" th:text="${year}"
+                                                th:selected="${ year == 1900 + #dates.createNow().getYear()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-hover">
+                            <div class="card">
+                                <canvas id="chart-revenue-day"></canvas>
+                            </div>
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex justify-content-between mt-3 mb-1">
+                            <label>Doanh thu theo từng tháng</label>
+                            <div class="d-flex">
+                                <div class="filter-revenue mx-2">
+                                    <label>Năm :</label>
+                                    <select name="select-year" id="select-year-revenue-month">
+                                        <option class="year"
+                                                th:each="year : ${#numbers.sequence(2022,1900 + #dates.createNow().getYear())}"
+                                                th:value="${year}" th:text="${year}"
+                                                th:selected="${ year == 1900 + #dates.createNow().getYear()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <table class="table table-bordered table-hover">
+                            <div class="card">
+                                <canvas id="chart-revenue-month"></canvas>
+                            </div>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<th:block id="js">
+    <script src="/admin-assets/plugins/chart.js/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script th:inline="javascript">
+
+
+        /// đồ thị doanh thu từng ngày của tháng được chọn
+
+        const renderRevenueDay = (listRevenue,month,year)=>{
+            const existingChart = Chart.getChart("chart-revenue-day");
+            if (existingChart) {
+                existingChart.destroy();
+            }
+            const maxTotalBooking = Math.max(...listRevenue.map(item => item.totalPrice));
+            let maxChart = 10000000;
+            if (maxTotalBooking>maxChart){
+                maxChart += maxTotalBooking;
+            }
+            new Chart(document.getElementById('chart-revenue-day'), {
+                type: 'line',
+                data: {
+                    labels: listRevenue.map(item => `${item.day}-${item.month}`),
+                    datasets: [{
+                        label: 'Doanh thu',
+                        data: listRevenue.map(item => item.totalPrice),
+                        backgroundColor: [
+
+                            'rgb(255, 99, 132)',
+
+
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+
+                        ],
+                        pointStyle: 'rectRounded',
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: maxChart
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: (ctx) => 'Doanh thu tháng '+ month + ' năm ' +year,
+                        },
+                    }
+                }
+            });
+        }
+
+
+
+        /// đồ thị doanh thu từng tháng của năm được chọn
+        const renderRevenueMonth = (listRevenue,year) =>{
+            const existingChart = Chart.getChart("chart-revenue-month");
+            if (existingChart) {
+                existingChart.destroy();
+            }
+            const maxTotalBooking = Math.max(...listRevenue.map(item => item.totalPrice));
+            let maxChart = 10000000;
+            if (maxTotalBooking>maxChart){
+                maxChart += maxTotalBooking;
+            }
+            new Chart(
+                document.getElementById('chart-revenue-month'),
+                {
+                    type: 'bar',
+                    data: {
+                        labels: listRevenue.map(item => `Tháng ${item.month}/${item.year}`),
+                        datasets: [
+                            {
+                                label: 'Doanh thu ',
+                                data: listRevenue.map(item => item.totalPrice),
+                                backgroundColor: [
+                                    'rgba(153, 102, 255, 0.2)',
+                                ],
+                                borderColor: [
+                                    'rgb(153, 102, 255)',
+                                ],
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: maxChart // Thêm một giá trị cố định cho giá trị cao nhất
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: (ctx) => 'Doanh thu năm '+year,
+                            },
+                        }
+                    }
+                }
+            );
+        }
+
+        const selectMonthRevenueDay = document.getElementById('select-month-revenue-day');
+        const selectYearRevenueDay = document.getElementById('select-year-revenue-day');
+        const selectYearRevenueMonth = document.getElementById('select-year-revenue-month');
+
+
+        // lắng nghe sự kiện khi lấy doanh thu các ngày trong tháng thay đổi
+        selectYearRevenueDay.addEventListener('change',()=>{
+            var   monthInt = parseInt(selectMonthRevenueDay.value)
+            var  yearINt = parseInt(selectYearRevenueDay.value)
+            getRevenueDay(monthInt,yearINt);
+
+        })
+        selectMonthRevenueDay.addEventListener('change',()=>{
+            var   monthInt = parseInt(selectMonthRevenueDay.value)
+            var  yearINt = parseInt(selectYearRevenueDay.value)
+            getRevenueDay(monthInt,yearINt);
+
+        })
+        selectYearRevenueMonth.addEventListener('change',()=>{
+            var  yearINt = parseInt(selectYearRevenueMonth.value)
+            getRevenueMonth(yearINt);
+
+        })
+
+
+        // hàm gọi api để lấy doanh thu các tháng của năm đã được chọn
+        const getRevenueMonth = (year)=>{
+            axios.get("/api/admin/revenue/month/"+year)
+                .then((res)=>{
+                    console.log(res);
+                    renderRevenueMonth(res.data,year)
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+        }
+
+
+        // hàm gọi api để lấy doanh thu các ngày của tháng và năm đã được chọn
+        const getRevenueDay = (month,year)=>{
+           axios.get("/api/admin/revenue/day/"+year+"/"+month)
+               .then((res)=>{
+                   console.log(res);
+                   renderRevenueDay(res.data,month,year)
+               })
+               .catch((err)=>{
+                   console.log(err);
+               })
+       }
+       const currentDate = new Date()
+       getRevenueDay(currentDate.getMonth()+1,currentDate.getFullYear())
+       getRevenueMonth(currentDate.getFullYear())
+    </script>
+</th:block>
+</body>
+</html>

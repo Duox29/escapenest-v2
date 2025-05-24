@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{::#css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Tất cả thành phố</title>
+    <th:block id="css">
+        <style>
+            .preview-thumbnail{
+                width: 80%;
+                object-fit: cover;
+                height: 250px;
+                border-radius: 10px;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body>
+<!-- BODY -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/admin/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Danh sách thành phố
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <!-- Group buttons bên trái -->
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" id="btn-open-modal">
+                            <i class="fas fa-plus"></i> Tạo thành phố mới
+                        </button>
+                        <a href="/admin/city" type="button" class="btn btn-info">
+                            <i class="fas fa-redo"></i> Refresh
+                        </a>
+                    </div>
+
+                    <!-- Ô tìm kiếm bên phải -->
+                    <div class="d-flex" style="width: 300px">
+                        <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Tìm kiếm theo tên hoặc quốc gia..."
+                                id="search-input"
+                                oninput="handleSearch(this.value)"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered table-hover table-city">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên Thành phố</th>
+                                    <th>Quốc gia</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+
+                            <div class="d-flex justify-content-center mt-3" id="pagination">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal country -->
+            <div class="modal fade" id="modal-city" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="modal-city-title" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fs-5" id="modal-city-title">Tạo thành phố</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form-city">
+                                <div class="form-group ">
+                                    <label for="input-name">Tên thành phố</label>
+                                    <input type="text" class="form-control" id="input-name" placeholder="tên thành phố"
+                                           name="name">
+                                </div>
+                                <div class="form-group ">
+                                    <label for="input-country">Quốc Gia</label>
+                                    <input type="text" class="form-control" id="input-country" placeholder="tên quốc gia"
+                                           name="nameCountry">
+                                </div>
+                                <div  class="form-group">
+                                    <div class="container-thumbnail d-none">
+                                        <img class="preview-thumbnail" src="" alt="">
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary" id="btn-handle-city">Xác nhận</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<th:block id="js">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+            integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+            integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+            integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script th:inline="javascript">
+        let cityList = [[${cityList}]];
+        console.log(cityList);
+
+        $('#form-city').validate({
+            rules: {
+                name: {
+                    required: true
+                }
+                ,nameCountry: {
+                    required: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "Tên thành phố không được để trống"
+                },
+                nameCountry: {
+                    required: "Tên quốc gia không được để trống"
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        //pagination
+        const renderPagination = (cityList) => {
+            $('#pagination').pagination({
+                dataSource: cityList,
+                callback: function (data, pagination) {
+                    renderCityList(data);
+                }
+            })
+        }
+
+        let idCityUpdate = null;
+        // // Render country
+        const tableContent = document.querySelector("table tbody")
+        const renderCityList = (listCity) => {
+            tableContent.innerHTML = "";
+            let html = "";
+            listCity.forEach((city,) => {
+                html += `
+                     <tr>
+                                    <td>${city.id}</td>
+                                    <td>${city.name}</td>
+                                    <td >${city.country}</td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm" onclick="openModalUpdate(${city.id})">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteCity(${city.id})">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                         <label for="|image-city-${city.id}|"
+                                               class="btn btn-primary btn-sm mb-0">Chọn ảnh</label>
+                                                <input type="file" class="d-none" id="|image-city-${city.id}|"
+                                                   onchange="uploadImageCity(event,${city.id})">
+                                    </td>
+                                </tr>
+                `
+            })
+            tableContent.innerHTML = html;
+        }
+
+        // Open modal create
+        const inputNameEl = document.getElementById("input-name");
+        const inputCountryEl = document.getElementById("input-country");
+        const btnOpenModal = document.getElementById("btn-open-modal");
+        const thumbnailCity = document.querySelector(".preview-thumbnail");
+        btnOpenModal.addEventListener("click", () => {
+            thumbnailCity.src ='';
+            $('#modal-city').modal('show');
+
+            // set tiêu đề
+            const modalTitle = document.getElementById("modal-city-title")
+            modalTitle.innerText = "Tạo thành phố"
+            document.querySelector(".container-thumbnail").classList.add("d-none");
+        })
+
+        $('#modal-city').on('hidden.bs.modal', function (event) {
+            inputNameEl.value = "";
+            idCityUpdate = null;
+        })
+
+        // tạo một thành phố
+        const createCity = () => {
+            thumbnailCity.src = '';
+            if (!$('#form-city').valid()) {
+                return;
+            }
+
+            const name = inputNameEl.value;
+            const country = inputCountryEl.value;
+            const data ={
+                nameCity :name,
+                country :country,
+            }
+            if (!name || name.trim() === "") {
+                toastr.error("Tên thành phố không được để trống")
+                return
+            }if (!country || name.trim() === "") {
+                toastr.error("Tên quốc gia không được để trống")
+                return
+            }
+
+            axios.post("/api/admin/city", data)
+                .then(res => {
+                    cityList.unshift(res.data)
+                    renderPagination(cityList)
+                    inputNameEl.value = "";
+
+                    $('#modal-city').modal('hide');
+                    toastr.success("Tạo thành công")
+                })
+                .catch(e => {
+                    toastr.error(e.response.data.message);
+                    console.log(e);
+                })
+        }
+
+        // Update country using axios and vanilla js
+        const updateCity = () => {
+            if (!$('#form-city').valid()) {
+                return;
+            }
+
+            const name = inputNameEl.value;
+            const country = inputCountryEl.value;
+            const data ={
+                nameCity :name,
+                country :country,
+            }
+            if (!name || name.trim() === "") {
+                toastr.error("Tên thành phố không được để trống")
+                return
+            }if (!country || name.trim() === "") {
+                toastr.error("Tên quốc gia không được để trống")
+                return
+            }
+            console.log(idCityUpdate)
+
+            axios.put(`/api/admin/city/${idCityUpdate}`, data)
+                .then(res => {
+                    const city = cityList.find(city => city.id === idCityUpdate)
+                    city.name = res.data.name;
+
+                    renderPagination(cityList)
+                    inputNameEl.value = "";
+
+                    $('#modal-city').modal('hide');
+                    toastr.success("Cập nhật thành công");
+                    idCityUpdate = null;
+                })
+                .catch(e => {
+                    toastr.error(e.response.data.message);
+                    console.log(e);
+                })
+        }
+
+        // Handle open modal update
+        const openModalUpdate = id => {
+            const city = cityList.find(city => city.id === id)
+            inputNameEl.value = city.name;
+            inputCountryEl.value = city.country;
+            idCityUpdate = city.id;
+            thumbnailCity.src = city.imageCity;
+
+            $('#modal-city').modal('show');
+            // set title modal
+            const modalTitle = document.getElementById("modal-city-title")
+            modalTitle.innerText = "Cập nhật thành phố"
+            document.querySelector(".container-thumbnail").classList.remove("d-none");
+
+        }
+
+        // Handle country
+        const btnHandleCity = document.getElementById("btn-handle-city")
+        btnHandleCity.addEventListener("click", () => {
+            console.log(idCityUpdate)
+            if (idCityUpdate) {
+                updateCity()
+            } else {
+                createCity()
+            }
+        })
+
+        // Xóa
+        const deleteCity = (id) => {
+            const isDelete = confirm("Bạn có chắc chắn muốn xóa quốc gia này không?")
+            if (isDelete) {
+                axios.delete(`/api/admin/city/${id}`)
+                    .then(() => {
+                        cityList = cityList.filter(city => city.id !== id)
+                        renderPagination(cityList)
+                        toastr.success("Xóa thành công")
+                    })
+                    .catch(e => {
+                        toastr.error(e.response.data.message);
+                        console.log(e);
+                    })
+            }
+        }
+        const uploadImageCity  = (e,idCity)=>{
+            e.preventDefault()
+            const file = e.target.files[0];
+            console.log(file);
+
+            // tạo một form data với key là file và giá trị trong input
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // gửi một đường dãn tới url dưới , khi upload thành cong sẽ hiện ảnh vưừa được upload
+            axios.post(`/api/admin/city/upload-image/${idCity}`, formData)
+                .then((res) => {
+                    var city = cityList.find(city => city.id === res.data.id)
+                    city.imageCity = res.data.imageCity;
+                    toastr.success('Cập nhật ảnh thành công');
+                })
+                .catch((err)=> {
+                    console.log(err)
+                    toastr.error(err.response.data.messages);
+                });
+        }
+        function handleSearch(keyword) {
+            const searchTerm = keyword.toLowerCase().trim();
+            const filteredCities = cityList.filter(city =>
+                city.name.toLowerCase().includes(searchTerm) ||
+                city.country.toLowerCase().includes(searchTerm)
+            );
+            renderPagination(filteredCities);
+        }
+
+        renderPagination(cityList);
+    </script>
+
+</th:block>
+</body>
+
+</html>

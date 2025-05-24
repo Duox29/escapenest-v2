@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{admin/layout/layout.html :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+	<title>Bài viết hỗ trợ người dùng</title>
+
+	<th:block id="css">
+		<link rel="stylesheet" href="/admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"/>
+		<link rel="stylesheet" href="/admin-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"/>
+		<link rel="stylesheet" href="/admin-assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"/>
+	</th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper" id="main-content">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-12">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item">
+								<a href="/admin/dashboard">Dashboard</a>
+							</li>
+							<li class="breadcrumb-item active">
+								Danh sách bài viết
+							</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row py-2">
+					<div class="col-12">
+						<button type="button" class="btn btn-primary btn-create-support">
+							<i class="fas fa-plus"></i> Viết bài
+						</button>
+						<button type="button" class="btn btn-info btn-refresh">
+							<i class="fas fa-redo"></i> Refresh
+						</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+								<table class="table table-bordered table-hover" id="blog-table">
+									<thead>
+									<tr>
+										<th>Tiêu đề</th>
+										<th>Danh mục</th>
+										<th>Trạng thái</th>
+										<th>Ngày tạo</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr th:each="support : ${supportList}">
+										<td>
+											<a th:href="@{/admin/support/{id}/detail (id=${support.id})}"><th:block th:text="${support.title}"></th:block></a>
+										</td>
+										<td th:text="${support.supportType.value}"></td>
+										<td>
+                                        <span class="badge" th:text="${support.status ? 'Công khai' : 'Chờ duyệt'}"
+											  th:classappend="${support.status ? 'bg-success' : 'bg-secondary'}">Công khai</span>
+										</td>
+										<td th:text="${#temporals.format(support.createdAt , 'dd/MM/yyy')}"></td>
+									</tr>
+									</tbody>
+								</table>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+<th:block id="js">
+	<script src="/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="/admin-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="/admin-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="/admin-assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="/admin-assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+	<script>
+		$('#blog-table').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"order": [],
+			"language": {
+				"emptyTable": "Không có bài nào viết .", // Thông báo tùy chỉnh khi không có dữ liệu
+				"paginate": {
+					"next": '<i class="fas fa-chevron-right"></i>',
+					"previous": '<i class="fas fa-chevron-left"></i>'
+				}
+			},
+			"drawCallback": function () {
+				var api = this.api();
+				if (api.page.info().pages <= 1) {
+					$('.paginate_button').hide(); // Ẩn tất cả các nút phân trang
+				} else {
+					$('.paginate_button').show(); // Hiện lại tất cả các nút phân trang
+				}
+			}
+		});
+		const  btnCreate = document.querySelector('.btn-create-support');
+		btnCreate.addEventListener('click' , ()=>{
+			window.location.href = "/admin/support/create"
+		})
+		const  btnRefresh = document.querySelector('.btn-refresh');
+		btnRefresh.addEventListener('click' , ()=>{
+			window.location.reload()
+		})
+	</script>
+</th:block>
+</body>
+
+</html>

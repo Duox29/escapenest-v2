@@ -1,0 +1,83 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+    font-family: montserrat, arial, verdana;
+}
+.page-cancel-booking{
+    min-height: 600px;
+}
+.back-page {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.title-page {
+    margin-top: 15px;
+    margin-left: 20px;
+}
+
+.reason-cancel {
+    margin-top: 25px;
+    margin-left: 20px;
+}
+
+.confirm-back {
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.confirm {
+    border: none;
+    background-color: #27374D;
+    color: white;
+    padding: 10px 10px;
+    border-radius: 10px;
+}
+
+.back {
+    border: none;
+    background-color: white;
+    color: #0d6efd;
+    padding: 10px 10px;
+    border-radius: 10px;
+}
+.back:hover {
+    border: none;
+    background-color: #F0F6FD;
+    color: #0d6efd;
+    padding: 10px 10px;
+    border-radius: 10px;
+}
+
+
+
+.select-reason {
+    width: 100%;
+    padding: 10px 10px;
+    border-radius: 5px;
+}
+
+.hotel{
+    padding: 15px 10px;
+    border: 1px solid #E7E7E7 !important;
+    border-radius: 6px;
+}
+.policy-hotel{
+    padding: 15px 10px;
+    border: 1px solid #E7E7E7 !important;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+.image-hotel{
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+}
+.infor-hotel{
+    display: flex;
+   flex-direction: column;
+}
+
+.price {
+    text-align: end;
+}

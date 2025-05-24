@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>EscapeNest.com</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/assets/css/style-list-booking.css">
+    </th:block>
+
+</head>
+<body>
+
+<div id="main-content">
+    <section class="content-page">
+        <div class="container">
+            <div class="row">
+               <div class="title-page d-flex justify-content-center">
+                   <div class="col-10">
+                       <h2 class="p-0 m-0"> <i class="fa-regular fa-calendar-check"></i> Lịch sử đơn đặt homestay của bạn </h2>
+                   </div>
+               </div>
+            </div>
+            <div class="row">
+                <div class="wrap d-flex justify-content-center">
+                    <div class="col-9">
+                        <div class="filter-booking d-flex">
+                            <div class="col-3 px-2">
+                                <button class="btn-filter-booking current-filter" type-filter = "ALL" th:onclick="getAllBooking()">Tất cả</button>
+                            </div>
+                            <div class="col-3 px-2">
+                                <button  class="btn-filter-booking" type-filter = "CONFIRMED" th:onclick="getBookingConfirm()">Đã xác nhận</button>
+                            </div>
+                            <div class="col-3 px-2">
+                                <button  class="btn-filter-booking" type-filter = "COMPLETE" th:onclick="getBookingComplete()">Hoàn tất</button>
+                            </div>
+                            <div class="col-3 px-2">
+                                <button  class="btn-filter-booking" type-filter = "CANCELLED" th:onclick="getAllBookingCancel()">Đã hủy</button>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class=" d-flex justify-content-between">
+                            <div  class="sort-booking"  >
+                                <label class="select-type-sort">
+                                    <i class="fa-solid fa-arrow-up-wide-short"></i>
+                                    Sắp xếp theo :
+                                    <select name="select-sort" id="select-sort">
+                                        <option class="option-sort" value="DEFAULT"> Mặc định</option>
+                                        <option class="option-sort" value="DATE-CHECKIN" > Ngày nhận phòng </option>
+                                        <option class="option-sort" value="DATE-CHECKOUT" > Ngày trả phòng </option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="search-by-id-booking">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input class="search-id-booking" type="text" placeholder="Tìm kiếm theo mã đặt phòng" th:oninput="searchBooking()">
+                            </div>
+
+                        </div>
+
+                        <div class="list-booking">
+                            <h1 th:if="${page.getContent().size()==0}">
+                                Chưa có đơn nào được đặt
+                            </h1>
+                            <ul class="list-unstyled " >
+                                <li class="w-100" th:each="booking : ${page.getContent()}">
+                                    <a class="card-booking" th:href="@{/chi-tiet-booking/{id} (id=${booking.id})}">
+<!--                                        <img th:src="${booking.getHotel().getCity().getImageCity()}" alt="">-->
+                                        <div class="infor-booking">
+                                            <h5 th:text="${booking.getHotel().getName()}"></h5>
+                                            <h6 th:text="${booking.getHotel().getCity().getName()}"></h6>
+                                            <span><th:block th:text="${booking.getCheckIn().getDayOfMonth()}"></th:block>
+                                                tháng
+                                                <th:block th:text="${booking.getCheckIn().getMonth().getValue()}"></th:block>
+                                                - <th:block th:text="${booking.getCheckOut().getDayOfMonth()}"></th:block>
+                                                tháng
+                                                <th:block th:text="${booking.getCheckOut().getMonth().getValue()}"></th:block></span>
+                                            <p class="p-0 m-0" th:classappend="${booking.statusBooking.value.equalsIgnoreCase('Đã hủy') ?'text-danger':'text-succses'}" th:text="${booking.statusBooking.value}"></p>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="d-flex justify-content-center " th:classappend="${page.getTotalPages() > 1?'d-block':'d-none'}">
+                                <ul class="pagination">
+                                    <li class="page-item" th:classappend="${currentPage}==1?'disabled':''">
+                                        <a class="page-link" th:href="@{/danh-sach-dat-phong/{id} (id = ${#authentication.principal.getUser().getId()},pageNumber=${currentPage}-1)}"><i class="fa-solid fa-angle-left"></i></a>
+                                    </li>
+                                    <li class="page-item" th:each=" index : ${#numbers.sequence(1,page.getTotalPages())}"
+                                        th:classappend="${currentPage==index}?'active':''">
+                                        <a class="page-link" th:href="@{/danh-sach-dat-phong/{id} (id = ${#authentication.principal.getUser().getId()},pageNumber=${index})}" th:text="${index}"></a>
+                                    </li>
+                                    <li class="page-item"  th:classappend="${currentPage == page.getTotalPages()}?'disabled':''">
+                                        <a class="page-link"  th:href="@{/danh-sach-dat-phong/{id} (id = ${#authentication.principal.getUser().getId()},pageNumber=${currentPage+1})}"><i class="fa-solid fa-angle-right"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+</div>
+
+<th:block id="js">
+
+    <script th:inline="javascript">
+        const bookingList = [[${page.getContent}]];
+        console.log(bookingList)
+    </script>
+    <script src="/web/assets/js/booking.js"></script>
+
+</th:block>
+
+</body>
+</html>

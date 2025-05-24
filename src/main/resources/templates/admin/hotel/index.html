@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách các homestay </title>
+    <th:block id="css">
+    </th:block>
+</head>
+<body>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="main-content">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/admin/dashboard">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Danh sách homestay
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row py-2">
+                    <div class="col-12">
+                        <a href="/admin/hotels" type="button" class="btn btn-info">
+                            <i class="fas fa-redo"></i> Refresh
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body text-align-center">
+                                <table class="table table-bordered table-hover" id="hotel-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Tên homestay</th>
+                                        <th>Loại hình cho thuê</th>
+                                        <th>Email</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="hotel : ${hotelPage.getContent()}">
+                                        <td>
+                                            <a th:href="@{/admin/hotels/{id}/detail (id=${hotel.id})}"
+                                               th:text="${hotel.name}"></a>
+                                        </td>
+                                        <td th:text="${hotel.rentalType.value}"></td>
+                                        <td th:text="${hotel.email}"></td>
+                                        <td th:text="${hotel.hotline}"></td>
+                                        <td th:text="${hotel.address}"></td>
+                                        <td>
+                                        <span class="badge" th:text="${hotel.status ? 'Công khai' : 'Riêng tư'}"
+                                              th:classappend="${hotel.status ? 'bg-success' : 'bg-secondary'}">Công khai</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                               <div class="d-flex justify-content-center">
+                                   <ul class="pagination mt-3" id="pagination">
+                                   </ul>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<th:block id="js">
+    <script src="/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script>
+        const totalPages = [[${hotelPage.getTotalPages()}]]; // tổng số trang
+        const currentPage = [[${currentPage}]]; // trang hiện tại
+        const maxPagesToShow = 6; // số trang tối đa muốn hiển thị
+
+        function getPages(current, total, max) {
+            let pages = [];
+            let start = Math.max(1, current - Math.floor(max / 2));
+            let end = Math.min(total, start + max - 1);
+
+            if (end - start < max - 1) {
+                start = Math.max(1, end - max + 1);
+            }
+
+            if (start > 1) {
+                pages.push(1);
+                if (start > 2) {
+                    pages.push('...');
+                }
+            }
+
+            for (let i = start; i <= end; i++) {
+                pages.push(i);
+            }
+
+            if (end < total) {
+                if (end < total - 1) {
+                    pages.push('...');
+                }
+                pages.push(total);
+            }
+
+            return pages;
+        }
+        function renderPagination(pages, current) {
+            const paginationElement = document.getElementById('pagination');
+            paginationElement.innerHTML = ''; // Xóa nội dung cũ
+
+            pages.forEach(page => {
+                const li = document.createElement('li');
+                li.classList.add('page-item');
+                const a = document.createElement('a');
+                a.classList.add('page-link');
+                if (page === '...') {
+                    a.textContent = '...';
+                    li.classList.add('disabled'); // Vô hiệu hóa nút
+                } else {
+                    a.textContent = page;
+                    a.href = `http://localhost:9000/admin/hotels?page=${page}`;
+                    if (page === current) {
+                        li.classList.add('active'); // Đánh dấu trang hiện tại
+                    }
+                }
+                li.appendChild(a);
+                paginationElement.appendChild(li);
+            });
+        }
+        const pagesToShow = getPages(currentPage, totalPages, maxPagesToShow);
+        renderPagination(pagesToShow,currentPage)
+    </script>
+
+</th:block>
+</body>
+
+</body>
+</html>

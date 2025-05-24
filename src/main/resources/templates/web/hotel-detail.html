@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+
+
+    <title>EscapeNest.com | Chi tiết homestay </title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/lib/OwlCarousel/dist/assets/owl.carousel.min.css">
+        <link rel="stylesheet" href="/web/lib/OwlCarousel/dist/assets/owl.theme.default.min.css">
+        <link rel="stylesheet" href="/web/assets/css/style-hotel-detail.css">
+    </th:block>
+</head>
+<body>
+
+
+<div id="main-content">
+    <section class="search p-3">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-4 ">
+                    <form action="" id="form-search">
+                        <div class="form-group">
+                            <div class="inputdata-search d-flex align-items-center pt-1 pb-2 px-2">
+                                <i style="font-size: 20px;" class="fa-solid fa-location-dot"></i>
+                                <input name="nameCity" id="input-name-city" type="text" class=" w-100 p-1 form-control"
+                                       placeholder="Tìm địa điểm, homestay, v.v.">
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-3">
+                    <div class="inputdata-search d-flex align-items-center p-1">
+                        <i style="font-size: 15px;" class="fa-solid fa-calendar-days"></i>
+                        <input id="date-range" class="w-100 form-control w-100 ps-3" type="text" name="daterange"
+                               placeholder="Ngập ngày đến và đi của bạn"/>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="button-guest-number border shadow d-flex justify-content-between align-items-center">
+                        <i style="font-size: 20px;" class="fa-solid fa-user-check"></i>
+                        <label class="">Số người</label>
+                        <div class="w-50 d-flex justify-content-between">
+                            <button id="minus-guest" class="minus-guest"><i class="fa-solid fa-minus"></i></button>
+                            <span id="num-guest" class="num-guest">01</span>
+                            <button id="plus-guest" class="plus-guest"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-2">
+                    <div class="button-room-number border shadow d-flex justify-content-between align-items-center">
+                        <i style="font-size: 15px;" class="fa-solid fa-house"></i>
+                        <label class="label">Số phòng</label>
+                        <div class="w-50 d-flex justify-content-between ">
+                            <button id=".minus-room" class="minus-room"><i class="fa-solid fa-minus"></i></button>
+                            <span id=".num-room" class="num-room">01</span>
+                            <button id=".plus-room" class="plus-room"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="button-room-number border shadow d-flex justify-content-between align-items-center">
+                        <button type="submit" id="btn-search" class="btn-search w-100">
+                            <i class="fa-solid fa-magnifying-glass" style="color: black; font-size: 20px;"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="list-image-hotel">
+        <div class="container">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <div class="back p-3  d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fa-solid fa-angle-left text-primary"></i>
+                            <a class="text-decoration-none ms-1"
+                               th:href="@{/danh-sach-khach-san(nameCity = ${nameCity},checkIn=${checkIn},checkOut=${checkOut},numberGuest=${numberGuest},numberRoom=${numberRoom})}">Xem
+                                tất cả nơi lưu trú</a>
+                        </div>
+                        <!--                        <button class="btn-favourite " type-button="" th:value="${hotel.id}">-->
+                        <!--                            <i style="font-size: 20px;color: #0a58ca" class="fa-regular fa-heart"></i>-->
+                        <!--                        </button>-->
+
+                    </div>
+                    <button class="image-grid w-100 " type="button" data-bs-toggle="modal"
+                            data-bs-target="#modal-image">
+                       <th:block th:if="${imageHotelList.size()>=5}">
+                           <img class="image-grid-col-2 image-grid-row-2" th:src="${hotel.poster}"
+                                alt="architecture">
+                           <img th:src="${imageHotelList.get(1).url}"
+                                alt="architecture">
+                           <img th:src="${imageHotelList.get(2).url}"
+                                alt="architecture">
+                           <img th:src="${imageHotelList.get(3).url}"
+                                alt="architecture">
+                           <img th:src="${imageHotelList.get(4).url}"
+                                alt="architecture">
+                       </th:block>
+                        <th:block th:if="${imageHotelList.size()<=4}">
+                            <img class="image-grid-col-2 image-grid-row-2" th:src="${hotel.poster}"
+                                 alt="architecture">
+                        </th:block>
+                    </button>
+                    <div class="nav-bar d-flex p-1">
+
+                        <div class="nav-item">
+                            <button class="nav-link">
+                                Tổng quan
+                            </button>
+                        </div>
+                        <div class="nav-item">
+                            <button class="nav-link">
+                                Tiện ích, dịch vụ
+                            </button>
+                        </div>
+                        <div class="nav-item">
+                            <button class="nav-link">Phòng
+                            </button>
+                        </div>
+                        <div class="nav-item">
+                            <button class="nav-link">
+                                Chính sách
+                            </button>
+                        </div>
+                        <div class="nav-item">
+                            <button class="nav-link">
+                                Đánh giá
+                            </button>
+                        </div>
+                    </div>
+                    <hr class="p-0 m-0">
+
+
+                </div>
+                <div class="col-1"></div>
+
+                <!-- Modal -->
+                <div class="modal fade " id="modal-image" tabindex="-1" aria-labelledby="imageHotelModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog  modal-xl ">
+                        <div class="modal-content  container-modal-image">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imageHotelModalLabel" th:text="${hotel.name}"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+
+                            </div>
+                            <!--                            <div class="list-filter-image">-->
+                            <!--                                <button class = "btn-filter-type-image"  type="button">Tất cả ảnh-->
+                            <!--                                </button>-->
+                            <!--                                <button class = "btn-filter-type-image" type="button" th:each="type : ${imageTypes}" ><th:block th:text="${type.value}"></th:block>(<th:block th:text="${imageTypes.size()}"></th:block>)</button>-->
+                            <!--                            </div>-->
+                            <div class="modal-body modal-image">
+                                <th:block th:each="image : ${imageHotelList}">
+
+                                    <img th:src="${image.url}"
+                                         alt="architecture">
+                                </th:block>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="table-infor-hotel">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <div class="d-flex justify-content-between">
+                        <div class="content-hotel px-3">
+                            <h1 th:text="${hotel.name}"></h1>
+                            <ul class="start-hotel d-flex list-unstyled">
+                                <li class="item-star me-1" th:each="star : ${#numbers.sequence(0,hotel.star)}">
+                                    <i class="fa-solid fa-star"></i>
+                                </li>
+                            </ul>
+                            <p class="description-hotel" th:text="${hotel.description}"></p>
+                            <h5>Tiện nghi và dịch vụ nổi bật</h5>
+                            <div class="amenity-grid ">
+                                <div class="grid-item" th:each="amenity : ${amenityHotels}">
+                                    <th:block th:text="${amenity.name}"></th:block>
+                                </div>
+                            </div>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#modal-amenity-hotel"
+                                    class="btn-show-amenity-hotel p-0 btn text-primary d-flex align-items-center justify-content-start text-decoration-none"
+                                    href="">
+                                Xem tất cả tiện ích nơi lưu trú
+                                <i class="fa-solid fa-angle-right ms-2 mt-1"></i>
+                            </button>
+
+                        </div>
+
+
+                        <div class="map-review-hotel">
+
+                            <div class="map border">
+                                <a class="link-map w-100 text-reset text-decoration-none" href="">
+                                    <img class="image-map" th:src="${hotel.city.imageCity}" alt="">
+                                    <div class="d-flex justify-content-center my-2 align-items-center">
+
+                                        <span class="p-1 address-hotel   ">
+                                            <i style="font-size: 20px;" class="fa-solid fa-location-dot"></i>
+                                            <th:block th:text="${hotel.getAddress()}"></th:block>
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="ratting-hotel d-flex ">
+                                <div class="age-rating">9,6</div>
+                                <div class="infor-rating-hotel">
+                                    <h6 class="p-0 m-0" th:text="${hotel.getRatingText()}">Tuyệt vời</h6>
+                                    <span class="quantity"><th:block th:text="${reviewList.size()}"></th:block> bài đánh giá</span>
+                                </div>
+                            </div>
+                            <!--                            <div class="deatail-review">-->
+                            <!--                                <a class="d-flex align-items-center justify-content-start text-decoration-none" href="">-->
+                            <!--                                    <span>Xem tất cả đánh giá</span>-->
+                            <!--                                    <i class="fa-solid fa-angle-right ms-2 mt-1"></i>-->
+                            <!--                                </a>-->
+                            <!--                            </div>-->
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div class="col-1"></div>
+                <div class="modal fade " id="modal-amenity-hotel" tabindex="-1" aria-labelledby="amenityHotelModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog  modal-lg ">
+                        <div class="modal-content  container-modal-amenity">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="amenityHotelModalLabel">Tiện nghi và dịch vụ nổi bật </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <h6 class="w-100 title-amenity-hotel">Tiện ích</h6>
+                            <div class="modal-body show-amenity-hotel">
+                                <div class="amenity-detail col-12" th:each="amenity : ${hotel.amenityHotelList}">
+                                    <span class="icon-amenity">
+                                       <i class="fa-solid fa-check"></i>
+                                    </span>
+                                    <span class="name-amenity" th:text="${amenity.name}"></span>
+                                </div>
+                            </div>
+
+
+                            <h6 class="title-service">Dịch Vụ</h6>
+                            <div class="modal-body show-service-hotel">
+                                <span th:text="${hotel.policyHotel.service}"></span></div>
+
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="room-list mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <h3>Chọn phòng</h3>
+                    <div class="wrapper-room mr-1">
+                        <!--                <span class="select-number-bed">-->
+                        <!--                    <button class="btn-select">Tất cả phòng</button>-->
+                        <!--                    <button class="btn-select"> 1 giường</button>-->
+                        <!--                    <button class="btn-select"> 2 gường</button>-->
+                        <!--                </span>-->
+                        <div class="row mb-4">
+                            <div class="col-4 p-3 " th:each="room : ${roomList}">
+                                <div class="card-room w-100 h-100">
+                                    <button th:onclick="'renderImageRoomDetail('+${room.id}+')'" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#modal-room-detail"
+                                            class="w-100 m-0 p-0 btn-show-detail-room">
+                                        <img class="w-100" th:src="${room.thumbnailRoom}"
+                                             alt="">
+                                    </button>
+                                    <button th:onclick="'renderImageRoomDetail('+${room.id}+')'"
+                                            class="btn-show-image-room" data-bs-toggle="modal"
+                                            data-bs-target="#modal-room-detail">
+                                        <i class="fa-regular fa-images"></i>
+                                        <span th:text="${roomList.size()}"></span>
+                                    </button>
+
+                                    <div class="px-2 pt-1 pb-2">
+                                        <h5 class="p-1">
+                                            <th:block th:text="${room.name}"></th:block>
+                                        </h5>
+                                        <div class="room-index">
+                                            <div class="icon-room-index">
+                                                <i class="fa-regular fa-square"></i>
+                                            </div>
+                                            <span class="mx-2"><th:block
+                                                    th:text="${room.area}"></th:block> mét vuông</span>
+                                        </div>
+                                        <div class="room-index ">
+                                            <div class="icon-room-index">
+                                                <i class="fa-solid fa-users"></i>
+                                            </div>
+                                            <span class="mx-2"><th:block
+                                                    th:text="${room.capacity}"></th:block> khách</span>
+                                        </div>
+                                        <div class="room-index">
+                                            <div class="icon-room-index">
+                                                <i class="fa-solid fa-bed"></i>
+                                            </div>
+                                            <!--                                            <span class="mx-2" th:each="bed : ${room.bedList}"> <th:block-->
+                                            <!--                                                    th:text="${roomList.size()}"></th:block> Giường cỡ <th:block-->
+                                            <!--                                                    th:text="${bed.getBedSize()}"></th:block></span>-->
+                                            <span class="mx-2"><th:block th:text="${room.bedType}"></th:block> </span>
+                                        </div>
+                                        <button class="btn text-primary d-flex align-items-center justify-content-start text-decoration-none mt-1 p-0"
+                                                data-bs-toggle="modal" data-bs-target="#modal-room-detail"
+                                                th:onclick="'renderImageRoomDetail('+${room.id}+')'">
+                                            Xem tất cả
+                                            <i class="fa-solid fa-angle-right ms-2 mt-1"></i>
+                                        </button>
+                                        <hr>
+                                        <!--                                        <button class="discount" type="button">-->
+                                        <!--                                            Giảm 25%-->
+                                        <!--                                        </button>-->
+                                        <div class="d-flex align-items-center ">
+                                            <h5 class="price-room p-0 m-0"
+                                                th:text="|${#numbers.formatInteger(room.priceAverage,3,'COMMA')} đ|"></h5>
+                                            <!--                                            <span class="mx-2 original-price"><del>1.530.00 đ</del></span>-->
+                                        </div>
+                                        <p class="description-price w-50">Giá mỗi đêm đã gồm thuế và phí</p>
+                                        <!--                                        <a class="d-flex align-items-center justify-content-start text-decoration-none "-->
+                                        <!--                                           href="">-->
+                                        <!--                                            <span>Chi tiết giá</span>-->
+                                        <!--                                            <i class="fa-solid fa-angle-right ms-2 mt-1"></i>-->
+                                        <!--                                        </a>-->
+                                        <a th:href="@{/thanh-toan/{id_hotel}/{id_room}(id_hotel=${hotel.id},id_room=${room.id}, checkIn=${checkIn}, checkOut=${checkOut},numberGuest=${numberGuest},numberRoom=${numberRoom},price = ${room.priceAverage})}"
+                                           class="text-reset text-decoration-none btn-booking"
+                                           sec:authorize=" isAuthenticated()">
+                                            <span>Đặt <span th:if="${numberRoom>1}"><th:block
+                                                    th:text="${numberRoom}"></th:block> phòng</span></span>
+                                        </a>
+                                        <a th:href="@{/account/login}" sec:authorize="not isAuthenticated()"
+                                           class="text-reset text-decoration-none btn-booking">
+                                            <span>Vui lòng đăng nhập</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="modal fade " id="modal-room-detail" tabindex="-1"
+                                     aria-labelledby="roomDetail" aria-hidden="true">
+                                    <div class="modal-dialog  modal-lg  container-modal-room-detail">
+                                        <div class="modal-content  container-modal-room-detail">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="roomDetail">Thông tin phòng</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body  modal-room-detail">
+                                                <div class="owl-carousel owl-theme slider-main">
+
+                                                </div>
+                                                <div class="information-room">
+                                                    <h6 class="name-hotel">Phòng đôi Superior</h6>
+                                                    <div class="wrap-icon">
+                                                        <span class="icon-amenity">
+                                                            <i class="fa-regular fa-square"></i>
+                                                        </span>
+                                                        <span class="name-amenity-modal">  mét vuông</span>
+                                                    </div>
+                                                    <div class="wrap-icon">
+                                                        <span class="icon-amenity">
+                                                           <i class="fa-solid fa-users"></i>
+                                                        </span>
+                                                        <span class="name-amenity-modal"> <th:block
+                                                                th:text="${room.capacity}"></th:block> khách</span>
+                                                    </div>
+                                                    <div class="wrap-icon">
+                                                        <span class="icon-amenity">
+                                                            <i class="fa-solid fa-bed"></i>
+                                                        </span>
+                                                        <!--                                                        <span class="name-amenity-modal" th:text="${room.area}"></span>-->
+                                                        <span class="name-amenity-modal"> 2 giường cỡ KING</span>
+                                                    </div>
+                                                </div>
+
+                                                <h6 class="title-amenity-room">Tiện nghi phòng</h6>
+                                                <div class="amenity-room-detail row">
+
+                                                </div>
+
+                                                <div class="wrap-modal">
+                                                    <h6 class="title-price-modal">Tùy chọn phòng </h6>
+                                                    <div class="price-room-modal d-flex">
+                                                        <h5 class="price-room-new">2.123.566 </h5>
+                                                        <span class="original-price-modal"><del>2.565.444</del></span>
+                                                    </div>
+                                                    <span>Giá mỗi đêm đã bao gồm thuế và phí</span>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="modal-footer">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <hr>
+
+
+                    </div>
+
+
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="mb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <h4>Chính sách của Homestay</h4>
+                    <div class="policy-hotel p-3 w-100">
+                        <div class="pb-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="d-flex justify-content-end">Nhận Phòng</h5>
+                                </div>
+                                <div class="col-8">
+                                     <span>
+                                         <th:block th:text="${hotel.policyHotel.startCheckIn}"></th:block>
+                                         -
+                                         <th:block th:text="${hotel.policyHotel.endCheckOut}"></th:block>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="d-flex justify-content-end">Trả Phòng</h5>
+                                </div>
+                                <div class="col-8">
+                                     <span>
+                                         <th:block th:text="${hotel.policyHotel.startCheckOut}"></th:block>
+                                         -
+                                         <th:block th:text="${hotel.policyHotel.endCheckOut}"></th:block>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="d-flex justify-content-end">Dịch vụ của homestay</h5>
+                                </div>
+                                <div class="col-8">
+                      <span>
+                        <th:block th:text="${hotel.policyHotel.service}"></th:block>
+                      </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="d-flex justify-content-end">Hướng dẫn nhận phòng</h5>
+                                </div>
+                                <div class="col-8">
+                      <span>
+                        Nơi lưu trú này có dịch vụ đưa đón từ sân bay (có thể áp dụng phụ phí). Khách phải liên hệ với nơi lưu trú để thông báo chi tiết thời gian đến trước khi khởi hành bằng thông tin liên hệ trong xác nhận đặt phòng
+                        Nhân viên tiếp tân sẽ đón tiếp khách tại nơi lưu trú
+                        Khách có thể chọn tự dọn dẹp nơi lưu trú trước khi trả phòng hoặc thanh toán phí vệ sinh bổ sung khi trả phòng (khoản tiền thực tế có thể khác nhau)
+                      </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="d-flex justify-content-end">Vật nuôi</h5>
+                                </div>
+                                <div class="col-8">
+                      <span>
+                       <th:block th:text="${hotel.policyHotel.animal}"></th:block>
+                      </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pb-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="d-flex justify-content-end">Độ tuổi</h5>
+                                </div>
+                                <div class="col-8">
+                      <span>
+                       <th:block th:text="${hotel.policyHotel.ageLimit}"></th:block>
+                      </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pb-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="d-flex justify-content-end">Chính sách hủy</h5>
+                                </div>
+                                <div class="col-8">
+                      <span>
+                        <th:block th:text="${hotel.policyHotel.cancelPolicy}"></th:block>
+                      </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pb-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <h5 class="d-flex justify-content-end">Lưu ý khác</h5>
+                                </div>
+                                <div class="col-8">
+                      <span>
+                       <th:block th:text="${hotel.policyHotel.note}"></th:block>
+                      </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div>
+
+
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="infor-review-detail">
+        <div class="container">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <h4>Đánh giá homestay
+                        <th:block th:text="${hotel.name}"></th:block>
+                        từ khách hàng
+                    </h4>
+                    <div class="wrapper-review">
+
+                        <div class="px-5">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="ratting-hotel-detail py-5 d-flex ">
+                                        <div th:if="${hotel.rating>0}" class="age-rating-detail">
+                                            <th:block th:text="${hotel.rating}"></th:block>
+                                        </div>
+                                        <div class="infor-rating-hotel-detail">
+                                            <h4  class="p-0 m-0">
+                                                <th:block th:text="${hotel.getRatingText()}"></th:block>
+                                            </h4>
+                                            <span class="quantity-detail"><th:block
+                                                    th:text="${reviewList.size()}"></th:block> bài đánh giá</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 container-review-detail">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- The Modal -->
+                    <div class="modal" id="myModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Cập nhật đánh giá</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="rating d-flex justify-content-center">
+                                    <span class="star px-1" data-rating="1">
+                                              <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star px-1" data-rating="2">
+                                              <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star px-1" data-rating="3">
+                                              <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star px-1" data-rating="4">
+                                              <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star px-1" data-rating="5">
+                                              <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    <span class="star px-1" data-rating="6">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="7">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="8">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="9">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    <span class="star px-1" data-rating="10">
+                                              <i class="fa-solid fa-star"></i>
+                                        </span>
+                                </div>
+                                <div class="d-flex justify-content-center" id="rating-value"></div>
+
+
+                                <!-- Modal body -->
+                                <form id="form-review">
+                                    <div class="modal-body">
+                                        <div class="form-group">
+
+                                            <textarea id="reviewContent"
+                                                      class="w-100 form-control rounded overflow-hidden  my-2"
+                                                      type="text" placeholder="Viết bình luận . . . ."
+                                                      name="content">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn text-reset" data-bs-dismiss="modal">Đóng
+                                        </button>
+                                        <button id="submitReview" type="button" class="btn">Cập nhật
+                                        </button>
+
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <div class="pr my-5">
+        <div class="container">
+            <div class="row">
+                <div class="wrap-pr d-flex">
+                    <div class="col-4">
+                        <img class="w-100 image-pr" src="https://static.vinwonders.com/2023/01/cac-loai-hinh-du-lich-4.jpg" alt="">
+                    </div>
+                    <div class="col-6 px-3">
+                        <div class="title-pr mt-2 ">
+                            <h3>Hưởng nhiều quyền lợi hơn với app EscapeNest</h3>
+                        </div>
+                        <div class="content-pr pt-2">
+                            <p>Với ưu đãi trên web của chúng tôi, bạn có thể tiết kiệm
+                                để
+                                đi được nhiều hơn và quản lý mọi thứ trong khi đang di chuyển</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block id="js">
+    <script th:inline="javascript">
+        let hotel = [[${hotel}]]
+        let nameCity = [[${nameCity}]];
+        let checkIn = [[${checkIn}]];
+        let checkOut = [[${checkOut}]];
+        let valueNumberGuest = [[${numberGuest}]];
+        let valueNumberRoom = [[${numberRoom}]];
+        let reviewLists = [[${reviewList}]];
+        let roomList = [[${roomList}]];
+        let infoUser = [[${user}]]
+    </script>
+    <script src="/web/assets/js/hotel-detail.js"></script>
+    <script src="/web/lib/OwlCarousel/dist/owl.carousel.min.js"></script>
+
+</th:block>
+
+
+</body>
+</html>

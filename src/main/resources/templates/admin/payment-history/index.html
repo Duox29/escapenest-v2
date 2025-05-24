@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout.html :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>Lịch sử giao dịch</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"/>
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="main-content">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/admin/dashboard">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Lịch sử giao dịch
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row py-2">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-info btn-refresh">
+                            <i class="fas fa-redo"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover" id="payment-history-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Mã giao dịch</th>
+                                        <th>Thanh toán đơn đặt phòng</th>
+                                        <th>Số tiền</th>
+                                        <th>Thời gian</th>
+                                        <th>Ngân hàng</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="payment : ${paymentHistoryServices}">
+                                        <td th:text="${payment.vnpTransactionNo}"></td>
+                                        <td>
+                                            <a th:href="@{/chi-tiet-booking/{id} (id=${payment.vnpTxnRef})}"><th:block th:text="${payment.vnpTxnRef}"></th:block></a>
+                                        </td>
+                                        <td th:text="${#numbers.formatInteger(payment.vnpAmount, 3, 'COMMA')} + ' VNĐ'"></td>
+                                        <td th:text="${#temporals.format(payment.vnpPayDate, ' HH:mm   dd/MM/yyyy ')}"></td>
+                                        <td th:text="${payment.vnpBankCode}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<th:block id="js">
+    <script src="/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+    <script>
+        $('#payment-history-table').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [],
+            "language": {
+                "emptyTable": "Chưa có giao dịch nào.", // Thông báo tùy chỉnh khi không có dữ liệu
+                "paginate": {
+                    "next": '<i class="fas fa-chevron-right"></i>',
+                    "previous": '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "drawCallback": function () {
+                var api = this.api();
+                if (api.page.info().pages <= 1) {
+                    $('.paginate_button').hide(); // Ẩn tất cả các nút phân trang
+                } else {
+                    $('.paginate_button').show(); // Hiện lại tất cả các nút phân trang
+                }
+            }
+        });
+    </script>
+</th:block>
+</body>
+
+</html>

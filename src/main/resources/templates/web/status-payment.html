@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Trạng thái thanh toán</title>
+    <th:block id="css">
+        <style>
+            .wrap-icon img{
+                width: 50px;
+                height: 50px;
+                object-fit: cover;
+            }
+        </style>
+    </th:block>
+</head>
+<body >
+
+<div id="main-content">
+    <section class="status-payment-and-infor my-5">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-4 border  py-5 px-3">
+                    <div th:if="${status.equals('00')}" class="title-payment">
+                        <div class="wrap-icon d-flex justify-content-center">
+                            <img src="https://cdn-icons-png.flaticon.com/512/148/148767.png" alt="">
+                        </div>
+                        <div class="title-status-payment d-flex justify-content-center mt-2">
+                            <h4>Thanh toán thành công !</h4>
+                        </div>
+                        <div class="info-payment d-flex justify-content-center mt-5">
+                            <h5>Thông tin thanh toán</h5>
+                        </div>
+                        <div class="d-flex justify-content-center"><hr style="width: 70%" ></div>
+                        <div class="id-payment">
+                           <div class="d-flex justify-content-center"> Mã đơn đặt phòng</div>
+                            <div class="d-flex justify-content-center" th:text="${vnpTxnRef}"></div>
+                        </div>
+                        <div class="d-flex justify-content-center"><hr style="width: 70%" ></div>
+                        <div class="bank-payment">
+                            <div class="d-flex justify-content-center">Ngân hàng</div>
+                            <div class="d-flex justify-content-center" th:text="${vnpBankCode}"></div>
+                        </div>
+                        <div class="d-flex justify-content-center"><hr style="width: 70%" ></div>
+                        <div class="date-payment">
+                            <div class="d-flex justify-content-center">Ngày thanh toán</div>
+                            <div class="d-flex justify-content-center" th:text="${#temporals.format(vnpPayDate,'dd/MM/yyyy')}"></div>
+                        </div>
+                        <div class="d-flex justify-content-center"><hr style="width: 70%" ></div>
+                        <div class="content-payment">
+                            <div class="d-flex justify-content-center">Nội dung</div>
+                            <div class="d-flex justify-content-center" th:text="${vnpOrderInfo}"></div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-5">
+                            <a class="text-decoration-none" href="/" target="_blank">Quay lại Trang Chủ</a>
+                        </div>
+
+                    </div>
+                    <div th:if="${!status.equals('00')}" class="title-payment">
+                        <div class="wrap-icon d-flex justify-content-center">
+                            <img src="https://cdn-icons-png.flaticon.com/128/148/148766.png" alt="">
+                        </div>
+                        <div class="title-status-payment d-flex justify-content-center mt-2">
+                            <h4>Thanh toán thất bại !</h4>
+                        </div>
+                        <div class="info-payment d-flex justify-content-center mt-5">
+                            <h5>Thông tin thanh toán</h5>
+                        </div>
+                        <div class="d-flex justify-content-center"><hr style="width: 70%" ></div>
+                        <div class="id-payment">
+                            <div class="d-flex justify-content-center"> Mã đơn đặt phòng</div>
+                            <div class="d-flex justify-content-center" th:text="${vnpTxnRef}"></div>
+                        </div>
+                        <div class="d-flex justify-content-center"><hr style="width: 70%" ></div>
+                        <div class="bank-payment">
+                            <div class="d-flex justify-content-center">Ngân hàng</div>
+                            <div class="d-flex justify-content-center" th:text="${vnpBankCode}"></div>
+                        </div>
+                        <div class="d-flex justify-content-center"><hr style="width: 70%" ></div>
+                        <div class="d-flex justify-content-center mt-5">
+                            <a class="text-decoration-none" href="/">Quay lại Trang Chủ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+<th:block id="js">
+    <script th:inline="javascript">
+    </script>
+
+</th:block>
+
+</body>
+</html>

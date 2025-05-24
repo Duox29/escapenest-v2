@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="sidebar">
+    <!-- Brand Logo -->
+    <a href="/admin/dashboard" class="brand-link">
+        <img src="/admin-assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: 0.8" />
+        <span class="brand-text font-weight-light">Admin</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a th:href="@{/admin/dashboard}"  class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            DashBoard
+                        </p>
+                    </a>
+
+                </li>
+                <li class="nav-item" >
+                    <a  class="nav-link" th:href="@{/admin/revenue}">
+                        <i class=" nav-icon fa-solid fa-square-poll-vertical"></i>
+                        <p>
+                           Doanh thu
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Quản lý bài viết
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a th:href="@{/admin/support}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tất cả bài viết</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/support/create}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tạo bài viết</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+
+                    <a th:href="@{/admin/hotels}" class="nav-link">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>
+                            Quản lý homestay
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a  th:href="@{/admin/amenity}" class="nav-link">
+                        <i class="nav-icon fas fa-tree"></i>
+                        <p >
+                            Tiện ích
+                            </i>
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-regular fa-user"></i>
+                        <p>
+                            User
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a th:href="@{/admin/user}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách user</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/user/create}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tạo User</p>
+                            </a>
+                        </li> <li class="nav-item">
+<!--                        <a th:href="@{/admin/user-management}"  class="nav-link">-->
+<!--                            <i class="nav-icon fa-regular fa-square-minus"></i>-->
+<!--                            <p>Yêu cầu xóa tài khoản</p>-->
+<!--                        </a>-->
+                    </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/bookings}" class="nav-link">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Danh sách đặt phòng
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/city}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-tree-city"></i>
+                        <p>
+                             Thành phố
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/payment-history}" class="nav-link">
+                        <i class=" nav-icon fa-solid fa-clock-rotate-left"></i>
+                        <p>
+                             Lịch sử giao dịch
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/report}" class="nav-link">
+                        <i class=" nav-icon fa-solid fa-chart-line"></i>
+                        <p>
+                            Báo cáo thống kê
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>
+
+</body>
+</html>

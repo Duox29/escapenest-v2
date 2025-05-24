@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>EscapeNest.com</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="/web/lib/OwlCarousel/dist/assets/owl.carousel.min.css">
+        <link rel="stylesheet" href="/web/lib/OwlCarousel/dist/assets/owl.theme.default.min.css">
+        <link rel="stylesheet" href="/web/assets/css/style-favourite-hotel.css">
+    </th:block>
+
+</head>
+<body>
+
+<div id="main-content">
+
+
+    <section class="list-hotel">
+
+        <div class="container">
+            <div class="row notification" th:class="${hotelPage.getTotalPages()!=0 ? 'd-none' : 'd-inline-block'}">
+                <h1>Chưa có homestay nào được thêm vào mục yêu thích</h1>
+            </div>
+            <th:block class="container-body" th:class="${hotelPage.getTotalPages()==0 ? 'd-none' : 'd-inline-block'}">
+                <div class="row " >
+                    <div class="title-page">
+                        <a th:href="@{/yeu-thich/{id} (id=${#authentication.principal.user.getId()})}" class="link-back">Danh sách yêu thích </a> <span >/ <th:block  th:text="${city}"></th:block></span>
+                        <h2 th:text="${city}"> </h2>
+                    </div>
+                </div>
+                <div class="row wrap-list">
+                </div>
+                <div class="wrap-pagination d-flex justify-content-center">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${indexPage}==1?'disabled':''">
+                            <a class="page-link" th:href="@{/danh-sach-yeu-thich/{id}/{city} (id = ${#authentication.principal.getUser().getId()},city = ${city},pageNumber=${indexPage}-1)}"><i class="fa-solid fa-angle-left"></i></a>
+                        </li>
+                        <li class="page-item" th:each=" index : ${#numbers.sequence(1,hotelPage.getTotalPages())}"
+                            th:classappend="${indexPage == index}?'active':''">
+                            <a class="page-link" th:href="@{/danh-sach-yeu-thich/{id}/{city} (id = ${#authentication.principal.getUser().getId()}, city = ${city}, pageNumber=${index})}" th:text="${index}"></a>
+                        </li>
+                        <li class="page-item"  th:classappend="${indexPage == hotelPage.getTotalPages()}?'disabled':''">
+                            <a class="page-link"  th:href="@{/danh-sach-yeu-thich/{id}/{city} (id = ${#authentication.principal.getUser().getId()},city = ${city},pageNumber=${indexPage}-1)}"><i class="fa-solid fa-angle-right"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </th:block>
+        </div>
+
+    </section>
+
+
+</div>
+
+<th:block id="js">
+    <script th:inline="javascript">
+        let hotelList = [[${listHotel}]];
+        let currentPage = [[${indexPage}]];
+    </script>
+    <script src="/web/lib/OwlCarousel/dist/owl.carousel.min.js"></script>
+    <script src="/web/assets/js/list-hotel-favourite.js"></script>
+</th:block>
+
+</body>
+</html>
