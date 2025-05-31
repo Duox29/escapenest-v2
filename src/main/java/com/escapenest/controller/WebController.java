@@ -92,7 +92,7 @@ public class WebController {
         // Gọi service mới, lấy danh sách HotelDto
         List<HotelDto> hotelList = hotelService.getHotelBySearchV2(nameCity, checkIn, checkOut, numberGuest, numberRoom);
 
-        // Nếu có session (đang đăng nhập) thì lấy khách sạn yêu thích
+        // Nếu có session (đang đăng nhập) thì lấy homestay yêu thích
         if (session.getAttribute("MY_SESSION") != null) {
             List<Hotel> hotelFavourite = hotelService.getAllHotelFavourite((String) session.getAttribute("MY_SESSION"));
             model.addAttribute("hotelFavourite", hotelFavourite);
@@ -130,9 +130,9 @@ public class WebController {
         LocalDate checkInDay = LocalDate.parse(checkIn,dateTimeFormatter);
         LocalDate checkOutDay = LocalDate.parse(checkOut,dateTimeFormatter);
         List<RoomDto> roomList = roomService.getDataRoom(id,checkInDay,checkOutDay,numberGuest,numberRoom);
-        // danh sách các review của khách sạn
+        // danh sách các review của homestay
         List<Review> reviewList = reviewsService.findAllReview(id);
-        // lấy các tiện sub cac tiên ích của khách sạn
+        // lấy các tiện sub cac tiên ích của homestay
         List<AmenityHotel> listAmenity;
         if (hotel.getAmenityHotelList().size()>5){
             listAmenity = hotel.getAmenityHotelList().subList(0,5);

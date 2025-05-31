@@ -212,12 +212,12 @@ public class ImageService {
         return imageUserRepository.findAllByUser_Id(id);
     }
 
-    // lấy tất cả ảnh của khách sạn
+    // lấy tất cả ảnh của homestay
     public List<ImageHotel> getAllImageByIdHotel(int i) {
         return imageHotelRepository.findAllByHotel_Id(i);
     }
 
-    // xóa ảnh của khách sạn
+    // xóa ảnh của homestay
     public void deleteImageHotel(String id) {
         ImageHotel imageHotel = imageHotelRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy image"));
         Path filePathDelete = Paths.get(uploadDir).resolve("image_hotel").resolve(id);

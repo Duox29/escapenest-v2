@@ -30,9 +30,9 @@ public class RoomPriceService {
 
     //đặt giá phòng cho từng phòng và từng ngày riêng biệt
     public void setRoomPrice(RoomPriceRequest request) {
-        // lấy khách sạn đang đăng nhập
+        // lấy homestay đang đăng nhập
         Hotel hotel = hotelService.getHotelByAccountCurrent();
-        // lấy danh sách phòng của khách sạn đó
+        // lấy danh sách phòng của homestay đó
         Room room = roomRepository.findById(request.getIdRoom())
                 .orElseThrow(()-> new RuntimeException("Không tìm thấy phòng nòa có id : "+ request.getIdRoom()));
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -76,9 +76,9 @@ public class RoomPriceService {
 
     // đặt giá phòng cho từng loại phòng và từng ngày riêng
     public List<RoomPriceDto> getRoomPriceDay(String date) {
-        // lấy ra khách sạn đang đăng nhập hiện tại
+        // lấy ra homestay đang đăng nhập hiện tại
         Hotel hotel = hotelService.getHotelByAccountCurrent();
-        // lấy các danh sách phòng của khách sạn đó
+        // lấy các danh sách phòng của homestay đó
         List<Room> roomList = roomRepository.findRoomByHotel_Id(hotel.getId());
         // lấy ra ngày mà người dùng muốn xem giá của từng phòng
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

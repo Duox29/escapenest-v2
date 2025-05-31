@@ -32,7 +32,7 @@ public class ReviewsService {
         //  lấy ra booking với id được gửi lên
         Booking booking = bookingRepository.findById(upsertReviewRequest.getIdBooking()).orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
 
-        // tìm kiếm khách sạn theo id
+        // tìm kiếm homestay theo id
         Hotel hotel = booking.getHotel();
 
         // lấy user đã reviews

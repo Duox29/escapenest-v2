@@ -301,7 +301,7 @@
             nameAmenityRoom.value = '';
             btnSaveRoom.setAttribute('type-btn','CREATE')
         })
-        // khi click vào nút thêm mới thì sửa title cho modal tiện ích khách sạn
+        // khi click vào nút thêm mới thì sửa title cho modal tiện ích homestay
         btnAmenityHotel.addEventListener('click' , ()=>{
             titleAmenityRoom.innerText = "Thêm mới tiện ích cho homestay  "
             nameAmenityRoom.value = '';
@@ -425,7 +425,7 @@
                 })
         }
 
-        // gọi api cập nhật tiện ích khách sạn
+        // gọi api cập nhật tiện ích homestay
         const updateAmenityHotel = (data)=>{
             axios.put('/api/amenity/update/hotel-amenity/'+idAmenityHotelCurrent, data)
                 .then((res) =>{

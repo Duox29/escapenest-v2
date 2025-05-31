@@ -248,6 +248,7 @@
         btnResetPassword.addEventListener('click', async () => {
             const isConfirm = confirm('Bạn có chắc chắn muốn reset mật khẩu?');
             if (!isConfirm) return;
+            toastr.info("Đã reset mật khẩu. Mail sẽ được gửi tới người dùng")
             try {
                 let res = await axios.put(`/api/admin/users/reset-password/${user.id}`);
                 if (res.status === 200) {

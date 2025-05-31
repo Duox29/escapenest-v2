@@ -135,7 +135,7 @@ public class RoomService {
     }
 
 
-    // logic lấy ra các phòng trống của từng khách sạn theo ngày và theo booking
+    // logic lấy ra các phòng trống của từng homestay theo ngày và theo booking
     List<Room> availableRooms(Integer id, LocalDate checkInDay, LocalDate checkOutDay, Integer numberRoom, Integer numberGuest) {
         // lấy danh sách các phòng theo id hotel
         List<Room> roomList = roomRepository.findRoomByHotel_IdAndStatusTrue(id);
@@ -268,7 +268,7 @@ public class RoomService {
 
     // logic lấy các thông tin của phòng gias phòng theo ngày mà người dùng đã chọn
     public List<RoomDto> getDataRoom(Integer idHotel, LocalDate start , LocalDate end , Integer numberGuest, Integer numberRoom) {
-        // lấy ra các phòng theo id của khách sạn
+        // lấy ra các phòng theo id của homestay
         List<Room> roomList = availableRooms(idHotel,start,end,numberGuest,numberRoom);
         List<RoomDto> roomDtoList = new ArrayList<>();
         for (Room room : roomList ){
@@ -301,7 +301,7 @@ public class RoomService {
     }
     //logic lay tt room khong filter
     public List<RoomDto> getDataRoomNoCheck(Integer idHotel, LocalDate start , LocalDate end , Integer numberGuest, Integer numberRoom) {
-        // lấy ra các phòng theo id của khách sạn
+        // lấy ra các phòng theo id của homestay
         List<Room> roomList = allRooms(idHotel);
         List<RoomDto> roomDtoList = new ArrayList<>();
         for (Room room : roomList ){

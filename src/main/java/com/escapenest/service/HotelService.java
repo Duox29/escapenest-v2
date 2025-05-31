@@ -57,19 +57,19 @@ public class HotelService {
 
     public List<HotelDto> hotelListSearch = new ArrayList<>();
 
-    // logic tìm kiếm khách sạn
+    // logic tìm kiếm homestay
     public void getHotelBySearch(String nameCity, String checkIn, String checkOut, Integer numberGuest, Integer numberRoom) {
         // lấy ngày checkIn và checkOut từ string
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate checkInDay = LocalDate.parse(checkIn, dateTimeFormatter);
         LocalDate checkOutDay = LocalDate.parse(checkOut, dateTimeFormatter);
 
-        // lấy danh sách khách sạn theo city
+        // lấy danh sách homestay theo city
         List<Hotel> hotelList = hotelRepository.findHotelByCity_NameIgnoreCaseAndStatusTrue(nameCity);
         List<HotelDto> availableHotels = new ArrayList<>();
-        // duyệt từng khách sạn để kiểm tra các điều kiện
+        // duyệt từng homestay để kiểm tra các điều kiện
         for (Hotel hotel : hotelList) {
-            // laays ra các phòng trống của khách sạn
+            // laays ra các phòng trống của homestay
             List<RoomDto> dataRoom = roomService.getDataRoom(hotel.getId(), checkInDay, checkOutDay, numberRoom, numberGuest);
             if (!dataRoom.isEmpty()) {
                 // lấy ra các thông tin của phòng và giá theo thời điểm của ngày chekIn và checkOut
@@ -87,11 +87,11 @@ public class HotelService {
         LocalDate checkInDay = LocalDate.parse(checkIn, dateTimeFormatter);
         LocalDate checkOutDay = LocalDate.parse(checkOut, dateTimeFormatter);
 
-        // Lấy danh sách khách sạn theo tên thành phố và có trạng thái hoạt động
+        // Lấy danh sách homestay theo tên thành phố và có trạng thái hoạt động
         List<Hotel> hotelList = hotelRepository.findHotelByCity_NameIgnoreCaseAndStatusTrue(nameCity);
         List<HotelDto> availableHotels = new ArrayList<>();
 
-        // Duyệt qua từng khách sạn để kiểm tra phòng trống
+        // Duyệt qua từng homestay để kiểm tra phòng trống
         for (Hotel hotel : hotelList) {
             List<RoomDto> dataRoom = roomService.getDataRoom(
                     hotel.getId(), checkInDay, checkOutDay, numberRoom, numberGuest
@@ -134,10 +134,10 @@ public class HotelService {
            }
         }
         System.out.println("log " + nameAmenityRoom);
-        // lấy giá thấp nhất của khách sạn để hiện thị cho người dùng
+        // lấy giá thấp nhất của homestay để hiện thị cho người dùng
         int price = getMinPrice(dataRoom);
         int totalReview = reviewRepository.findReviewByHotel_Id(hotel.getId()).size();
-        // tạo một dối tượng chữa các thông tin cần thiết của khách sạn
+        // tạo một dối tượng chữa các thông tin cần thiết của homestay
         HotelDto hotelDto = new HotelDto();
         hotelDto.setId(hotel.getId());
         hotelDto.setName(hotel.getName());
@@ -170,7 +170,7 @@ public class HotelService {
         return minPrice;
     }
 
-    // phân trang cho trang danh sách khách sạn sau khi tìm kiếm
+    // phân trang cho trang danh sách homestay sau khi tìm kiếm
     @Transactional
     public Page<HotelDto> getPaginationHotel(Integer pageNumber, Integer limit) {
         Pageable pageable = PageRequest.of(pageNumber - 1, limit);
@@ -181,7 +181,7 @@ public class HotelService {
     }
 
     public Hotel getHotelById(Integer id) {
-        return hotelRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khách sạn nào tương ứng"));
+        return hotelRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Không tìm thấy homestay nào tương ứng"));
     }
 
     public List<HotelDto> getHotelHomPage(String city, String checkIn, String checkOut, Integer numberGuest, Integer numberRoom) {
@@ -218,11 +218,11 @@ public class HotelService {
         return hotelListSearch;
     }
 
-    // tìm kiếm các khách sạn yêu thích theo thành phố
+    // tìm kiếm các homestay yêu thích theo thành phố
     public Page<Hotel> findHotelFavouriteByCity(Integer id, String city, Integer pageNumber, Integer limit) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, limit);
-        // lấy ra danh sách khách sạn được yêu thích của user
-        List<Hotel> hotelList = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy khách sạn nào có id " + id)).getHotelList().stream()
+        // lấy ra danh sách homestay được yêu thích của user
+        List<Hotel> hotelList = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy homestay nào có id " + id)).getHotelList().stream()
                 .filter(hotel -> Objects.equals(hotel.getCity().getName(), city))
                 .toList();
 
@@ -263,7 +263,7 @@ public class HotelService {
 
     public Hotel updateHotelAdmin(Integer id, UpsertHotelRequest request) {
         Hotel hotel = hotelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy khách sạn nào có id : " + id));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy homestay nào có id : " + id));
         City city = cityService.getCityById(request.getIdCity());
         RentalType rentalType = RentalType.valueOf(request.getRentalType());
         hotel.setUpdatedAt(LocalDate.now());
@@ -318,7 +318,7 @@ public class HotelService {
     }
 
 
-    // hotel-manager update khách sạn
+    // hotel-manager update homestay
     public Hotel updateHotel(Integer id, UpsertHotelRequest request) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy homestay nào có id : " + id));
@@ -337,7 +337,7 @@ public class HotelService {
         return hotelRepository.findHotelByCity_Id(id);
     }
 
-    // tạo khách sạn dựa trên thông tin đã có
+    // tạo homestay dựa trên thông tin đã có
     @Transactional
     public Hotel createHotel(UpsertHotelRequest upsertHotelRequest, City city, User user, PolicyHotel policyHotel, List<AmenityHotel> amenityHotelList) {
         Hotel hotelNew = Hotel.builder()
@@ -438,11 +438,11 @@ public class HotelService {
         if (hotelRepository.findByHotline(upsertHotelRequest.getPhoneHotel()) != null) {
             throw new RuntimeException("Số điện thoại đã tồn tại ");
         }
-        // lây danh sách các tiện ích mà khách sạn chọn để lưu vào tiện ích của khách sạn đó
+        // lây danh sách các tiện ích mà homestay chọn để lưu vào tiện ích của homestay đó
         List<AmenityHotel> amenityHotelList = amenityService.getAllAmenityHotelById(upsertHotelRequest.getAmenityHotelList());
-        // Lấy thành phố  mà khách sạn đã chọn
+        // Lấy thành phố  mà homestay đã chọn
         City city = cityService.getCityById(upsertHotelRequest.getIdCity());
-        // tạo chính sách mới cho khách sạn
+        // tạo chính sách mới cho homestay
         PolicyHotel policyHotel = policyService.createPolicyHotel(upsertPolicyRequest);
         // cập nhật role mới cho user
         log.info("Break point");
@@ -450,12 +450,12 @@ public class HotelService {
         log.info("Pass point");
         user.setUserRole(UserRole.ROLE_HOTEL);
         userRepository.save(user);
-        // tạo dữ liệu khách sạn
+        // tạo dữ liệu homestay
         Hotel hotelNew = createHotel(upsertHotelRequest, city, user, policyHotel, amenityHotelList);
         // tạo dối tượng image hotel
         ImageHotel imageHotel = imageService.uploadImageHotel(hotelNew.getId(), fileHotel);
         imageHotelRepository.save(imageHotel);
-        // đặt poster cho khách sạn là ảnh đầu tiên
+        // đặt poster cho homestay là ảnh đầu tiên
         hotelNew.setPoster(imageHotel.getUrl());
         // tạo dữ liệu cho phòng
         Room room = roomService.createRoom(upsertRoomRequest);
@@ -469,7 +469,7 @@ public class HotelService {
                         "\n" +
                         "Chúc mừng bạn đã trở thành đối tác của EscapeNest.\n" +
                         "\n" +
-                        "Truy cập đường link sau để chuyển đến trang quản lý nơi lưu trú của bạn :\n" +
+                        "Truy cập đường link sau để chuyển đến trang quản lý homestay của bạn :\n" +
                         "\n" +
                         link+"\n" +
                         "\n" +

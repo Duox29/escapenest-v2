@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
@@ -30,15 +31,42 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final HttpSession session;
     private final HotelRepository hotelRepository;
+    private final MailService mailService;
 
 
     public User adminResetPasswordUser(Integer id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy user"));
-
-        user.setPassword(passwordEncoder.encode("123"));
-
+        String randomPassword = generateRandomPassword(6);
+        mailService.sendMail(user.getEmail(),
+                "Mật khẩu của bạn đã được đặt lại",
+                "Chào " +user.getName()+"! \n" +
+                        "\n" +
+                        "Chúng tôi đã đặt lại mật khẩu của bạn trên EscapeNest.\n" +
+                        "\n" +
+                        "Dưới đây là mật khẩu mới của bạn, vui lòng không cung cấp cho người khác:\n" +
+                        "\n" +
+                        randomPassword+"\n" +
+                        "\n" +
+                        "Trân trọng.\n" );
+        user.setPassword(passwordEncoder.encode(randomPassword));
         return userRepository.save(user);
+    }
+    //tạo pass random
+    private String generateRandomPassword(int length) {
+        // Chuỗi chứa các ký tự được phép
+        String allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            // Chọn ngẫu nhiên một ký tự từ chuỗi allowedChars
+            int randomIndex = random.nextInt(allowedChars.length());
+            sb.append(allowedChars.charAt(randomIndex));
+        }
+
+        return sb.toString();
     }
     public User adminUpdateUser(Integer id, AdminUpdateUserRequest request) {
         User existingUser = userRepository.findById(id)

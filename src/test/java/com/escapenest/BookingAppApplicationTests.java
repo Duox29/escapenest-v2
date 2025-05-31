@@ -905,7 +905,7 @@ class BookingAppApplicationTests {
 
     @Test
     void createReview() {
-        String[] coment = {"Dịch vụ tuyệt vời. 10 điểm không có nhưng", "Khách sạn sạch sẽ, thoáng mát.", "Rất là sạch sẽ luôn, view đẹp nữa",
+        String[] coment = {"Dịch vụ tuyệt vời. 10 điểm không có nhưng", "Homestay sạch sẽ, thoáng mát.", "Rất là sạch sẽ luôn, view đẹp nữa",
                 "Phòng sạch sẽ lắm luôn, view cực xịn xò lúc tụi mình check in còn không tin với giá tiền đó mình được ở căn hộ sang xịn như vậy", "Chỗ nghỉ view đỉnh, thoáng mát tiện nghi. Chị chủ siuuuu nhiệt tình, hỗ trợ checkin sớm"};
         List<Hotel>hotelList = hotelRepository.findHotelByCity_Id(18);
         Random random = new Random();

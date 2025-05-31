@@ -32,12 +32,12 @@ public class AmenityService {
         return amenityRoomRepository.findAll();
     }
 
-    // lấy tất cả tiện ích khách sạn mà trang web đang có
+    // lấy tất cả tiện ích homestay mà trang web đang có
     public List<AmenityHotel> getAllAmenityHotel() {
         return amenityHotelRepository.findAll();
     }
 
-    // admin cập nhật tiện ích khách sạn
+    // admin cập nhật tiện ích homestay
     public AmenityHotel updateAmenityHotel(Integer id, UpsertAmenityRequest request) {
         // kiểm tra xem có tiện ích nào với id được gửi lên hay không ;
         AmenityHotel amenityHotel = amenityHotelRepository.findById(id)
@@ -61,7 +61,7 @@ public class AmenityService {
     }
 
 
-    // admin tạo tiện ích khách sạn
+    // admin tạo tiện ích homestay
     public AmenityHotel createAmenityHotel(UpsertAmenityRequest request) {
 
         // kiểm tra xem tên tiện ích đã có hay chưa
@@ -103,7 +103,7 @@ public class AmenityService {
     }
 
 
-    // lấy danh sách các tiện ích khi đối tác tạo thông tin khách sạn
+    // lấy danh sách các tiện ích khi đối tác tạo thông tin homestay
     public List<AmenityHotel> getAllAmenityHotelById(List<Integer> amenityHotelListId) {
         List<AmenityHotel> amenityHotelList = new ArrayList<>();
         // kiểm tra danh sách id được gửi lên và lấy ra tiện ích với id tương ứng

@@ -50,7 +50,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     List<RevenueDayDto> getTotalRevenueByMonth(@Param("id") Integer id);
 
 
-    // tổng đơn đặt phongfg theo từng loại phòng của khách sạn
+    // tổng đơn đặt phongfg theo từng loại phòng của homestay
     @Query(value = "SELECT new com.escapenest.model.dto.TotalBookingByRoomTypeDto(o.room.name, count(o.id)) " +
             "FROM Booking o WHERE o.hotel.id = :id AND YEAR(o.createAt) = :year AND o.statusBooking = 'COMPLETE' " +
             "GROUP BY o.room.name " +
@@ -64,7 +64,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "ORDER BY YEAR(o.createAt) DESC, MONTH(o.createAt) DESC")
     List<RevenueMonthDto> getTotalRevenueByMonthAndHotelId(@Param("id") Integer id, @Param("year") int year);
 
-    // tổng booking từng tháng trong năm của khách sạn
+    // tổng booking từng tháng trong năm của homestay
     @Query(value = "SELECT new  com.escapenest.model.dto.TotalBookingMonthDto(MONTH(o.createAt), YEAR(o.createAt), COUNT(o.id))" +
             " FROM Booking o WHERE o.statusBooking = 'COMPLETE' AND o.hotel.id = :id AND YEAR(o.createAt) = :year AND MONTH(o.createAt) = :month"   +
             " GROUP BY MONTH(o.createAt), YEAR(o.createAt)")

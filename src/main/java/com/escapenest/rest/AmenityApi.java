@@ -30,7 +30,7 @@ public class AmenityApi {
 
 
 
-    // admin cập nhật tiện ích khách sạn
+    // admin cập nhật tiện ích homestay
     @PutMapping("/update/hotel-amenity/{id}")
     public ResponseEntity<AmenityHotel> updateAmenityHotel (@PathVariable Integer id ,@RequestBody UpsertAmenityRequest request){
         AmenityHotel amenityHotel = amenityService.updateAmenityHotel(id,request);
@@ -43,7 +43,7 @@ public class AmenityApi {
         return ResponseEntity.ok(amenityRoom);
     }
 
-    // admin tạo tiện ích khách sạn
+    // admin tạo tiện ích homestay
     @PostMapping("/create/hotel-amenity")
     public ResponseEntity<AmenityHotel> createAmenityHotel (@RequestBody UpsertAmenityRequest request){
         AmenityHotel amenityHotel = amenityService.createAmenityHotel(request);
@@ -57,7 +57,7 @@ public class AmenityApi {
         return new ResponseEntity<>(amenityRoom, HttpStatus.CREATED);
     }
 
-    // admin xóa tiện ích khách sạn hoặc phòng
+    // admin xóa tiện ích homestay hoặc phòng
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAmenity (@PathVariable Integer id){
         amenityService.deleteAmenity(id);

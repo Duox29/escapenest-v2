@@ -47,14 +47,14 @@ public class HotelApi {
         userService.saveHotelFavourite(id);
         return ResponseEntity.ok().build();
     }
-    // xóa khách sạn ra khỏi danh sanh yêu thích trang danh sách yêu thiích
+    // xóa homestay ra khỏi danh sanh yêu thích trang danh sách yêu thiích
     @DeleteMapping("/delete/list-favourite/{id}")
     public ResponseEntity<Page<Hotel>> deleteHotelFavourite(@PathVariable Integer id,@RequestParam Integer pageNumber){
         Page<Hotel> hotelPage = userService.deleteHotelFavourite(id,pageNumber);
         return ResponseEntity.ok(hotelPage);
     }
 
-    // xóa khách sạn ra khỏi danh sách yêu thích trang danh sách khách sạn
+    // xóa homestay ra khỏi danh sách yêu thích trang danh sách homestay
     @DeleteMapping("/delete/favourite/{id}")
     public ResponseEntity<?> deleteHotelFavourite(@PathVariable Integer id){
         User user  = userService.deleteHotelFavourite(id);

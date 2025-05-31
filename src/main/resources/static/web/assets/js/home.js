@@ -98,7 +98,7 @@ plusRoom.addEventListener('click',()=>{
 const btnSearch = document.getElementById('btn-search');
 const inputNameCity = document.getElementById('input-name-city'); // input dữ liệu thành phố người dùng nhập vào
 
-const showHotelCity = document.getElementById("show-hotel-city");// btn chuyển hướng từ gợi ý khách sạn theo thanh phố
+const showHotelCity = document.getElementById("show-hotel-city");// btn chuyển hướng từ gợi ý homestay theo thanh phố
 
 // chuyển hướng tới trang sanh sách khi người dùng click vào ô tìm kiếm
 btnSearch.addEventListener('click' ,()=>{
@@ -116,7 +116,7 @@ inputNameCity.addEventListener('keydown',(e)=>{
     }
 })
 
-// click vào các khách sạn sẽ chuyển hướng tới trang danh sách khách sạn theo thành phố người dùng đã chọn
+// click vào các homestay sẽ chuyển hướng tới trang danh sách homestay theo thành phố người dùng đã chọn
 showHotelCity.addEventListener('click' , (e)=>{
     let nameCity= showHotelCity.getAttribute('value');
     console.log(nameCity);
@@ -153,7 +153,7 @@ window.addEventListener('load', () => {
     defaultValue.classList.add('active-city')
     console.log(startDate);
     console.log(endDate);
-    // Gọi API để lấy dữ liệu cho thành phố mặc định và render khách sạn
+    // Gọi API để lấy dữ liệu cho thành phố mặc định và render homestay
     renderCityData(defaultValue.textContent ,startDate,endDate);
     showHotelCity.innerHTML = `<span>Xem tất cả homestay tại ${defaultValue.textContent}</span>`
     showHotelCity.setAttribute('value', defaultValue.textContent);
@@ -171,7 +171,7 @@ btnList.forEach((btn)=>{
 
         btn.classList.add("active-city")
         let city = btn.textContent;
-        // showHotelCity.innerText = 'Xem thêm khách sạn của ' + city;
+        // showHotelCity.innerText = 'Xem thêm homestay của ' + city;
         showHotelCity.innerHTML = `<span>Xem tất cả homestay tại ${city}</span>`
         renderCityData(city,startDate,endDate);
     })
@@ -197,7 +197,7 @@ const renderCityData = (value,checkIn,checkOut) => {
 const formatCurrency = (number)=> {
     return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 }
-// render khách sạn recommend
+// render homestay recommend
 
 
 function navigateToHotelDetail(hotelId, encodedCity) {
