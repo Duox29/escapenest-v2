@@ -1,10 +1,10 @@
 # 🏡 ESCAPENEST - Hệ thống Website Cho Thuê và Quản Lý Homestay
 
 > Đề tài tốt nghiệp: Xây dựng website cho thuê và quản lý homestay ESCAPENEST  
-> Sinh viên thực hiện: [Tên của bạn]  
-> Trường: [Tên trường]  
-> Khoa: [Tên khoa]  
-> Niên khóa: [20xx - 20yy]
+> Sinh viên thực hiện: Lê Văn Dương 
+> Trường: Đại học Công Nghiệp Hà Nội
+> Khoa: Công Nghệ Thông Tin  
+> Niên khóa: 2021 - 2025
 
 ---
 
@@ -29,7 +29,7 @@ Mục đích chính của đề tài **"Xây dựng website cho thuê và quản
 
 | Công nghệ             | Mô tả                                |
 |----------------------|--------------------------------------|
-| `Java 17`            | Ngôn ngữ lập trình chính             |
+| `Java`            | Ngôn ngữ lập trình chính                |
 | `Spring Boot`        | Framework backend mạnh mẽ            |
 | `Spring Data JPA`    | Truy vấn dữ liệu ORM với Hibernate   |
 | `Thymeleaf`          | Template Engine cho giao diện phía server |
@@ -44,7 +44,7 @@ Mục đích chính của đề tài **"Xây dựng website cho thuê và quản
 
 - 🔐 Đăng ký / Đăng nhập (vai trò khách hàng & chủ homestay)
 - 🏡 Đăng bài homestay, thêm hình ảnh, giá, tiện nghi,...
-- 📆 Đặt phòng theo ngày giờ
+- 📆 Đặt phòng theo ngày
 - 💳 Thanh toán đơn giản qua nhiều phương thức
 - 📊 Thống kê, quản lý đơn đặt và doanh thu cho chủ homestay
 - 🌟 Đánh giá, bình luận sau khi lưu trú
