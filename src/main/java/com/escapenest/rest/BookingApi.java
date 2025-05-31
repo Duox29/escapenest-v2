@@ -1,5 +1,6 @@
 package com.escapenest.rest;
 
+import com.escapenest.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import com.escapenest.entity.Booking;
 import com.escapenest.model.request.UpsertBookingRequest;
@@ -14,9 +15,13 @@ import org.springframework.web.bind.annotation.*;
 public class BookingApi {
 
     private final BookingService bookingService;
+    private final AuthService authService;
 
     @PostMapping("/add")
     public ResponseEntity<?> bookingHotel(@RequestBody UpsertBookingRequest bookingRequest){
+        if(authService.isSuspended(bookingRequest.getEmailCustomer())) {
+            throw new RuntimeException("Tài khoản đã bị khóa, vui lòng liên hệ để được hỗ trợ.");
+        }
         Booking booking = bookingService.bookingHotel(bookingRequest);
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }

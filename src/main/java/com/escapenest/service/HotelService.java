@@ -128,10 +128,8 @@ public class HotelService {
     private HotelDto createHotelDto(Hotel hotel, List<RoomDto> dataRoom) {
         Set<String> nameAmenityRoom = new HashSet<>();
         for (int i = 0; i < dataRoom.size(); i++) {
-            System.out.println("size" + dataRoom.size());
            RoomDto room = dataRoom.get(i);
            for (AmenityRoom amenityRoom : room.getAmenityRoomList()){
-               System.out.println("Name :" +amenityRoom.getName());
                nameAmenityRoom.add(amenityRoom.getName());
            }
         }
@@ -214,8 +212,8 @@ public class HotelService {
                 return Double.compare(o2.getRating(), o1.getRating());
             }
         });
-        if (hotelDtos.size() > 8) {
-            return hotelDtos.subList(0, 8);
+        if (hotelDtos.size() > 4) {
+            return hotelDtos.subList(0, 4);
         }
         return hotelListSearch;
     }

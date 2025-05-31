@@ -155,7 +155,7 @@ window.addEventListener('load', () => {
     console.log(endDate);
     // Gọi API để lấy dữ liệu cho thành phố mặc định và render khách sạn
     renderCityData(defaultValue.textContent ,startDate,endDate);
-    showHotelCity.innerHTML = `<span>Xem tất cả homestay ${defaultValue.textContent}</span>`
+    showHotelCity.innerHTML = `<span>Xem tất cả homestay tại ${defaultValue.textContent}</span>`
     showHotelCity.setAttribute('value', defaultValue.textContent);
 });
 

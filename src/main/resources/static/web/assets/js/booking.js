@@ -90,7 +90,8 @@ const getStatusBooking = (statusBooking) => {
             return "Đã hủy";
         case "COMPLETE":
             return "Hoàn tất";
-
+        case "REJECTED":
+            return "Bị từ chối";
     }
 }
 

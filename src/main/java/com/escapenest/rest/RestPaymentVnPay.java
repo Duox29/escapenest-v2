@@ -1,6 +1,7 @@
 package com.escapenest.rest;
 
 
+import com.escapenest.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import com.escapenest.config.ConfigVnPay;
 import com.escapenest.entity.Booking;
@@ -23,9 +24,13 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RestPaymentVnPay {
      private final BookingService bookingService ;
+     private final AuthService authService;
     @PostMapping("/vn-pay")
     @Transactional
     public ResponseEntity<?> createPaymentVnPay(@RequestBody UpsertBookingRequest bookingRequest) throws UnsupportedEncodingException {
+        if(authService.isSuspended(bookingRequest.getEmailCustomer())) {
+            throw new RuntimeException("Tài khoản đã bị khóa, vui lòng liên hệ để được hỗ trợ.");
+        }
         long amount = bookingRequest.getPrice() * 100;
         Booking booking = bookingService.bookingHotel(bookingRequest);
 
@@ -84,7 +89,6 @@ public class RestPaymentVnPay {
         paymentRestDto.setMessage("Success");
         paymentRestDto.setUrl(paymentUrl);
         System.out.println(paymentUrl);
-        System.out.println("Cuối");
         System.out.println(paymentRestDto);
         return ResponseEntity.status(HttpStatus.OK).body(paymentRestDto);
     }

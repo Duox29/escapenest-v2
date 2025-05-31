@@ -29,10 +29,6 @@ public class DashboardHotelController {
         TotalBookingMonthDto totalBookingMonthDtoPending = bookingService.getTotalBookingPendingMonthByHotel(hotel.getId());
         long totalRevenueYear = bookingService.getTotalRevenueYearCurrent(hotel.getId(),LocalDate.now().getYear());
         RevenueMonthDto totalRevenueMonth = bookingService.getTotalRevenueMonth(hotel.getId(),LocalDate.now().getYear(),LocalDate.now().getMonthValue());
-
-        System.out.println(totalBookingMonthDto + " Tổng doanh thu nè ");
-        System.out.println(totalBookingMonthDtoPending + " Tổng doanh thu nè ");
-
         model.addAttribute("hotel" , hotel);
         model.addAttribute("totalRevenueYear" , totalRevenueYear);
         model.addAttribute("totalRevenueMonth" , totalRevenueMonth);

@@ -20,7 +20,6 @@ public class AuthApi {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest){
-        System.out.println("đến đây");
         return new  ResponseEntity<>(authService.register(registerRequest), HttpStatus.CREATED);
 
     }

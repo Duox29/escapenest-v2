@@ -72,8 +72,9 @@
                                     <td th:text="${user.email}">Email</td>
                                     <td th:text="${user.phoneNumber}">Phone</td>
                                     <td>
-                                        <span class="badge" th:text="${user.userRole.value}"
-                                              th:classappend="${user.userRole.value == 'ADMIN' ? 'bg-success' : 'bg-secondary'}">ROLE_USER</span>
+                                        <span class="badge"
+                                              th:text="${user.userRole.value == 'ADMIN' ? 'ADMIN' : (user.userRole.value == 'USER' ? 'USER' : 'OWNER')}"
+                                              th:classappend="${user.userRole.value == 'ADMIN' ? 'bg-success' : (user.userRole.value == 'USER' ? 'bg-info' : 'bg-secondary')}">User Role</span>
                                     </td>
                                     <td>
                                         <span class="badge" th:text="${user.enable ? 'Đã kích hoạt' : 'Chưa kích hoạt'}"

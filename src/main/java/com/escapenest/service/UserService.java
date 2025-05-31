@@ -88,17 +88,17 @@ public class UserService {
         return userRepository.findByEmail(session.getAttribute("MY_SESSION").toString()).orElseThrow(()->new UsernameNotFoundException("Không tìm thấy user hiện tại "));
     }
 
-    // lưu khách sạn vào danh sách yêu thích
+    // lưu homestay vào danh sách yêu thích
     public void saveHotelFavourite(Integer id) {
         // tìm user đang đăng nhập
         User user = userRepository.findByEmail((String) session.getAttribute("MY_SESSION")).orElseThrow(()-> new UsernameNotFoundException("User Not Found "));
-        // tìm khách sạn được chọn
+        // tìm homestay được chọn
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy homestay trên"));
         user.getHotelList().add(hotel);
         userRepository.save(user);
     }
-    // xóa khách sạn ra khỏi danh sách yêu thích trang danh sách khách snaj yêu thích
+    // xóa homestay ra khỏi danh sách yêu thích trang danh sách yêu thích
     public Page<Hotel> deleteHotelFavourite(Integer id, Integer pageNumber) {
         if (pageNumber < 1){
             throw  new RuntimeException("Số trang không hợp lệ ");
@@ -118,20 +118,32 @@ public class UserService {
     }
 
 
-    // xóa khách sạn yêu thích taại trang danh sách khách sạn
+    // xóa homestay yêu thích
     public User deleteHotelFavourite(Integer idHotel) {
         // tìm kiếm user đăng nhập
         User user = userRepository.findByEmail((String) session.getAttribute("MY_SESSION")).orElseThrow(()-> new UsernameNotFoundException("User Not Found "));
-        // tìm kiếm khách sạn bị xóa khỏi danh sách yêu thích
+        // tìm kiếm homestay bị xóa khỏi danh sách yêu thích
         Hotel hotel = hotelRepository.findById(idHotel)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy homestay trên"));
 
-        // kiêm tra xem khách sạn đó có trong danh sách yeeu thích của user hay không
+        // kiêm tra xem homestay đó có trong danh sách yeeu thích của user hay không
         if (!user.getHotelList().contains(hotel)) {
             throw new IllegalStateException("Homestay trên không phải homestay được yêu thích của người dùng");
         }
         // remove ra khỏi danh sách yêu thích
         user.getHotelList().remove(hotel);
         return userRepository.save(user);
+    }
+
+    //deactive user
+    public User deactive(Integer id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+        user.setSuspended(true);
+        return  userRepository.save(user);
+    }
+    public User active(Integer id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+        user.setSuspended(false);
+        return  userRepository.save(user);
     }
 }

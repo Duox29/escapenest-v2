@@ -1,25 +1,26 @@
-let profileDropdownList = document.querySelector(".profile-dropdown-list");
-let btn = document.querySelector(".profile-dropdown-btn");
+// Check if elements exist before setting up event listeners
+const profileDropdownList = document.querySelector(".profile-dropdown-list");
+const btn = document.querySelector(".profile-dropdown-btn");
 
-let classList = profileDropdownList.classList;
+if (profileDropdownList && btn) {
+    const classList = profileDropdownList.classList;
 
-const toggle = () => classList.toggle("active");
+    const toggle = () => classList.toggle("active");
+    btn.addEventListener('click', toggle);
 
-window.addEventListener("click", function (e) {
-    if (!btn.contains(e.target)){
-        classList.remove("active");
-    }
-});
-const logOut = ()=>{
-    let isConFirm = confirm("Bạn có chắc rằng muốn đăng xuất?")
-    if (isConFirm){
-        toastr.success("Đăng xuất thành công");
-        setTimeout(()=>{
-            window.location.reload();
-            window.location.href = "/logout";
-        },2000)
-    }
+    window.addEventListener("click", function (e) {
+        if (!btn.contains(e.target) && !profileDropdownList.contains(e.target)) {
+            classList.remove("active");
+        }
+    });
 }
 
-
-
+const logOut = () => {
+    let isConFirm = confirm("Bạn có chắc rằng muốn đăng xuất?")
+    if (isConFirm) {
+        toastr.success("Đăng xuất thành công");
+        setTimeout(() => {
+            window.location.href = "/logout";
+        }, 2000)
+    }
+}

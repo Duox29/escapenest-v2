@@ -44,12 +44,22 @@ formRegister.addEventListener('submit' ,(e)=>{
         password: inputPassword.value,
         confirmPassword: confirmPassword.value
     }
-    console.log("adbb")
+    toastr.options = {
+        timeOut: 0,
+        extendedTimeOut: 0,
+        tapToDismiss: false,
+        closeButton: false
+    };
+    toastr.info("Đang xử lý, vui lòng chờ...")
     axios.post("/api/auth/register",data)
         .then((res) =>{
+            toastr.clear();
+            toastr.options = {};
             toastr.success("Đăng ký thành công. Vui lòng kiểm tra email xác thực tài khoản ")
         })
         .catch((er)=>{
+            toastr.clear();
+            toastr.options = {};
             toastr.error(er.response.data.message);
         })
 })

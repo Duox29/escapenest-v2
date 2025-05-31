@@ -57,6 +57,7 @@ public class User {
     List<Hotel> hotelList;
 
     Boolean enable;
+    Boolean suspended;
 
 
     LocalDate createdAt;

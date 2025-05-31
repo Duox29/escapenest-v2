@@ -151,7 +151,6 @@ public class    BookingService {
 
     public List<RevenueDayDto> getRevenueByDay(Integer year, Integer month) {
         List<RevenueDayDto> revenueDtoList = bookingRepository.getTotalRevenueDay();
-        System.out.println("Lấy doanh thu"+revenueDtoList);
         List<RevenueDayDto> result = new ArrayList<>();
         LocalDate dateSelect = LocalDate.of(year, month, 1);
 
@@ -217,11 +216,8 @@ public class    BookingService {
     public int totalRevenueYear(int year) {
         // lấy doanh thu của từng tháng rồi ộng vào
         List<RevenueMonthDto> result = getRevenueByMonth(year);
-        System.out.println("Doanh thu nè năm" +result.toString());
         int sum = 0;
         for (RevenueMonthDto revenueMonthDto : result) {
-            System.out.println("Doanh thu nè tháng"+revenueMonthDto);
-
             sum += (int) revenueMonthDto.getTotalPrice();
         }
         return (int) (sum * 0.15);
@@ -229,10 +225,8 @@ public class    BookingService {
 
     public long totalMonthCurrent(int year, int monthValue) {
         List<RevenueDayDto> result = getRevenueByDay(year, monthValue);
-        System.out.println("Doanh thu nè tháng"+result.toString());
         long sum = 0;
         for (RevenueDayDto revenueDayDto : result) {
-            System.out.println("Doanh thu nè tháng"+revenueDayDto);
             sum += revenueDayDto.getTotalPrice();
         }
         return sum;

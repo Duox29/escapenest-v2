@@ -23,7 +23,6 @@ public class HotelManagerApi {
     }
     @GetMapping("/revenue-month/{idHotel}")
     public ResponseEntity<?> getRevenueYearByHotel ( @RequestParam Integer year, @PathVariable Integer idHotel){
-        System.out.println("hàm ở đây à");
         return ResponseEntity.ok(bookingService.getRevenueByYearAndHotel(idHotel,year));
 
     }

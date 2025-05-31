@@ -104,6 +104,7 @@ public class AuthService {
                 .createdAt(LocalDate.now())
                 .avatar("/web/assets/image/avata-default.jpg")
                 .enable(false)
+                .suspended(false)
                 .build();
         userRepository.save(user);
         createTokenConfirmAccount(user);
@@ -311,33 +312,6 @@ public class AuthService {
         return userRepository.findByEmail(httpSession.getAttribute("MY_SESSION").toString()).orElseThrow(()->new UsernameNotFoundException("Không tìm thấy user hiện tại "));
     }
 
-    // TODO:Cần sửa
-//    public User createUserHotel(UpsertHotelRequest request) {
-//        if (userRepository.findByEmail(request.get()).isPresent()){
-//            throw new BadRequestException("Email đã tồn tại");
-//        }
-//        if (userRepository.findByPhoneNumber(request.getPhoneHotel()).isPresent()){
-//            throw new BadRequestException("Số điện thoại đã tồn tại");
-//        }
-//        String regex = "^0([0-9]{9})";
-//        String phone = "";
-//        if (request.getPhoneHotel().matches(regex)){
-//            phone = request.getPhoneHotel();
-//        }else {
-//            throw new BadRequestException("Số điện thoại của bạn không hợp lệ ");
-//        }
-//        User user = User.builder()
-//                .name(request.getName())
-//                .userRole(UserRole.ROLE_HOTEL)
-//                .password(passwordEncoder.encode("12345678"))
-//                .email(request.getEmail())
-//                .createdAt(LocalDate.now())
-//                .avatar("/web/assets/image/avatar-default.jpg")
-//                .enable(true)
-//                .phoneNumber(phone)
-//                .build();
-//        return userRepository.save(user);
-//    }
 
     public List<User> getAllUser() {
         return userRepository.findAll();
@@ -348,44 +322,13 @@ public class AuthService {
     public User getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(()-> new UsernameNotFoundException("Không tìm thấy user nào có id :"+id));
     }
+    public boolean isSuspended(String emailUser) {
+        User user = userRepository.findByEmail(emailUser).orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản"));
+        if(user.getSuspended().equals(true))
+        {
+            return true;
+        }
+        return false;
+    }
 
-
-
-//    public void resetPassword(String email) {
-//        // check email exist
-//        User user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy email"));
-//
-//        // Create token confirm
-//        TokenConfirm tokenConfirm = new TokenConfirm();
-//        tokenConfirm.setNameToken(UUID.randomUUID().toString());
-//        tokenConfirm.setUser(user);
-//        tokenConfirm.setType(TokenType.PASSWORD_RESET);
-//        // set expiry date after 1 day
-//        tokenConfirm.setExpiryDate(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000));
-//        tokenConfirmRepository.save(tokenConfirm);
-//
-//        // send email
-//        log.info("Send email");
-//        Map<String, String> data = new HashMap<>();
-//        data.put("email", user.getEmail());
-//        data.put("username", user.getName());
-//        data.put("token", tokenConfirm.getToken());
-//
-//        mailService.sendMailResetPassword(data);
-//
-//        log.info("Send mail success");
-//    }
-
-
-//    public void submitReasonDelete(Integer id, String reason) {
-//        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy user"));
-//        UserDelete userDelete = UserDelete.builder()
-//                .user(user)
-//                .reason(reason)
-//                .createdAt(LocalDate.now())
-//                .status(false)
-//                .build();
-//        userDeleteRepository.save(userDelete);
-//    }
 }

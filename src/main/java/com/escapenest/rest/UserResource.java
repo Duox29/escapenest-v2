@@ -39,6 +39,15 @@ public class UserResource {
     public ResponseEntity<?> updateAvatar(@RequestParam("file") MultipartFile file, @PathVariable Integer id) {
         return ResponseEntity.ok(imageService.uploadImageForUser(id, file));
     }
-
+    @PutMapping("/deactive/{id}")
+    public ResponseEntity<?> deactiveUser(@PathVariable("id") Integer id) {
+        System.out.println("Deactive endpoint called with ID: " + id);
+        return ResponseEntity.ok(userService.deactive(id));
+    }
+    @PutMapping("/active/{id}")
+    public ResponseEntity<?> activeUser(@PathVariable("id") Integer id) {
+        System.out.println("Active endpoint called with ID: " + id);
+        return ResponseEntity.ok(userService.active(id));
+    }
 
 }

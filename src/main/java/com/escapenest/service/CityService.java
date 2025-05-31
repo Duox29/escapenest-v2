@@ -25,7 +25,6 @@ public class CityService {
 
     // tìm kiếm thành phố nổi nật Home Page
     public List<CityDto> findCityFavourite() {
-        System.out.println( "haihaihai"+cityRepository.findAllCitiesOrderByTotalHotelsAsc());
         if (cityRepository.findAllCitiesOrderByTotalHotelsAsc().size()>10){
             return cityRepository.findAllCitiesOrderByTotalHotelsAsc().subList(0,10);
         }

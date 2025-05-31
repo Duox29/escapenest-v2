@@ -18,8 +18,6 @@ public class CityApi {
     private final ImageService imageService;
     @PostMapping()
     public ResponseEntity<?> createCity(@RequestBody UpsertCityRequest request){
-
-        System.out.println("nè");
        City city= cityService.createCity(request);
         return new ResponseEntity<>(city, HttpStatus.CREATED);
     }

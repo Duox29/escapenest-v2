@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout.html :: layout(~{::title},~{::#css},~{::#main-content},~{::#js})}">
+<head>
+    <title>Chi tiết đơn đặt phòng</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"/>
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" id="main-content">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/admin/dashboard">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/admin/payment-history">Lịch sử giao dịch</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Chi tiết đơn đặt phòng
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Thông tin đơn đặt phòng #<span th:text="${booking.id}"></span></h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <h4>Thông tin khách hàng</h4>
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>Tên khách hàng</th>
+                                                <td th:text="${booking.nameCustomer}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Email</th>
+                                                <td th:text="${booking.emailCustomer}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Số điện thoại</th>
+                                                <td th:text="${booking.phoneCustomer}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Người dùng</th>
+                                                <td>
+                                                    <a th:if="${booking.user != null}" th:href="@{/admin/user/detail/{id}(id=${booking.user.id})}">
+                                                        <span th:text="${booking.user.name}"></span>
+                                                    </a>
+                                                    <span th:unless="${booking.user != null}">Khách vãng lai</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4>Thông tin thanh toán</h4>
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>Phương thức thanh toán</th>
+                                                <td th:text="${booking.paymentMethod}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Trạng thái</th>
+                                                <td>
+                                                        <span th:switch="${booking.statusBooking}" class="badge">
+                                                            <span th:case="PENDING" class="badge badge-warning">Đang chờ</span>
+                                                            <span th:case="CONFIRMED" class="badge badge-success">Đã xác nhận</span>
+                                                            <span th:case="CANCELLED" class="badge badge-danger">Đã hủy</span>
+                                                            <span th:case="COMPLETED" class="badge badge-info">Hoàn thành</span>
+                                                            <span th:case="REJECTED" class="badge badge-danger">Bị từ chối</span>
+                                                            <span th:case="*" class="badge badge-secondary">[[${booking.statusBooking}]]</span>
+                                                        </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Tổng tiền</th>
+                                                <td th:text="${#numbers.formatInteger(booking.price, 3, 'COMMA') + ' VNĐ'}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ngày tạo</th>
+                                                <td th:text="${#temporals.format(booking.createAt, 'dd/MM/yyyy')}"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4>Thông tin đặt phòng</h4>
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>Khách sạn</th>
+                                                <td>
+                                                    <a th:href="@{/admin/hotels/{id}/detail (id=${booking.hotel.id})}">
+                                                        <span th:text="${booking.hotel.name}"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Phòng</th>
+                                                <td>
+                                                    <a th:href="@{/admin/room/chi-tiet/{id}(id=${booking.room.id})}">
+                                                        <span th:text="${booking.room.name}"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Số phòng</th>
+                                                <td th:text="${booking.numberRoom}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Số khách</th>
+                                                <td th:text="${booking.guests}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ngày nhận phòng</th>
+                                                <td th:text="${#temporals.format(booking.checkIn, 'dd/MM/yyyy')}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Ngày trả phòng</th>
+                                                <td th:text="${#temporals.format(booking.checkOut, 'dd/MM/yyyy')}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Số ngày</th>
+                                                <td th:text="${booking.checkIn.until(booking.checkOut).days} + ' ngày'"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Đã đánh giá</th>
+                                                <td>
+                                                    <span th:if="${booking.isReviewed}" class="badge badge-success">Đã đánh giá</span>
+                                                    <span th:unless="${booking.isReviewed}" class="badge badge-secondary">Chưa đánh giá</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<th:block id="js">
+    <script src="/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/admin-assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+</th:block>
+</body>
+</html>

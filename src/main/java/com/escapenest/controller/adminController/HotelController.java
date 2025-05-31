@@ -41,7 +41,6 @@ public class HotelController {
     @GetMapping("/create")
     public String viewCreateHotelPage(Model model){
         List<City> cityList = cityService.getAllCity();
-        System.out.println("nè"+cityList);
         model.addAttribute("rentalTypes" , RentalType.values());
         model.addAttribute("cityList" ,cityList);
         return "admin/hotel/create";
@@ -65,10 +64,6 @@ public class HotelController {
         TotalBookingMonthDto totalBookingMonthDtoPending = bookingService.getTotalBookingPendingMonthByHotel(id);
         long totalRevenueYear = bookingService.getTotalRevenueYearCurrent(id,LocalDate.now().getYear());
         RevenueMonthDto totalRevenueMonth = bookingService.getTotalRevenueMonth(id,LocalDate.now().getYear(),LocalDate.now().getMonthValue());
-
-        System.out.println(totalBookingMonthDto + " Tổng doanh thu nè ");
-        System.out.println(totalBookingMonthDtoPending + " Tổng doanh thu nè ");
-
         model.addAttribute("hotel" , hotel);
         model.addAttribute("totalRevenueYear" , totalRevenueYear);
         model.addAttribute("totalRevenueMonth" , totalRevenueMonth);

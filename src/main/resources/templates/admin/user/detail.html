@@ -70,6 +70,12 @@
                     <button type="button" class="btn btn-warning px-4" id="btn-reset-password">
                         Reset mật khẩu
                     </button>
+                    <button type="button" class="btn btn-danger px-4" id="btn-delete">
+                        Khóa tài khoản
+                    </button>
+                    <button type="button" class="btn btn-info px-4" id="btn-active">
+                        Mở tài khoản
+                    </button>
                 </div>
             </div>
 
@@ -107,7 +113,15 @@
                                                 <option value="ADMIN"
                                                         th:selected="${user.userRole.value.equals('ADMIN')}" th:value="${user.userRole}">ADMIN
                                                 </option>
+                                                <option value="HOTEL"
+                                                    th:selected="${user.userRole.value.equals('HOTEL')}" th:value="${user.userRole}">OWNER</option>
                                             </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Trạng thái</label>
+                                            <input type="text" class="form-control" id="status"
+                                                   th:value="${user.suspended} ? 'Tạm khóa' : 'Hoạt động'"
+                                                   disabled>
                                         </div>
                                     </form>
                                 </div>
@@ -243,6 +257,58 @@
                 toastr.error('Reset mật khẩu thất bại');
             }
         })
+
+        //deact tài khoản
+        const btnDeactive = document.getElementById('btn-delete');
+        btnDeactive.addEventListener('click', async () => {
+            const isConfirm = confirm('Bạn có chắc muốn khóa tài khoản này?');
+            if(!isConfirm) return;
+
+            try {
+                console.log('Attempting to deactivate user ID:', user.id);
+                let res = await axios.put(`/api/admin/users/deactive/${user.id}`, {}, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Response:', res); // Log response
+
+                if(res.status === 200) {
+                    toastr.success("Đã khóa tài khoản thành công");
+                    setTimeout(() => window.location.reload(), 1500);
+                }
+            } catch (e) {
+                console.error('Error:', e);
+                toastr.error("Khóa thất bại: " + (e.response?.data?.message || "Đã xảy ra lỗi"));
+            }
+        });
+
+        //active tài khoản
+        const btnActive = document.getElementById('btn-active');
+        btnActive.addEventListener('click', async () => {
+            const isConfirm = confirm('Bạn có chắc muốn mở khóa tài khoản này?');
+            if(!isConfirm) return;
+
+            try {
+                console.log('Attempting to activate user ID:', user.id);
+                let res = await axios.put(`/api/admin/users/active/${user.id}`, {}, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Response:', res); // Log response
+
+                if(res.status === 200) {
+                    toastr.success("Đã mở khóa tài khoản thành công");
+                    setTimeout(() => window.location.reload(), 1500);
+                }
+            } catch (e) {
+                console.error('Error:', e);
+                toastr.error("Mở khóa thất bại: " + (e.response?.data?.message || "Đã xảy ra lỗi"));
+            }
+        });
     </script>
 </th:block>
 

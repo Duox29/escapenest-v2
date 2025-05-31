@@ -62,7 +62,7 @@
                                     <tr th:each="payment : ${paymentHistoryServices}">
                                         <td th:text="${payment.vnpTransactionNo}"></td>
                                         <td>
-                                            <a th:href="@{/chi-tiet-booking/{id} (id=${payment.vnpTxnRef})}"><th:block th:text="${payment.vnpTxnRef}"></th:block></a>
+                                            <a th:href="@{/admin/payment-history/chi-tiet/{id} (id=${payment.vnpTxnRef})}"><th:block th:text="${payment.vnpTxnRef}"></th:block></a>
                                         </td>
                                         <td th:text="${#numbers.formatInteger(payment.vnpAmount, 3, 'COMMA')} + ' VNĐ'"></td>
                                         <td th:text="${#temporals.format(payment.vnpPayDate, ' HH:mm   dd/MM/yyyy ')}"></td>
